@@ -1,17 +1,21 @@
-public class Drinks {
+package model;
+
+import java.io.Serializable;
+
+public class Drinks implements Serializable {
     private String idDrink ;
     private String nameDrink ;
     private int qualityDrink ;
-    private long primeDrink ;
+    private long priceDrink ;
     private String otherDescription ;
 
     public Drinks(){};
 
-    public Drinks(String idDrink, String nameDrink, int qualityDrink, long primeDrink, String otherDescription) {
+    public Drinks(String idDrink, String nameDrink, int qualityDrink, long priceDrink, String otherDescription) {
         this.idDrink = idDrink;
         this.nameDrink = nameDrink;
         this.qualityDrink = qualityDrink;
-        this.primeDrink = primeDrink;
+        this.priceDrink = priceDrink;
         this.otherDescription = otherDescription;
     }
 
@@ -39,12 +43,12 @@ public class Drinks {
         this.qualityDrink = qualityDrink;
     }
 
-    public long getPrimeDrink() {
-        return primeDrink;
+    public long getPriceDrink() {
+        return priceDrink;
     }
 
-    public void setPrimeDrink(long primeDrink) {
-        this.primeDrink = primeDrink;
+    public void setPriceDrink(long primeDrink) {
+        this.priceDrink = primeDrink;
     }
 
     public String getOtherDescription() {
@@ -58,10 +62,10 @@ public class Drinks {
     @Override
     public String toString() {
         return "Drink : ID ='" + idDrink  +
-                ",Name = '" + nameDrink  +
+                "',Name = '" + nameDrink  +
                 "', Quality='" + qualityDrink +
-                "', Prime ='" + primeDrink +
-                "', Other = '" + otherDescription +
+                "', Prime ='" + priceDrink +
+                " VND', Other = '" + otherDescription +
                 '}';
     }
 }
