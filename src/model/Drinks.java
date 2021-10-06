@@ -3,13 +3,16 @@ package model;
 import java.io.Serializable;
 
 public class Drinks implements Serializable {
-    private String idDrink ;
-    private String nameDrink ;
-    private int qualityDrink ;
-    private long priceDrink ;
-    private String otherDescription ;
+    private String idDrink;
+    private String nameDrink;
+    private int qualityDrink;
+    private long priceDrink;
+    private String otherDescription;
 
-    public Drinks(){};
+    public Drinks() {
+    }
+
+    ;
 
     public Drinks(String idDrink, String nameDrink, int qualityDrink, long priceDrink, String otherDescription) {
         this.idDrink = idDrink;
@@ -61,11 +64,12 @@ public class Drinks implements Serializable {
 
     @Override
     public String toString() {
-        return "Drink : ID ='" + idDrink  +
-                "',Name = '" + nameDrink  +
+        return "Drink : ID ='" + idDrink +
+                "',Name = '" + nameDrink +
                 "', Quality='" + qualityDrink +
                 "', Prime ='" + priceDrink +
                 " VND', Other = '" + otherDescription +
                 "'";
     }
+
 }

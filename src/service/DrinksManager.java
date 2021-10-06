@@ -1,10 +1,12 @@
 package service;
 
 import model.Drinks;
+import sort.sortDrinks.*;
 
 import java.io.*;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -16,11 +18,11 @@ public class DrinksManager implements Serializable {
     public static final String NAME_REGEX = "^([AÀẢÃÁẠĂẰẮẲẴẶÂẤẦẨẪẬBCDĐEÈÉẺẼẸÊỀẾỂỄỆFGHIÍÌỈĨỊJKLMNOÒÓỎÕỌÔỒỐỔỖỘƠỜỚỞỠỢPQRSTUÙÚỦŨỤƯỪỨỬỮỰVWXYÝỲỶỸỴZ]+[aàảãáạăằẳẵắặâầẩẫấậbcdđeèẻẽéẹêềểễếệfghiìỉĩíịjklmnoòỏõóọôồổỗốộơờởỡớợpqrstuùủũúụưừửữứựvwxyỳỷỹýỵz]+[ ]*)+$";
     public static final String QUALITY_REGEX = "^[0-9]{1,9}$"; //int
     public static final String PRIME_REGEX = "^[1-9][0-9]{1,14}[0]{3}$";
-    public static final String FORMAT_CSV = "ID,NAME,QUALITY,PRICE,OTHER";
+    public static final String FORMAT_CSV_DRINKS = "ID,NAME,QUALITY,PRICE,OTHER";
     public static final String DOWN_THE_LINE = "\n";
     public static final String COMMA_DELIMITER = ",";
     public static final String SAVE_OBJECT_DRINKS = "D:\\Manager_Coffee_And_Drink\\src\\data\\list_drinks.txt";
-    public static final String SAVE_FORMAT_CSV = "D:\\Manager_Coffee_And_Drink\\out_data\\list_drinks.csv";
+    public static final String SAVE_FORMAT_CSV_DRINKS = "D:\\Manager_Coffee_And_Drink\\out_data\\list_drinks.csv";
 
     public DrinksManager() {
         drinksList = readDataFromFile(SAVE_OBJECT_DRINKS);
@@ -108,23 +110,27 @@ public class DrinksManager implements Serializable {
         Drinks drink = new Drinks(id, name, quality, price, other);
         System.out.println("Thức uống mới : " + drink);
         System.out.println("Bạn muốn thêm '" + drink.getNameDrink() + "' vào danh sách thức uống của quán !");
-        char press = 'x';
+        char press = ' ';
         boolean isChoice = true;
         do {
             System.out.print("Nhấn 'Y' để đồng ý ! Nhấn 'N' để hủy bỏ thao tác !");
-            press = input.nextLine().charAt(0);
+            try {
+                press = input.nextLine().charAt(0);
+            } catch (Exception e) {
+                press = ' ';
+            }
             switch (press) {
                 case 'Y':
                 case 'y': {
                     drinksList.add(drink);
                     writeToFile(SAVE_OBJECT_DRINKS, drinksList);
-                    writeDataFromFileFormatToCsv(SAVE_FORMAT_CSV, drinksList);
+                    writeDataFromFileFormatToCsv(SAVE_FORMAT_CSV_DRINKS, drinksList);
                     isChoice = false;
                     break;
                 }
                 case 'n':
                 case 'N':
-                    addDrinksList();
+                    menuDrinksManager();
                     isChoice = false;
                     break;
                 default:
@@ -135,15 +141,19 @@ public class DrinksManager implements Serializable {
 
     public void displayMenuDrinks() {
         displayDrinkFornmat();
-        char press = 'x';
+        char press = ' ';
         boolean isChoice = true;
         do {
             System.out.print("Nhấn 'R' để quay trở về menu quản lý thức uống !");
-            press = input.nextLine().charAt(0);
+            try {
+                press = input.nextLine().charAt(0);
+            } catch (Exception e) {
+                press = ' ';
+            }
             switch (press) {
                 case 'r':
                 case 'R': {
-                    System.out.println("gọi lai menu drink mânger");//thay lenh goi menu sau
+                    menuDrinksManager();
                     isChoice = false;
                     break;
                 }
@@ -154,7 +164,7 @@ public class DrinksManager implements Serializable {
     }
 
     public void editDrink() {
-        char choice = 'x';
+        char choice = ' ';
         do {
             System.out.println("-----------------LỰA CHỌN THAY ĐỔI THÔNG TIN-------------------");
             System.out.println("|  1. Sửa thông tin thức uống theo ID                          |");
@@ -163,7 +173,11 @@ public class DrinksManager implements Serializable {
             System.out.println("----------------------------------------------------------------");
             System.out.println();
             System.out.println("Lựa chọn : ");
-            choice = input.nextLine().charAt(0);
+            try {
+                choice = input.nextLine().charAt(0);
+            } catch (Exception e) {
+                choice = ' ';
+            }
             switch (choice) {
                 case '1':
                     editDrinksById();
@@ -172,7 +186,7 @@ public class DrinksManager implements Serializable {
                     editDrinksByName();
                     break;
                 case '0':
-                    //goi mene manager ;
+                    menuDrinksManager();
                     break;
                 default:
                     System.out.println("Lựa chọn theo menu trên !");
@@ -183,6 +197,7 @@ public class DrinksManager implements Serializable {
 
     //sua theo id
     public void editDrinksById() {
+        displayFullDrinks();
         String id = "";
         System.out.print("Nhập id thức uống cần sửa : ");
         id = input.nextLine();
@@ -197,14 +212,18 @@ public class DrinksManager implements Serializable {
                 for (Drinks dr : drinksList) {
                     if (dr.getIdDrink().equals(id)) {
                         System.out.println("Thức uống cần tìm là : ");
-                        System.out.println(dr);
+                        displayOneDrinks(dr);
                         System.out.println("Có phải bạn muốn sửa sản phẩm này !");
 
-                        char press = 'x';
+                        char press = ' ';
                         boolean isChoice = true;
                         do {
                             System.out.println("Nhấn 'Y' để tiếp tục, nhấn 'N' để tìm kiếm lại ");
-                            press = input.nextLine().charAt(0);
+                            try {
+                                press = input.nextLine().charAt(0);
+                            } catch (Exception e) {
+                                press = ' ';
+                            }
                             switch (press) {
                                 case 'Y':
                                 case 'y':
@@ -230,6 +249,7 @@ public class DrinksManager implements Serializable {
 
     // edit theo ten
     public void editDrinksByName() {
+        displayFullDrinks();
         String name = "";
         do {
             System.out.print("Nhập tên thức uống cần sửa chữa thông tin : ");
@@ -245,14 +265,18 @@ public class DrinksManager implements Serializable {
                     for (Drinks dr : drinksList) {
                         if (dr.getNameDrink().equals(name)) {
                             System.out.println("Thức uống cần tìm là : ");
-                            System.out.println(dr);
+                            displayOneDrinks(dr);
                             System.out.println("Có phải bạn muốn sửa sản phẩm này !");
 
-                            char press = 'x';
+                            char press = ' ';
                             boolean isChoice = true;
                             do {
                                 System.out.println("Nhấn 'Y' để tiếp tục, nhấn 'N' để tìm kiếm lại ");
-                                press = input.nextLine().charAt(0);
+                                try {
+                                    press = input.nextLine().charAt(0);
+                                } catch (Exception e) {
+                                    press = ' ';
+                                }
                                 switch (press) {
                                     case 'Y':
                                     case 'y':
@@ -280,7 +304,7 @@ public class DrinksManager implements Serializable {
     }
 
     public void editDrinkOption(Drinks drinks) {
-        char choice;
+        char choice = ' ';
         boolean isChoice = true;
         do {
             System.out.println("----------Thay đổi thông tin thức uống--------------------");
@@ -295,7 +319,11 @@ public class DrinksManager implements Serializable {
             System.out.println("----------------------------------------------------------");
             System.out.println();
             System.out.println("Chọn :");
-            choice = input.nextLine().charAt(0);
+            try {
+                choice = input.nextLine().charAt(0);
+            } catch (Exception e) {
+                choice = ' ';
+            }
 
             switch (choice) {
                 case '1':
@@ -333,7 +361,7 @@ public class DrinksManager implements Serializable {
                     break;
                 case '8':
                     writeToFile(SAVE_OBJECT_DRINKS, drinksList);
-                    writeDataFromFileFormatToCsv(SAVE_FORMAT_CSV, drinksList);
+                    writeDataFromFileFormatToCsv(SAVE_FORMAT_CSV_DRINKS, drinksList);
                     System.out.println("Menu sau khi sửa là :");
                     displayDrinkFornmat();
                     editDrink();
@@ -436,7 +464,7 @@ public class DrinksManager implements Serializable {
 
     //delete
     public void deleteDrink() {
-        char choice = 'x';
+        char choice = ' ';
         do {
             System.out.println("-----------------LỰA CHỌN THỨC UỐNG MUỐN XÓA-------------------");
             System.out.println("|  1. Xóa theo ID của thức uống                                |");
@@ -445,7 +473,11 @@ public class DrinksManager implements Serializable {
             System.out.println("----------------------------------------------------------------");
             System.out.println();
             System.out.println("Lựa chọn : ");
-            choice = input.nextLine().charAt(0);
+            try {
+                choice = input.nextLine().charAt(0);
+            } catch (Exception e) {
+                choice = ' ';
+            }
             switch (choice) {
                 case '1':
                     deteleDrinkById();
@@ -454,7 +486,7 @@ public class DrinksManager implements Serializable {
                     deteleDrinkByName();
                     break;
                 case '0':
-                    //goi mene manager ;
+                    menuDrinksManager();
                     break;
                 default:
                     System.out.println("Lựa chọn theo menu trên !");
@@ -463,6 +495,7 @@ public class DrinksManager implements Serializable {
     }
 
     public void deteleDrinkById() {
+        displayFullDrinks();
         String id = "";
         System.out.print("Nhập id thức uống muốn xóa : ");
         id = input.nextLine();
@@ -485,6 +518,7 @@ public class DrinksManager implements Serializable {
     }
 
     public void deteleDrinkByName() {
+        displayFullDrinks();
         String name = "";
         System.out.print("Nhập tên thức uống cần xóa : ");
         name = input.nextLine();
@@ -516,12 +550,16 @@ public class DrinksManager implements Serializable {
         do {
             System.out.println("Bạn muốn lưu thay đổi ? 'Y' = Yes / 'N' = No");
             System.out.println("Chọn : ");
-            choice = input.nextLine().charAt(0);
+            try {
+                choice = input.nextLine().charAt(0);
+            } catch (Exception e) {
+                choice = ' ';
+            }
             switch (choice) {
                 case 'y':
                 case 'Y':
                     writeToFile(SAVE_OBJECT_DRINKS, drinksList);
-                    writeDataFromFileFormatToCsv(SAVE_FORMAT_CSV, drinksList);
+                    writeDataFromFileFormatToCsv(SAVE_FORMAT_CSV_DRINKS, drinksList);
                     isChoice = false;
                     deleteDrink();
                     break;
@@ -529,6 +567,7 @@ public class DrinksManager implements Serializable {
                 case 'N':
                     drinksList = readDataFromFile(SAVE_OBJECT_DRINKS);
                     isChoice = false;
+                    deleteDrink();
                     break;
                 default:
                     System.out.println();
@@ -540,47 +579,238 @@ public class DrinksManager implements Serializable {
 
     //Hien thi danh sach
     public void optionDisplay() {
-        char choice = 'x';
+        char choice = ' ';
         boolean isChoice = true;
         do {
             System.out.println("----------------------LỰA CHỌN HIỂN THỊ------------------------");
-            System.out.println("|  1. Hiển thị theo id thức uống                               |");
-            System.out.println("|  2. Hiển thị theo tên thức uống                              |");
-            System.out.println("|  3. Hiển thị theo số lượng                                   |");
-            System.out.println("|  4. Hiển thị theo giá                                        |");
+            System.out.println("|  1. Hiển thị sắp xếp theo id thức uống                       |");
+            System.out.println("|  2. Hiển thị sắp xếp theo tên thức uống                      |");
+            System.out.println("|  3. Hiển thị sắp xếp theo số lượng                           |");
+            System.out.println("|  4. Hiển thị sắp xếp theo giá                                |");
             System.out.println("|  0. Quay lại menu chính                                      |");
             System.out.println("----------------------------------------------------------------");
             System.out.println();
             System.out.print("Chọn :");
-            choice = input.nextLine().charAt(0);
-            switch (choice){
+            try {
+                choice = input.nextLine().charAt(0);
+            } catch (Exception e) {
+                choice = ' ';
+            }
+            switch (choice) {
                 case '1':
-                    //displayDrinkById() ;
+                    displayDrinkById();
                     break;
                 case '2':
-                    //displayDrinkByName() ;
+                    displayDrinkByName();
                     break;
                 case '3':
-                    //displayDrinkByQuality();
+                    displayDrinkByQuality();
                     break;
                 case '4':
-                    //displayDrinkByPrice ;
+                    displayDrinkByPrice();
                     break;
                 case '0':
-                    //menuchinh ;
+                    menuDrinksManager();
                 default:
                     System.out.println("Chọn theo menu !");
             }
 
-        }while (isChoice);
+        } while (isChoice);
     }
 
-    public void displayDrinkById(){
-        System.out.println("--------------SẮP XẾP THEO ID--------------");
-        System.out.println("| 1. Theo thứ tự từ A-Z                    |");
-        System.out.println("| 2. Theo thứ tự từ Z-A                    |");
-        System.out.println("| 3. Quay lại menu                         |");
-        System.out.println("--------------------------------------------");
+    public void displayDrinkById() {
+        boolean isChoice = true;
+        char choice = ' ';
+        do {
+            System.out.println("--------------SẮP XẾP THEO ID THỨC UỐNG--------------");
+            System.out.println("| 1. Theo thứ tự từ A-Z                               |");
+            System.out.println("| 2. Theo thứ tự từ Z-A                               |");
+            System.out.println("| 0. Quay lại menu                                    |");
+            System.out.println("-------------------------------------------------------");
+            System.out.println();
+            System.out.print("Lựa chọn :");
+            try {
+             choice = input.nextLine().charAt(0);}
+            catch (Exception e){
+                choice = ' ';
+            }
+            switch (choice) {
+                case '1':
+                    System.out.println("Sắp xếp theo ID từ A-Z");
+                    SortIdDrinksAZ sortIdAZ = new SortIdDrinksAZ();
+                    Collections.sort(drinksList, sortIdAZ);
+                    displayFullDrinks();
+                    drinksList = readDataFromFile(SAVE_OBJECT_DRINKS);
+                    break;
+                case '2':
+                    System.out.println("Sắp xếp theo ID từ Z-A");
+                    SortIdDrinksZA sortIdZA = new SortIdDrinksZA();
+                    Collections.sort(drinksList, sortIdZA);
+                    displayFullDrinks();
+                    drinksList = readDataFromFile(SAVE_OBJECT_DRINKS);
+                    break;
+                case '0':
+                    optionDisplay();
+                    isChoice = false;
+                default:
+                    System.out.println("Chọn lại !");
+            }
+        } while (isChoice);
+    }
+
+    public void displayDrinkByName() {
+        boolean isChoice = true;
+        char choice = ' ';
+        do {
+            System.out.println("--------------SẮP XẾP THEO TÊN THỨC UỐNG--------------");
+            System.out.println("| 1. Theo thứ tự từ A-Z                               |");
+            System.out.println("| 2. Theo thứ tự từ Z-A                               |");
+            System.out.println("| 0. Quay lại menu                                    |");
+            System.out.println("-------------------------------------------------------");
+            System.out.println();
+            System.out.print("Lựa chọn :");
+            try{
+             choice = input.nextLine().charAt(0);}
+            catch (Exception e){
+                choice = ' ';
+            }
+            switch (choice) {
+                case '1':
+                    System.out.println("Sắp xếp theo tên từ A-Z");
+                    SortToNameDrinksAZ sortNameAZ = new SortToNameDrinksAZ();
+                    Collections.sort(drinksList, sortNameAZ);
+                    displayFullDrinks();
+                    drinksList = readDataFromFile(SAVE_OBJECT_DRINKS);
+                    break;
+                case '2':
+                    System.out.println("Sắp xếp theo tên từ Z-A");
+                    SortToNameDrinksZA sortNameZA = new SortToNameDrinksZA();
+                    Collections.sort(drinksList, sortNameZA);
+                    displayFullDrinks();
+                    drinksList = readDataFromFile(SAVE_OBJECT_DRINKS);
+                    break;
+                case '0':
+                    optionDisplay();
+                    isChoice = false;
+                default:
+                    System.out.println("Chọn lại !");
+            }
+        } while (isChoice);
+    }
+
+    public void displayDrinkByQuality() {
+        boolean isChoice = true;
+        char choice = ' ';
+        do {
+            System.out.println("-----------SẮP XẾP THEO SỐ LƯỢNG THỨC UỐNG------------");
+            System.out.println("| 1. Theo thứ tự từ tăng dần                          |");
+            System.out.println("| 2. Theo thứ tự từ giảm dần                          |");
+            System.out.println("| 0. Quay lại menu                                    |");
+            System.out.println("-------------------------------------------------------");
+            System.out.println();
+            System.out.print("Lựa chọn :");
+            try{
+                choice = input.nextLine().charAt(0);}
+            catch (Exception e){
+                choice = ' ';
+            }
+            switch (choice) {
+                case '1':
+                    System.out.println("Sắp xếp theo số lượng tăng dần !");
+                    SortQualityDrinksAscending sortQualityDrinksAscending = new SortQualityDrinksAscending();
+                    Collections.sort(drinksList, sortQualityDrinksAscending);
+                    displayFullDrinks();
+                    drinksList = readDataFromFile(SAVE_OBJECT_DRINKS);
+                    break;
+                case '2':
+                    System.out.println("Sắp xếp theo số lượng giảm dần");
+                    SortQualityDrinksDecrease sortQualityDrinksDecrease = new SortQualityDrinksDecrease();
+                    Collections.sort(drinksList, sortQualityDrinksDecrease);
+                    displayFullDrinks();
+                    drinksList = readDataFromFile(SAVE_OBJECT_DRINKS);
+                    break;
+                case '0':
+                    optionDisplay();
+                    isChoice = false;
+                default:
+                    System.out.println("Chọn lại !");
+            }
+        } while (isChoice);
+    }
+
+    public void displayDrinkByPrice() {
+        boolean isChoice = true;
+        char choice = ' ';
+        do {
+            System.out.println("-----------SẮP XẾP THEO GIÁ THỨC UỐNG-----------------");
+            System.out.println("| 1. Theo thứ tự từ tăng dần                          |");
+            System.out.println("| 2. Theo thứ tự từ giảm dần                          |");
+            System.out.println("| 0. Quay lại menu                                    |");
+            System.out.println("-------------------------------------------------------");
+            System.out.println();
+            System.out.print("Lựa chọn :");
+
+            try{
+                choice = input.nextLine().charAt(0);}
+            catch (Exception e){
+                choice = ' ';
+            }
+            switch (choice) {
+                case '1':
+                    System.out.println("Sắp xếp theo giá thức uống tăng dần !");
+                    SortPriceDrinksAscending sortPriceDrinksAscending = new SortPriceDrinksAscending();
+                    Collections.sort(drinksList, sortPriceDrinksAscending);
+                    displayFullDrinks();
+                    drinksList = readDataFromFile(SAVE_OBJECT_DRINKS);
+                    break;
+                case '2':
+                    System.out.println("Sắp xếp theo giá thức uống giảm dần");
+                    SortPriceDrinksDecrease sortPriceDrinksDecrease = new SortPriceDrinksDecrease();
+                    Collections.sort(drinksList, sortPriceDrinksDecrease);
+                    displayFullDrinks();
+                    drinksList = readDataFromFile(SAVE_OBJECT_DRINKS);
+                    break;
+                case '0':
+                    optionDisplay();
+                    isChoice = false;
+                default:
+                    System.out.println("Chọn lại !");
+            }
+        } while (isChoice);
+    }
+
+
+    public void displayFullDrinks() {
+        DecimalFormat formater = new DecimalFormat("###,###,###");
+        int count = 0;
+        String stt, id, name, ql, pr, other;
+        System.out.println();
+        System.out.printf("%-3s%-12s%-12s%-40s%-20s%-23s%s\n", "", "STT", "ID", "TÊN THỨC UỐNG", "SỐ LƯỢNG", "GIÁ (VND)", "THÔNG TIN KHÁC");
+        for (Drinks dr : drinksList) {
+            count++;
+            stt = String.valueOf(count);
+            id = dr.getIdDrink();
+            name = dr.getNameDrink();
+            ql = String.valueOf(dr.getQualityDrink());
+            pr = formater.format(dr.getPriceDrink());
+            other = dr.getOtherDescription();
+            System.out.printf("%-3s%-12s%-12s%-40s%-20s%-23s%s\n", "", stt, id, name, ql, pr, other);
+        }
+        System.out.println();
+    }
+
+    public void displayOneDrinks(Drinks drinks) {
+        DecimalFormat formater = new DecimalFormat("###,###,###");
+        int count = 0;
+        String stt, id, name, ql, pr, other;
+        System.out.println();
+        System.out.printf("%-3s%-12s%-40s%-20s%-23s%s\n", "", "ID", "TÊN THỨC UỐNG", "SỐ LƯỢNG", "GIÁ (VND)", "THÔNG TIN KHÁC");
+        id = drinks.getIdDrink();
+        name = drinks.getNameDrink();
+        ql = String.valueOf(drinks.getQualityDrink());
+        pr = formater.format(drinks.getPriceDrink());
+        other = drinks.getOtherDescription();
+        System.out.printf("%-3s%-12s%-40s%-20s%-23s%s\n", "", id, name, ql, pr, other);
     }
 
     public boolean isIdFormat(String id) {
@@ -639,7 +869,7 @@ public class DrinksManager implements Serializable {
         FileWriter writer = null;
         try {
             writer = new FileWriter(path);
-            writer.append(FORMAT_CSV);
+            writer.append(FORMAT_CSV_DRINKS);
             writer.append(DOWN_THE_LINE);
             for (Drinks drink : listDrink) {
                 writer.append(drink.getIdDrink());
@@ -658,4 +888,52 @@ public class DrinksManager implements Serializable {
             e.printStackTrace();
         }
     }
+
+    public void menuDrinksManager() {
+        boolean isChoice = true;
+        do {
+            System.out.println("-------------------QUẢN LÝ THỨC UỐNG------------------------");
+            System.out.println("| 1. Thêm thức uống mới                                    |");
+            System.out.println("| 2. Sửa thông tin thức uống                               |");
+            System.out.println("| 3. Xóa thức uống khỏi danh sách thức uống                |");
+            System.out.println("| 4. Hiển thị format menu                                  |");
+            System.out.println("| 5. Hiển thị thông tin toàn bộ thức uống theo thứ tự      |");
+            System.out.println("| 0 . Quay lại menu chính                                  |");
+            System.out.println("------------------------------------------------------------");
+            System.out.println();
+            System.out.println("Chọn : ");
+            char choice = ' ';
+            try {
+                choice = input.nextLine().charAt(0);
+            } catch (Exception e) {
+                menuDrinksManager();
+            }
+
+            switch (choice) {
+                case '1':
+                    addDrinksList();
+                    break;
+                case '2':
+                    editDrink();
+                    break;
+                case '3':
+                    deleteDrink();
+                    break;
+                case '4':
+                    displayMenuDrinks();
+                    break;
+                case '5':
+                    optionDisplay();
+                    break;
+                case '0':
+                    ///Gọi menuchisnh
+                    isChoice = false;
+                    break;
+                default:
+                    System.out.println("Chọn lại !");
+
+            }
+        } while (isChoice);
+    }
+
 }
