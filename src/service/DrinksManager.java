@@ -3,6 +3,7 @@ package service;
 import model.Drinks;
 
 import java.io.*;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -133,21 +134,7 @@ public class DrinksManager implements Serializable {
     }
 
     public void displayMenuDrinks() {
-        int count = 0;
-        String stt, id, name, ql, pr;
-        System.out.println("------------------------------------------MENU COFFEE AND DRINKS----------------------------------------------");
-        System.out.printf("%-3s%-12s%-12s%-40s%-20s%-23s%s\n", "|", "STT", "ID", "TÊN THỨC UỐNG", "SỐ LƯỢNG", "GIÁ", "|");
-        for (Drinks dr : drinksList) {
-            count++;
-            stt = String.valueOf(count);
-            id = dr.getIdDrink();
-            name = dr.getNameDrink();
-            ql = String.valueOf(dr.getQualityDrink());
-            pr = String.valueOf(dr.getPriceDrink());
-            System.out.printf("%-3s%-12s%-12s%-40s%-20s%-23s%s\n", "|", stt, id, name, ql, pr, "|");
-        }
-        System.out.println("------------------------------------------######################-----------------------------------------------");
-
+        displayDrinkFornmat();
         char press = 'x';
         boolean isChoice = true;
         do {
@@ -166,6 +153,34 @@ public class DrinksManager implements Serializable {
         } while (isChoice);
     }
 
+    public void editDrink() {
+        char choice = 'x';
+        do {
+            System.out.println("-----------------LỰA CHỌN THAY ĐỔI THÔNG TIN-------------------");
+            System.out.println("|  1. Sửa thông tin thức uống theo ID                          |");
+            System.out.println("|  2. Sửa thông tin thức uống theo tên                         |");
+            System.out.println("|  0. Quay lại                                                 |");
+            System.out.println("----------------------------------------------------------------");
+            System.out.println();
+            System.out.println("Lựa chọn : ");
+            choice = input.nextLine().charAt(0);
+            switch (choice) {
+                case '1':
+                    editDrinksById();
+                    break;
+                case '2':
+                    editDrinksByName();
+                    break;
+                case '0':
+                    //goi mene manager ;
+                    break;
+                default:
+                    System.out.println("Lựa chọn theo menu trên !");
+            }
+        } while (choice != '0');
+    }
+
+
     //sua theo id
     public void editDrinksById() {
         String id = "";
@@ -173,10 +188,11 @@ public class DrinksManager implements Serializable {
         id = input.nextLine();
         if (!isIdFormat(id)) {
             System.out.println("Định dạng id phải có dạng 'AA001' !");
-            editDrinksById();
+            editDrink();
         } else {
             if (!isHaveIdDrinksList(id)) {
                 System.out.println("Id không có trong danh sách thức uống !");
+                editDrink();
             } else {
                 for (Drinks dr : drinksList) {
                     if (dr.getIdDrink().equals(id)) {
@@ -192,13 +208,12 @@ public class DrinksManager implements Serializable {
                             switch (press) {
                                 case 'Y':
                                 case 'y':
-                                    editDrink(dr);
+                                    editDrinkOption(dr);
                                     isChoice = false;
                                     break;
-
                                 case 'n':
                                 case 'N':
-                                    editDrinksById() ;///tamthoi ko thi goi ve cha
+                                    editDrink();
                                     isChoice = false;
                                     break;
                                 default:
@@ -212,9 +227,61 @@ public class DrinksManager implements Serializable {
         }
     }
 
-    public void editDrink(Drinks drinks) {
+
+    // edit theo ten
+    public void editDrinksByName() {
+        String name = "";
+        do {
+            System.out.print("Nhập tên thức uống cần sửa chữa thông tin : ");
+            name = input.nextLine();
+            if (!isNameFormat(name)) {
+                System.out.println("Định dạng tên sai (ví dụ : 'Coffee Đen Đá' !");
+                editDrink();
+            } else {
+                if (!isHaveNameDrinksList(name)) {
+                    System.out.println("Tên thức uống không có trong danh sách");
+                    editDrink();
+                } else {
+                    for (Drinks dr : drinksList) {
+                        if (dr.getNameDrink().equals(name)) {
+                            System.out.println("Thức uống cần tìm là : ");
+                            System.out.println(dr);
+                            System.out.println("Có phải bạn muốn sửa sản phẩm này !");
+
+                            char press = 'x';
+                            boolean isChoice = true;
+                            do {
+                                System.out.println("Nhấn 'Y' để tiếp tục, nhấn 'N' để tìm kiếm lại ");
+                                press = input.nextLine().charAt(0);
+                                switch (press) {
+                                    case 'Y':
+                                    case 'y':
+                                        editDrinkOption(dr);
+                                        isChoice = false;
+                                        break;
+
+                                    case 'n':
+                                    case 'N':
+                                        editDrink();
+                                        isChoice = false;
+                                        break;
+                                    default:
+                                        isChoice = true;
+                                }
+                            } while (isChoice);
+                            break;
+                        }
+                    }
+                }
+
+            }
+        }
+        while (isHaveNameDrinksList(name) || !isNameFormat(name));
+    }
+
+    public void editDrinkOption(Drinks drinks) {
         char choice;
-        boolean isChoice = true ;
+        boolean isChoice = true;
         do {
             System.out.println("----------Thay đổi thông tin thức uống--------------------");
             System.out.println("|   1. Thay đổi id thức uống                             |");
@@ -261,14 +328,16 @@ public class DrinksManager implements Serializable {
                     break;
                 case '7':
                     drinksList = readDataFromFile(SAVE_OBJECT_DRINKS);
-                    //Quay lai menu truoc do
-                    isChoice = false ;
+                    editDrink();
+                    isChoice = false;
                     break;
                 case '8':
                     writeToFile(SAVE_OBJECT_DRINKS, drinksList);
                     writeDataFromFileFormatToCsv(SAVE_FORMAT_CSV, drinksList);
-                    //menuManager();goi lai menu cha
-                    isChoice = false ;
+                    System.out.println("Menu sau khi sửa là :");
+                    displayDrinkFornmat();
+                    editDrink();
+                    isChoice = false;
                     break;
                 default:
                     System.out.println("Hãy chọn theo yêu cầu của menu ở trên !");
@@ -276,6 +345,24 @@ public class DrinksManager implements Serializable {
         } while (isChoice);
     }
 
+
+    public void displayDrinkFornmat() {
+        DecimalFormat formater = new DecimalFormat("###,###,###");
+        int count = 0;
+        String stt, id, name, ql, pr;
+        System.out.println("------------------------------------------MENU COFFEE AND DRINKS----------------------------------------------");
+        System.out.printf("%-3s%-12s%-12s%-40s%-20s%-23s%s\n", "|", "STT", "ID", "TÊN THỨC UỐNG", "SỐ LƯỢNG", "GIÁ (VND)", "|");
+        for (Drinks dr : drinksList) {
+            count++;
+            stt = String.valueOf(count);
+            id = dr.getIdDrink();
+            name = dr.getNameDrink();
+            ql = String.valueOf(dr.getQualityDrink());
+            pr = formater.format(dr.getPriceDrink());
+            System.out.printf("%-3s%-12s%-12s%-40s%-20s%-23s%s\n", "|", stt, id, name, ql, pr, "|");
+        }
+        System.out.println("------------------------------------------######################-----------------------------------------------");
+    }
 
     public void editIdDrink(Drinks drinks) {
         String newId = "";
@@ -291,6 +378,7 @@ public class DrinksManager implements Serializable {
         } while (isHaveIdDrinksList(newId) || !isIdFormat(newId));
         drinks.setIdDrink(newId);
     }
+
 
     public void editNameDrink(Drinks drinks) {
         String newName = "";
@@ -308,6 +396,7 @@ public class DrinksManager implements Serializable {
         drinks.setNameDrink(newName);
     }
 
+
     public void editQualityDrinks(Drinks drinks) {
         String q = "";
         int quality = 0;
@@ -322,6 +411,7 @@ public class DrinksManager implements Serializable {
         } while (!isQualityFormat(q));
         drinks.setQualityDrink(quality);
     }
+
 
     public void editPriceDrinks(Drinks drinks) {
         String strPrice = "";
@@ -342,6 +432,155 @@ public class DrinksManager implements Serializable {
         System.out.println("Mô tả mới về thức uống :");
         String other = input.nextLine();
         drinks.setOtherDescription(other);
+    }
+
+    //delete
+    public void deleteDrink() {
+        char choice = 'x';
+        do {
+            System.out.println("-----------------LỰA CHỌN THỨC UỐNG MUỐN XÓA-------------------");
+            System.out.println("|  1. Xóa theo ID của thức uống                                |");
+            System.out.println("|  2. Xóa theo tên thức uống                                   |");
+            System.out.println("|  0. Quay lại                                                 |");
+            System.out.println("----------------------------------------------------------------");
+            System.out.println();
+            System.out.println("Lựa chọn : ");
+            choice = input.nextLine().charAt(0);
+            switch (choice) {
+                case '1':
+                    deteleDrinkById();
+                    break;
+                case '2':
+                    deteleDrinkByName();
+                    break;
+                case '0':
+                    //goi mene manager ;
+                    break;
+                default:
+                    System.out.println("Lựa chọn theo menu trên !");
+            }
+        } while (choice != '0');
+    }
+
+    public void deteleDrinkById() {
+        String id = "";
+        System.out.print("Nhập id thức uống muốn xóa : ");
+        id = input.nextLine();
+        if (!isIdFormat(id)) {
+            System.out.println("Định dạng id phải có dạng 'AA001' !");
+            deleteDrink();
+        } else {
+            if (!isHaveIdDrinksList(id)) {
+                System.out.println("Id không có trong danh sách thức uống !");
+                deleteDrink();
+            } else {
+                for (Drinks drinks : drinksList) {
+                    if (drinks.getIdDrink().equals(id)) {
+                        deteleDrinksInList(drinks);
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    public void deteleDrinkByName() {
+        String name = "";
+        System.out.print("Nhập tên thức uống cần xóa : ");
+        name = input.nextLine();
+        if (!isNameFormat(name)) {
+            System.out.println("Định dạng tên sai (ví dụ : 'Coffee Đen Đá' !");
+            deleteDrink();
+        } else {
+            if (!isHaveNameDrinksList(name)) {
+                System.out.println("Tên thức uống không có trong danh sách");
+                deleteDrink();
+            } else {
+                for (Drinks drinks : drinksList) {
+                    if (drinks.getNameDrink().equals(name)) {
+                        deteleDrinksInList(drinks);
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+
+    public void deteleDrinksInList(Drinks drinks) {
+        drinksList.remove(drinks);
+        System.out.println("Menu thức uống sau khi xóa '" + drinks.getNameDrink() + "'");
+        displayDrinkFornmat();
+        char choice;
+        boolean isChoice = true;
+        do {
+            System.out.println("Bạn muốn lưu thay đổi ? 'Y' = Yes / 'N' = No");
+            System.out.println("Chọn : ");
+            choice = input.nextLine().charAt(0);
+            switch (choice) {
+                case 'y':
+                case 'Y':
+                    writeToFile(SAVE_OBJECT_DRINKS, drinksList);
+                    writeDataFromFileFormatToCsv(SAVE_FORMAT_CSV, drinksList);
+                    isChoice = false;
+                    deleteDrink();
+                    break;
+                case 'n':
+                case 'N':
+                    drinksList = readDataFromFile(SAVE_OBJECT_DRINKS);
+                    isChoice = false;
+                    break;
+                default:
+                    System.out.println();
+            }
+        } while (isChoice);
+
+    }
+
+
+    //Hien thi danh sach
+    public void optionDisplay() {
+        char choice = 'x';
+        boolean isChoice = true;
+        do {
+            System.out.println("----------------------LỰA CHỌN HIỂN THỊ------------------------");
+            System.out.println("|  1. Hiển thị theo id thức uống                               |");
+            System.out.println("|  2. Hiển thị theo tên thức uống                              |");
+            System.out.println("|  3. Hiển thị theo số lượng                                   |");
+            System.out.println("|  4. Hiển thị theo giá                                        |");
+            System.out.println("|  0. Quay lại menu chính                                      |");
+            System.out.println("----------------------------------------------------------------");
+            System.out.println();
+            System.out.print("Chọn :");
+            choice = input.nextLine().charAt(0);
+            switch (choice){
+                case '1':
+                    //displayDrinkById() ;
+                    break;
+                case '2':
+                    //displayDrinkByName() ;
+                    break;
+                case '3':
+                    //displayDrinkByQuality();
+                    break;
+                case '4':
+                    //displayDrinkByPrice ;
+                    break;
+                case '0':
+                    //menuchinh ;
+                default:
+                    System.out.println("Chọn theo menu !");
+            }
+
+        }while (isChoice);
+    }
+
+    public void displayDrinkById(){
+        System.out.println("--------------SẮP XẾP THEO ID--------------");
+        System.out.println("| 1. Theo thứ tự từ A-Z                    |");
+        System.out.println("| 2. Theo thứ tự từ Z-A                    |");
+        System.out.println("| 3. Quay lại menu                         |");
+        System.out.println("--------------------------------------------");
     }
 
     public boolean isIdFormat(String id) {

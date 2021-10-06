@@ -66,6 +66,6 @@ public class Drinks implements Serializable {
                 "', Quality='" + qualityDrink +
                 "', Prime ='" + priceDrink +
                 " VND', Other = '" + otherDescription +
-                '}';
+                "'";
     }
 }
