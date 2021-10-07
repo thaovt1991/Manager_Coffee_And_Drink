@@ -9,11 +9,11 @@ import java.util.Arrays;
 
 public class Main {
     public static void main(String[] args) {
-//       DrinksManager test = new DrinksManager();
-//        test.menuDrinksManager();
+       DrinksManager test = new DrinksManager();
+        test.menuDrinksManager();
 
-        StaffManager managerStaff = new StaffManager();
-        managerStaff.addStaff();
+//        StaffManager managerStaff = new StaffManager();
+//        managerStaff.addStaff();
 
     }
 }

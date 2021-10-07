@@ -18,6 +18,7 @@ public class DrinksManager implements Serializable {
     public static final String NAME_REGEX = "^([AÀẢÃÁẠĂẰẮẲẴẶÂẤẦẨẪẬBCDĐEÈÉẺẼẸÊỀẾỂỄỆFGHIÍÌỈĨỊJKLMNOÒÓỎÕỌÔỒỐỔỖỘƠỜỚỞỠỢPQRSTUÙÚỦŨỤƯỪỨỬỮỰVWXYÝỲỶỸỴZ]+[aàảãáạăằẳẵắặâầẩẫấậbcdđeèẻẽéẹêềểễếệfghiìỉĩíịjklmnoòỏõóọôồổỗốộơờởỡớợpqrstuùủũúụưừửữứựvwxyỳỷỹýỵz]+[ ]*)+$";
     public static final String QUALITY_REGEX = "^[0-9]{1,9}$"; //int
     public static final String PRIME_REGEX = "^[1-9][0-9]{1,14}[0]{3}$";
+    public static final String LINK_REGEX = "(^([C|D][:])\\\\(?:[\\w]+\\\\)*\\w+$)|(^[C|D][:][\\\\]$)";
     public static final String FORMAT_CSV_DRINKS = "ID,NAME,QUALITY,PRICE,OTHER";
     public static final String DOWN_THE_LINE = "\n";
     public static final String COMMA_DELIMITER = ",";
@@ -630,8 +631,8 @@ public class DrinksManager implements Serializable {
             System.out.println();
             System.out.print("Lựa chọn :");
             try {
-             choice = input.nextLine().charAt(0);}
-            catch (Exception e){
+                choice = input.nextLine().charAt(0);
+            } catch (Exception e) {
                 choice = ' ';
             }
             switch (choice) {
@@ -669,9 +670,9 @@ public class DrinksManager implements Serializable {
             System.out.println("-------------------------------------------------------");
             System.out.println();
             System.out.print("Lựa chọn :");
-            try{
-             choice = input.nextLine().charAt(0);}
-            catch (Exception e){
+            try {
+                choice = input.nextLine().charAt(0);
+            } catch (Exception e) {
                 choice = ' ';
             }
             switch (choice) {
@@ -709,9 +710,9 @@ public class DrinksManager implements Serializable {
             System.out.println("-------------------------------------------------------");
             System.out.println();
             System.out.print("Lựa chọn :");
-            try{
-                choice = input.nextLine().charAt(0);}
-            catch (Exception e){
+            try {
+                choice = input.nextLine().charAt(0);
+            } catch (Exception e) {
                 choice = ' ';
             }
             switch (choice) {
@@ -750,9 +751,9 @@ public class DrinksManager implements Serializable {
             System.out.println();
             System.out.print("Lựa chọn :");
 
-            try{
-                choice = input.nextLine().charAt(0);}
-            catch (Exception e){
+            try {
+                choice = input.nextLine().charAt(0);
+            } catch (Exception e) {
                 choice = ' ';
             }
             switch (choice) {
@@ -885,8 +886,286 @@ public class DrinksManager implements Serializable {
             }
             writer.close();
         } catch (Exception e) {
-            e.printStackTrace();
         }
+    }
+
+
+    public void searchDrink() {
+        boolean isChoice = true;
+        char choice = ' ';
+        do {
+            System.out.println("----------------------TÌM KIẾM THỨC UỐNG----------------------------");
+            System.out.println("| 1. Tìm kiếm theo ID thức uống                                     |");
+            System.out.println("| 2. Tìm kiếm theo tên thức uống                                    |");
+            System.out.println("| 3. Tìm kiếm theo số lượng thức uống                               |");
+            System.out.println("| 4. Tìm kiếm theo giá thức uống                                    |");
+            System.out.println("| 5. Tìm kiếm thông tin khác của thức uống                          |");
+            System.out.println("| 0. Quay lại                                                       |");
+            System.out.println(" -------------------------------------------------------------------");
+            System.out.println();
+            System.out.print("Chọn : ");
+            try {
+                choice = input.nextLine().charAt(0);
+            } catch (Exception e) {
+                choice = ' ';
+            }
+            switch (choice) {
+                case '1':
+                    searchById();
+                    break;
+                case '2':
+                    searchByName();
+                    break;
+                case '3':
+                    searchByQuality();
+                    break;
+                case '4':
+                    searchByPrice();
+                    break;
+                case '5':
+                    searchByOtherDescription();
+                    break;
+                case '0':
+                    menuDrinksManager();
+                    isChoice = false;
+                    break;
+                default:
+                    System.out.println("Hãy chọn theo menu tìm kiếm !");
+            }
+
+        } while (isChoice);
+    }
+
+
+    public void searchById() {
+        DecimalFormat formater = new DecimalFormat("###,###,###");
+        int count = 0;
+        String stt, id, name, ql, pr, other;
+        System.out.println();
+        System.out.print("Nhập ID thức uống cần tìm kiếm : ");
+        String search = input.nextLine();
+        System.out.println("Kết quả tìm kiếm của từ khóa '" + search + "' là : ");
+        search = search.toLowerCase();
+        System.out.printf("%-3s%-12s%-12s%-40s%-20s%-23s%s\n", "", "STT", "ID", "TÊN THỨC UỐNG", "SỐ LƯỢNG", "GIÁ (VND)", "THÔNG TIN KHÁC");
+        for (Drinks drinks : drinksList) {
+            if (drinks.getIdDrink().toLowerCase().contains(search)) {
+                count++;
+                stt = String.valueOf(count);
+                id = drinks.getIdDrink();
+                name = drinks.getNameDrink();
+                ql = String.valueOf(drinks.getQualityDrink());
+                pr = formater.format(drinks.getPriceDrink());
+                other = drinks.getOtherDescription();
+                System.out.printf("%-3s%-12s%-12s%-40s%-20s%-23s%s\n", "", stt, id, name, ql, pr, other);
+            }
+        }
+        displayReturnSearch(count);
+    }
+
+    public void searchByName() {
+        DecimalFormat formater = new DecimalFormat("###,###,###");
+        int count = 0;
+        String stt, id, name, ql, pr, other;
+        System.out.println();
+        System.out.print("Nhập tên thức uống cần tìm kiếm : ");
+        String search = input.nextLine();
+        System.out.println("Kết quả tìm kiếm của từ khóa '" + search + "' là : ");
+        search = search.toLowerCase();
+        System.out.printf("%-3s%-12s%-12s%-40s%-20s%-23s%s\n", "", "STT", "ID", "TÊN THỨC UỐNG", "SỐ LƯỢNG", "GIÁ (VND)", "THÔNG TIN KHÁC");
+        for (Drinks drinks : drinksList) {
+            if (drinks.getNameDrink().toLowerCase().contains(search)) {
+                count++;
+                stt = String.valueOf(count);
+                id = drinks.getIdDrink();
+                name = drinks.getNameDrink();
+                ql = String.valueOf(drinks.getQualityDrink());
+                pr = formater.format(drinks.getPriceDrink());
+                other = drinks.getOtherDescription();
+                System.out.printf("%-3s%-12s%-12s%-40s%-20s%-23s%s\n", "", stt, id, name, ql, pr, other);
+            }
+        }
+        displayReturnSearch(count);
+    }
+
+    public void searchByQuality() {
+        DecimalFormat formater = new DecimalFormat("###,###,###");
+        int count = 0;
+        String stt, id, name, ql, pr, other;
+        System.out.println();
+        System.out.print("Nhập số lượng của thức uống cần tìm kiếm : ");
+        String search = input.nextLine();
+        System.out.println("Kết quả tìm kiếm của từ khóa '" + search + "' là : ");
+        search = search.toLowerCase();
+        System.out.printf("%-3s%-12s%-12s%-40s%-20s%-23s%s\n", "", "STT", "ID", "TÊN THỨC UỐNG", "SỐ LƯỢNG", "GIÁ (VND)", "THÔNG TIN KHÁC");
+        for (Drinks drinks : drinksList) {
+            if (String.valueOf(drinks.getQualityDrink()).toLowerCase().contains(search)) {
+                count++;
+                stt = String.valueOf(count);
+                id = drinks.getIdDrink();
+                name = drinks.getNameDrink();
+                ql = String.valueOf(drinks.getQualityDrink());
+                pr = formater.format(drinks.getPriceDrink());
+                other = drinks.getOtherDescription();
+                System.out.printf("%-3s%-12s%-12s%-40s%-20s%-23s%s\n", "", stt, id, name, ql, pr, other);
+            }
+        }
+        displayReturnSearch(count);
+    }
+
+    public void searchByPrice() {
+        DecimalFormat formater = new DecimalFormat("###,###,###");
+        int count = 0;
+        String stt, id, name, ql, pr, other;
+        System.out.println();
+        System.out.print("Nhập giá thức uống cần tìm kiếm : ");
+        String search = input.nextLine();
+        System.out.println("Kết quả tìm kiếm của từ khóa '" + search + "' là : ");
+        search = search.toLowerCase();
+        System.out.printf("%-3s%-12s%-12s%-40s%-20s%-23s%s\n", "", "STT", "ID", "TÊN THỨC UỐNG", "SỐ LƯỢNG", "GIÁ (VND)", "THÔNG TIN KHÁC");
+        for (Drinks drinks : drinksList) {
+            if (String.valueOf(drinks.getPriceDrink()).toLowerCase().contains(search)) {
+                count++;
+                stt = String.valueOf(count);
+                id = drinks.getIdDrink();
+                name = drinks.getNameDrink();
+                ql = String.valueOf(drinks.getQualityDrink());
+                pr = formater.format(drinks.getPriceDrink());
+                other = drinks.getOtherDescription();
+                System.out.printf("%-3s%-12s%-12s%-40s%-20s%-23s%s\n", "", stt, id, name, ql, pr, other);
+            }
+        }
+        displayReturnSearch(count);
+    }
+
+    public void searchByOtherDescription() {
+        DecimalFormat formater = new DecimalFormat("###,###,###");
+        int count = 0;
+        String stt, id, name, ql, pr, other;
+        System.out.println();
+        System.out.print("Nhập thông tin thức uống cần tìm kiếm : ");
+        String search = input.nextLine();
+        System.out.println("Kết quả tìm kiếm của từ khóa '" + search + "' là : ");
+        search = search.toLowerCase();
+        System.out.printf("%-3s%-12s%-12s%-40s%-20s%-23s%s\n", "", "STT", "ID", "TÊN THỨC UỐNG", "SỐ LƯỢNG", "GIÁ (VND)", "THÔNG TIN KHÁC");
+        for (Drinks drinks : drinksList) {
+            if (drinks.getOtherDescription().toLowerCase().contains(search)) {
+                count++;
+                stt = String.valueOf(count);
+                id = drinks.getIdDrink();
+                name = drinks.getNameDrink();
+                ql = String.valueOf(drinks.getQualityDrink());
+                pr = formater.format(drinks.getPriceDrink());
+                other = drinks.getOtherDescription();
+                System.out.printf("%-3s%-12s%-12s%-40s%-20s%-23s%s\n", "", stt, id, name, ql, pr, other);
+            }
+        }
+        displayReturnSearch(count);
+    }
+
+    private void displayReturnSearch(int count) {
+        System.out.println("Có '" + count + "' thức uống được tìm thấy !");
+        char press = ' ';
+        boolean isChoice = true;
+        System.out.println();
+        do {
+            System.out.print("Nhấn 'R' để quay trở về menu tìm kiếm !");
+            try {
+                press = input.nextLine().charAt(0);
+            } catch (Exception e) {
+                press = ' ';
+            }
+            switch (press) {
+                case 'r':
+                case 'R': {
+                    searchDrink();
+                    isChoice = false;
+                    break;
+                }
+                default:
+                    isChoice = true;
+            }
+        } while (isChoice);
+    }
+
+    public void exportDataDrinksToCsv() {
+        String link = "";
+        String nameFileCsv = "";
+        String linkFull = "";
+        boolean isChoice = true;
+        do {
+            isChoice = false;
+            do {
+                System.out.print("Nhập đường dẫn file xuất ra : ");
+                link = input.nextLine();
+                if (!isLink(link)) {
+                    System.out.println("Định dạng đường dẫn không đúng ! ví dụ đường dẫn file : D:\\nameFoder\\....");
+                }
+            }
+            while (!isLink(link));
+
+            System.out.print("Nhập tên file : ");
+            nameFileCsv = input.nextLine();
+            linkFull = link + "\\" + nameFileCsv + ".csv";
+
+            //tao file dan
+            String[] arr = link.split("\\\\");
+            int i = 0;
+            String l = "";
+            while (i < arr.length) {
+                l = l + arr[i] + "\\";
+                File dir = new File(l);
+                dir.mkdir();
+                i++;
+            }
+
+            File file = new File(linkFull);
+            if (!file.exists()) {
+                writeDataFromFileFormatToCsv(linkFull, drinksList);
+                System.out.println("Đã xuất file thành công đến đường dẫn : " + linkFull);
+                System.out.println();
+                menuDrinksManager();
+            } else {
+                System.out.println("File đã tồn tại ! bạn có muốn ghi đè !");
+                char press = ' ';
+                boolean isPress = true;
+                do {
+                    System.out.print("Nhấn 'Y' để thực hiện,  'N' để thay đổi đường dẫn, 'R' để quay lại menu  ");
+                    try {
+                        press = input.nextLine().charAt(0);
+                    } catch (Exception e) {
+                        press = ' ';
+                    }
+                    switch (press) {
+                        case 'y':
+                        case 'Y':
+                            writeDataFromFileFormatToCsv(linkFull, drinksList);
+                            System.out.println("Đã xuất file thành công đến đường dẫn : " + linkFull);
+                            isChoice = false;
+                            isPress = false;
+                            menuDrinksManager();
+                            break;
+                        case 'n':
+                        case 'N':
+                            exportDataDrinksToCsv();
+                            isPress = false;
+                            break;
+                        case 'R':
+                        case 'r':
+                            isChoice = false;
+                            isPress = false;
+                            menuDrinksManager();
+                        default:
+                    }
+                } while (isPress);
+            }
+
+        } while (isChoice);
+    }
+
+    public boolean isLink(String link) {
+        Pattern pattern = Pattern.compile(LINK_REGEX);
+        Matcher matcher = pattern.matcher(link);
+        return matcher.matches();
     }
 
     public void menuDrinksManager() {
@@ -896,12 +1175,14 @@ public class DrinksManager implements Serializable {
             System.out.println("| 1. Thêm thức uống mới                                    |");
             System.out.println("| 2. Sửa thông tin thức uống                               |");
             System.out.println("| 3. Xóa thức uống khỏi danh sách thức uống                |");
-            System.out.println("| 4. Hiển thị format menu                                  |");
-            System.out.println("| 5. Hiển thị thông tin toàn bộ thức uống theo thứ tự      |");
+            System.out.println("| 4. Tìm kiếm thức uống                                    |");
+            System.out.println("| 5. Hiển thị format menu                                  |");
+            System.out.println("| 6. Hiển thị thông tin toàn bộ thức uống theo thứ tự      |");
+            System.out.println("| 7. Xuất file thông tin thực phẩm                         |");
             System.out.println("| 0 . Quay lại menu chính                                  |");
             System.out.println("------------------------------------------------------------");
             System.out.println();
-            System.out.println("Chọn : ");
+            System.out.print("Chọn : ");
             char choice = ' ';
             try {
                 choice = input.nextLine().charAt(0);
@@ -920,10 +1201,16 @@ public class DrinksManager implements Serializable {
                     deleteDrink();
                     break;
                 case '4':
-                    displayMenuDrinks();
+                    searchDrink();
                     break;
                 case '5':
+                    displayMenuDrinks();
+                    break;
+                case '6':
                     optionDisplay();
+                    break;
+                case '7':
+                    exportDataDrinksToCsv();
                     break;
                 case '0':
                     ///Gọi menuchisnh
@@ -935,5 +1222,5 @@ public class DrinksManager implements Serializable {
             }
         } while (isChoice);
     }
-
 }
+
