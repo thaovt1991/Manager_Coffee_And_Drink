@@ -18,10 +18,11 @@ public class StaffManager implements Serializable {
     public static final String COMMA_DELIMITER = ",";
     public static final String ID_STAFF_REGEX = "[A-Z]{2}+\\d{6}$";
     public static final String FULL_NAME_REGEX = "^([AÀẢÃÁẠĂẰẮẲẴẶÂẤẦẨẪẬBCDĐEÈÉẺẼẸÊỀẾỂỄỆFGHIÍÌỈĨỊJKLMNOÒÓỎÕỌÔỒỐỔỖỘƠỜỚỞỠỢPQRSTUÙÚỦŨỤƯỪỨỬỮỰVWXYÝỲỶỸỴZ]+[aàảãáạăằẳẵắặâầẩẫấậbcdđeèẻẽéẹêềểễếệfghiìỉĩíịjklmnoòỏõóọôồổỗốộơờởỡớợpqrstuùủũúụưừửữứựvwxyỳỷỹýỵz]+[ ]*)+$";
-    public static final String NUMBER_PHONE_REGEX = "^[0][1-9]{9,10}$";
+    public static final String NUMBER_PHONE_REGEX = "^[0][1-9][0-9]{8,9}$";
     public static final String DATE_OF_BIRTH_REGEX = "^[0|1|2|3]?[0-9][/][0-1]?[0-9][/][1|2]\\d{3}$"; //dinh dang 22/01/1991 ;
     public static final String PAY_REGEX = "^[1-9][0-9]{1,14}[0]{3}$";
     public static final String IDENTITY_CARD_REGEX = "^[1|2][0-9]{8}$";
+    public static final String LINK_REGEX = "(^([C|D][:])\\\\(?:[\\w]+\\\\)*\\w+$)|(^[C|D][:][\\\\]$)";
 
 
     public StaffManager() {
@@ -107,8 +108,6 @@ public class StaffManager implements Serializable {
             }
         } while (!isFormatFullName(fullName));
 
-
-
         String dateOfBirth = "";
         do {
             System.out.print("Nhập ngày tháng năm sinh của nhân viên, có dạng day/month/year, ví dụ 2/2/1992 : ");
@@ -178,6 +177,7 @@ public class StaffManager implements Serializable {
                     writeToFile(SAVE_OBJECT_STAFF,staffList);
                     writeDataFromFileFormatToCsv(SAVE_FORMAT_CSV_STAFF,staffList);
                     isChoice = false;
+                    menuStaffManager();
                     break;
                 case 'n':
                 case 'N':
@@ -186,12 +186,7 @@ public class StaffManager implements Serializable {
                     break;
                 default:
             }
-
         }while (isChoice) ;
-
-
-
-
 
     }
 
@@ -330,5 +325,134 @@ public class StaffManager implements Serializable {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void exportFileStaffToCsv() {
+        String link = "";
+        String nameFileCsv = "";
+        String linkFull = "";
+        boolean isChoice = true;
+        do {
+            isChoice = false;
+            do {
+                System.out.print("Nhập đường dẫn file xuất ra : ");
+                link = input.nextLine();
+                if (!isLink(link)) {
+                    System.out.println("Định dạng đường dẫn không đúng ! ví dụ đường dẫn file : D:\\nameFoder\\....");
+                }
+            }
+            while (!isLink(link));
+
+            System.out.print("Nhập tên file : ");
+            nameFileCsv = input.nextLine();
+            linkFull = link + "\\" + nameFileCsv + ".csv";
+
+            //tao foder
+            String[] arr = link.split("\\\\");
+            int i = 0;
+            String l = "";
+            while (i < arr.length) {
+                l = l + arr[i] + "\\";
+                File dir = new File(l);
+                dir.mkdir();
+                i++;
+            }
+
+            File file = new File(linkFull);
+            if (!file.exists()) {
+                writeDataFromFileFormatToCsv(linkFull, staffList);
+                System.out.println("Đã xuất file thành công đến đường dẫn : " + linkFull);
+                System.out.println();
+                menuStaffManager();
+            } else {
+                System.out.println("File đã tồn tại ! bạn có muốn ghi đè !");
+                char press = ' ';
+                boolean isPress = true;
+                do {
+                    System.out.print("Nhấn 'Y' để thực hiện,  'N' để thay đổi đường dẫn, 'R' để quay lại menu  ");
+                    try {
+                        press = input.nextLine().charAt(0);
+                    } catch (Exception e) {
+                        press = ' ';
+                    }
+                    switch (press) {
+                        case 'y':
+                        case 'Y':
+                            writeDataFromFileFormatToCsv(linkFull, staffList);
+                            System.out.println("Đã xuất file thành công đến đường dẫn : " + linkFull);
+                            isChoice = false;
+                            isPress = false;
+                            menuStaffManager();
+                            break;
+                        case 'n':
+                        case 'N':
+                            exportFileStaffToCsv();
+                            isPress = false;
+                            break;
+                        case 'R':
+                        case 'r':
+                            isChoice = false;
+                            isPress = false;
+                            menuStaffManager();
+                        default:
+                    }
+                } while (isPress);
+            }
+
+        } while (isChoice);
+    }
+
+    public boolean isLink(String link) {
+        Pattern pattern = Pattern.compile(LINK_REGEX);
+        Matcher matcher = pattern.matcher(link);
+        return matcher.matches();
+    }
+
+    public void menuStaffManager(){
+        char choice = ' ';
+        do{
+            System.out.println("------------------QUẢN LÝ NHÂN VIÊN------------------");
+            System.out.println("|  1. Thêm nhân viên                                 |");
+            System.out.println("|  2. Thay đổi thông tin nhân viên                   |");
+            System.out.println("|  3. Xóa nhân viên                                  |");
+            System.out.println("|  4. Tìm kiếm thông tin nhân viên                   |");
+            System.out.println("|  5. Hiển thị danh sách nhân viên                   |");
+            System.out.println("|  6. Xuất file thông tin nhân viên                  |");
+            System.out.println("|  0. Quay lại                                       |");
+            System.out.println("------------------------------------------------------");
+            System.out.println();
+            System.out.print("Chọn : ");
+            try {
+                choice = input.nextLine().charAt(0);
+            }catch (Exception e){
+                choice = ' ';
+            }
+
+            switch (choice){
+                case '1':
+                    addStaff();
+                    break;
+                case '2':
+                    //editStaff();
+                    break;
+                case '3':
+                    //deleteStaff();
+                   break;
+                case '4':
+                    //searchStaff();
+                    break;
+                case '5':
+                    //displayStaff();
+                    break;
+                case '6' :
+                    exportFileStaffToCsv();
+                    break;
+                case '0':
+                    //menuManager
+                    break;
+                default:
+                    System.out.println("Chọn theo menu !");
+            }
+        }while (choice !='0');
     }
 }

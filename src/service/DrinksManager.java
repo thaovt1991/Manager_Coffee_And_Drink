@@ -374,11 +374,13 @@ public class DrinksManager implements Serializable {
         } while (isChoice);
     }
 
-
+ ////fornmat theo thu tu id
     public void displayDrinkFornmat() {
         DecimalFormat formater = new DecimalFormat("###,###,###");
         int count = 0;
         String stt, id, name, ql, pr;
+        SortIdDrinksAZ sortIdAZ = new SortIdDrinksAZ(); //for mat theo id
+        Collections.sort(drinksList, sortIdAZ);
         System.out.println("------------------------------------------MENU COFFEE AND DRINKS----------------------------------------------");
         System.out.printf("%-3s%-12s%-12s%-40s%-20s%-23s%s\n", "|", "STT", "ID", "TÊN THỨC UỐNG", "SỐ LƯỢNG", "GIÁ (VND)", "|");
         for (Drinks dr : drinksList) {
@@ -391,6 +393,7 @@ public class DrinksManager implements Serializable {
             System.out.printf("%-3s%-12s%-12s%-40s%-20s%-23s%s\n", "|", stt, id, name, ql, pr, "|");
         }
         System.out.println("------------------------------------------######################-----------------------------------------------");
+        drinksList = readDataFromFile(SAVE_OBJECT_DRINKS);
     }
 
     public void editIdDrink(Drinks drinks) {
@@ -1213,12 +1216,12 @@ public class DrinksManager implements Serializable {
                     exportDataDrinksToCsv();
                     break;
                 case '0':
-                    ///Gọi menuchisnh
+                    System.out.println("quay lai menu chinh");///dien menu chonh vao xos cai kia
+                    System.exit(0);
                     isChoice = false;
                     break;
                 default:
                     System.out.println("Chọn lại !");
-
             }
         } while (isChoice);
     }
