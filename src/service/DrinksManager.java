@@ -195,7 +195,6 @@ public class DrinksManager implements Serializable {
         } while (choice != '0');
     }
 
-
     //sua theo id
     public void editDrinksById() {
         displayFullDrinks();
@@ -246,7 +245,6 @@ public class DrinksManager implements Serializable {
             }
         }
     }
-
 
     // edit theo ten
     public void editDrinksByName() {
@@ -544,7 +542,6 @@ public class DrinksManager implements Serializable {
         }
     }
 
-
     public void deteleDrinksInList(Drinks drinks) {
         drinksList.remove(drinks);
         System.out.println("Menu thức uống sau khi xóa '" + drinks.getNameDrink() + "'");
@@ -577,9 +574,7 @@ public class DrinksManager implements Serializable {
                     System.out.println();
             }
         } while (isChoice);
-
     }
-
 
     //Hien thi danh sach
     public void optionDisplay() {
@@ -850,7 +845,7 @@ public class DrinksManager implements Serializable {
             fis.close();
             ois.close();
         } catch (Exception ex) {
-            ex.printStackTrace();
+            System.out.println("File chưa tồn tại, hãy nhập dữ liệu và tạo ra nó !");
         }
         return listDrinks;
     }
@@ -1181,7 +1176,7 @@ public class DrinksManager implements Serializable {
             System.out.println("| 4. Tìm kiếm thức uống                                    |");
             System.out.println("| 5. Hiển thị format menu                                  |");
             System.out.println("| 6. Hiển thị thông tin toàn bộ thức uống theo thứ tự      |");
-            System.out.println("| 7. Xuất file thông tin thực phẩm                         |");
+            System.out.println("| 7. Xuất file thông tin thức uống                         |");
             System.out.println("| 0 . Quay lại menu chính                                  |");
             System.out.println("------------------------------------------------------------");
             System.out.println();

@@ -4,23 +4,28 @@ import java.io.Serializable;
 import java.text.DecimalFormat;
 
 public class Staff implements Serializable {
-    public String idStaff ;
-    public String fullName ;
+    public String idStaff;
+    public String fullName;
+    public String gender;
     public String dateOfBirth;
-    public String identityCard ;
-    public String numberPhone ;
-    public String address ;
-    public long payStaff ;
-    public String other ;
+    public String identityCard;
+    public String numberPhone;
+    public String address;
+    public long payStaff;
+    public String other;
 
-    public Staff(){};
+    public Staff() {
+    }
 
-    public Staff(String idStaff, String fullName,  String dateOfBirth,String identityCard ,String numberPhone, String address, long payStaff, String other) {
+    ;
+
+    public Staff(String idStaff, String fullName, String gender, String dateOfBirth, String identityCard, String numberPhone, String address, long payStaff, String other) {
         this.idStaff = idStaff;
         this.fullName = fullName;
+        this.gender = gender;
         this.numberPhone = numberPhone;
         this.dateOfBirth = dateOfBirth;
-        this.identityCard =identityCard ;
+        this.identityCard = identityCard;
         this.address = address;
         this.payStaff = payStaff;
         this.other = other;
@@ -41,6 +46,14 @@ public class Staff implements Serializable {
 
     public void setFullName(String fullName) {
         this.fullName = fullName;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 
     public String getNumberPhone() {
@@ -92,10 +105,10 @@ public class Staff implements Serializable {
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         DecimalFormat formater = new DecimalFormat("###,###,###");
-        return "Nhân viên - ID : '" + getIdStaff() +"' ; Họ và tên : " + getFullName() + " ; Ngày sinh : " + getDateOfBirth() +
+        return "Nhân viên - ID : '" + getIdStaff() + "' ; Họ và tên : " + getFullName() +" ; Giới tính : " +getGender() + " ; Ngày sinh : " + getDateOfBirth() +
                 " ; CMND : " + getIdentityCard() + " ;  Số điện thoại : " + getNumberPhone() + " ; Đia chỉ : " + getAddress() +
-                " ; Lương : " +formater.format(getPayStaff() ) + " VND ; Thông tin khác : " + getOther() ;
+                " ; Lương : " + formater.format(getPayStaff()) + " VND ; Thông tin khác : " + getOther();
     }
 }

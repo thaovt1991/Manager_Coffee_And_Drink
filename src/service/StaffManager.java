@@ -1,9 +1,15 @@
 package service;
 
+import model.Drinks;
 import model.Staff;
+import sort.sortDrinks.SortIdDrinksAZ;
+import sort.sortDrinks.SortIdDrinksZA;
+import sort.sortStaff.*;
 
 import java.io.*;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -13,7 +19,7 @@ public class StaffManager implements Serializable {
     static Scanner input = new Scanner(System.in);
     public static final String SAVE_OBJECT_STAFF = "D:\\Manager_Coffee_And_Drink\\src\\data\\list_staff.txt";
     public static final String SAVE_FORMAT_CSV_STAFF = "D:\\Manager_Coffee_And_Drink\\out_data\\list_staff.csv";
-    public static final String FORMAT_CSV_STAFF = "ID,HO VA TEN,NGAY SINH,CMND,SO DIEN THOAI,LUONG,THONG TIN KHAC";
+    public static final String FORMAT_CSV_STAFF = "ID,HO VA TEN,GIOI TINH,NGAY SINH,CMND,SO DIEN THOAI,LUONG,THONG TIN KHAC";
     public static final String DOWN_THE_LINE = "\n";
     public static final String COMMA_DELIMITER = ",";
     public static final String ID_STAFF_REGEX = "[A-Z]{2}+\\d{6}$";
@@ -108,27 +114,55 @@ public class StaffManager implements Serializable {
             }
         } while (!isFormatFullName(fullName));
 
+        String gender = "";
+        char press = ' ';
+        boolean isPress = true;
+        System.out.println("Giới tính nhân viên ");
+        do {
+            System.out.print("Nhấn 'M' nếu nhân viên là nam , nhấn 'F' nếu nhân viên là nữ ?  ");
+            try {
+                press = input.nextLine().charAt(0);
+            } catch (Exception e) {
+                press = ' ';
+            }
+            switch (press) {
+                case 'm':
+                case 'M':
+                    gender = "Nam";
+                    isPress = false;
+                    break;
+                case 'f':
+                case 'F':
+                    gender = "Nu";
+                    isPress = false;
+                    break;
+                default:
+            }
+
+        } while (isPress);
+
+
         String dateOfBirth = "";
         do {
             System.out.print("Nhập ngày tháng năm sinh của nhân viên, có dạng day/month/year, ví dụ 2/2/1992 : ");
-            dateOfBirth = input.nextLine() ;
-            if (!isFormatDateOfBirth(dateOfBirth)){
+            dateOfBirth = input.nextLine();
+            if (!isFormatDateOfBirth(dateOfBirth)) {
                 System.out.println("Không phải định dạng đúng !");
-            }else if(!isDatOfBirth(dateOfBirth)){
+            } else if (!isDatOfBirth(dateOfBirth)) {
                 System.out.println("Không phải ngày thực tế hoặc đã vượt ra khỏi nằm ngoài độ tuổi cho phép ! ");
             }
-        }while (!isDatOfBirth(dateOfBirth));
+        } while (!isDatOfBirth(dateOfBirth));
 
-        String idCar ="";
-        do{
+        String idCar = "";
+        do {
             System.out.print("Nhập số CMND của nhân viên : ");
-            idCar = input.nextLine() ;
-            if(!isFormatIdentityCard(idCar)){
+            idCar = input.nextLine();
+            if (!isFormatIdentityCard(idCar)) {
                 System.out.println("CMND phải có 9 số và bắt đầu từ  1 hoặc 2 !");
-            }else if(isIdentityCardHaveInList(idCar)){
+            } else if (isIdentityCardHaveInList(idCar)) {
                 System.out.println("CMND này đã được đăng kí , hãy kiểm tra lại !");
             }
-        }while (!isFormatIdentityCard(idCar) || isIdentityCardHaveInList(idCar) );
+        } while (!isFormatIdentityCard(idCar) || isIdentityCardHaveInList(idCar));
 
         String numberPhone = "";
         do {
@@ -141,52 +175,52 @@ public class StaffManager implements Serializable {
 
         String address = "";
         System.out.print("Nhập địa chỉ nhân viên : ");
-        address = input.nextLine() ;
+        address = input.nextLine();
 
-        String strPay = "" ;
-        do{
+        String strPay = "";
+        do {
             System.out.print("Nhập tiền lương của nhân viên : ");
-            strPay = input.nextLine() ;
-            if(!isFormatPay(strPay)) {
+            strPay = input.nextLine();
+            if (!isFormatPay(strPay)) {
                 System.out.println("Định dạng tiền lương chưa hợp lý !");
             }
-        }while (!isFormatPay(strPay));
+        } while (!isFormatPay(strPay));
 
         String other = "";
         System.out.print("Nhập các thông tin khác của nhân viên (có thể bỏ trống) !");
         other = input.nextLine();
 
-        Staff staff = new Staff(idStaff,fullName,dateOfBirth,idCar,numberPhone,address,Long.parseLong(strPay),other) ;
+        Staff staff = new Staff(idStaff, fullName, gender, dateOfBirth, idCar, numberPhone, address, Long.parseLong(strPay), other);
         System.out.println();
         System.out.println("Thông tin nhân viên bạn vừa nhập vào là : ");
         System.out.println(staff);
         System.out.println();
         char choice = ' ';
-        boolean isChoice = true ;
+        boolean isChoice = true;
         do {
             System.out.print("Bạn có muốn lưu vào dữ liệu nhân viên ! Nhấn 'Y' để đồng ý , nhấn 'N' để hủy dữ liệu vừa nhập  ");
             try {
                 choice = input.nextLine().charAt(0);
-            }catch (Exception e){
+            } catch (Exception e) {
                 choice = ' ';
             }
-            switch (choice){
+            switch (choice) {
                 case 'y':
                 case 'Y':
                     staffList.add(staff);
-                    writeToFile(SAVE_OBJECT_STAFF,staffList);
-                    writeDataFromFileFormatToCsv(SAVE_FORMAT_CSV_STAFF,staffList);
+                    writeToFile(SAVE_OBJECT_STAFF, staffList);
+                    writeDataFromFileFormatToCsv(SAVE_FORMAT_CSV_STAFF, staffList);
                     isChoice = false;
                     menuStaffManager();
                     break;
                 case 'n':
                 case 'N':
                     //menuStaffManager();
-                    isChoice = false ;
+                    isChoice = false;
                     break;
                 default:
             }
-        }while (isChoice) ;
+        } while (isChoice);
 
     }
 
@@ -278,7 +312,7 @@ public class StaffManager implements Serializable {
             fis.close();
             ois.close();
         } catch (Exception ex) {
-            System.out.println("File chua tồn tại, hãy nhập dữ liệu và tạo ra nó !");
+            System.out.println("File chưa tồn tại, hãy nhập dữ liệu và tạo ra nó !");
         }
         return listStaff;
     }
@@ -296,7 +330,6 @@ public class StaffManager implements Serializable {
         }
     }
 
-
     public void writeDataFromFileFormatToCsv(String path, ArrayList<Staff> listStaff) {
         FileWriter writer = null;
         try {
@@ -307,6 +340,8 @@ public class StaffManager implements Serializable {
                 writer.append(staff.getIdStaff());
                 writer.append(COMMA_DELIMITER);
                 writer.append(staff.getFullName());
+                writer.append(COMMA_DELIMITER);
+                writer.append(staff.getGender());
                 writer.append(COMMA_DELIMITER);
                 writer.append(staff.getDateOfBirth());
                 writer.append(COMMA_DELIMITER);
@@ -408,9 +443,736 @@ public class StaffManager implements Serializable {
         return matcher.matches();
     }
 
-    public void menuStaffManager(){
+
+    public void displayAllStaff() {
+        DecimalFormat format = new DecimalFormat("###,###,###");
+        int count = 0;
+        String stt, id, fullname, gender, dateOfBirth, idCar, numberPhone, address, pay, other;
+        System.out.printf("%-5s%-15s%-30s%-15s%-15s%-15s%-20s%-35s%-20s%s\n", "STT", "ID", "HỌ VÀ TÊN", "GIỚI TÍNH", "NGÀY SINH", "CMND", "SĐT", "ĐỊA CHỈ", "LƯƠNG- VND", "THÔNG TIN KHÁC");
+        for (Staff staff : staffList) {
+            count++;
+            stt = String.valueOf(count);
+            id = staff.getIdStaff();
+            fullname = staff.getFullName();
+            gender = staff.getGender();
+            dateOfBirth = staff.getDateOfBirth();
+            idCar = staff.getIdentityCard();
+            numberPhone = staff.getNumberPhone();
+            address = staff.getAddress();
+            pay = format.format(staff.getPayStaff());
+            other = staff.getOther();
+            System.out.printf("%-5s%-15s%-30s%-15s%-15s%-15s%-20s%-35s%-20s%s\n", stt, id, fullname, gender, dateOfBirth, idCar, numberPhone, address, pay, other);
+        }
+        System.out.println();
+    }
+
+    public void optionDisplayStaff() {
         char choice = ' ';
-        do{
+        boolean isChoice = true;
+        do {
+            System.out.println("----------------------LỰA CHỌN HIỂN THỊ------------------------");
+            System.out.println("|  1. Hiển thị sắp xếp theo id nhân viên                       |");
+            System.out.println("|  2. Hiển thị sắp xếp theo tên nhân viên                      |");
+            System.out.println("|  3. Hiển thị sắp xếp theo ngày sinh                          |");
+            System.out.println("|  4. Hiển thị sắp xếp theo lương                              |");
+            System.out.println("|  5. Hiển thị theo giới tính                                  |");
+            System.out.println("|  0. Quay lại                                                 |");
+            System.out.println("----------------------------------------------------------------");
+            System.out.println();
+            System.out.print("Chọn :");
+            try {
+                choice = input.nextLine().charAt(0);
+            } catch (Exception e) {
+                choice = ' ';
+            }
+            switch (choice) {
+                case '1':
+                    displayStaffById();
+                    break;
+                case '2':
+                    displayStaffByName();
+                    break;
+                case '3':
+                    displayStaffByDateOfDay();
+                    break;
+                case '4':
+                    displayStaffByPay();
+                    break;
+                case '5':
+                    displayStaffByGender();
+                    break;
+                case '0':
+                    menuStaffManager();
+                    isChoice = false;
+                default:
+                    System.out.println("Chọn theo menu !");
+            }
+
+        } while (isChoice);
+    }
+
+    public void displayStaffById() {
+        boolean isChoice = true;
+        char choice = ' ';
+        do {
+            System.out.println("---------------SẮP XẾP THEO ID NHÂN VIÊN----------------");
+            System.out.println("| 1. Sắp xếp ID theo thứ tự A-Z                          |");
+            System.out.println("| 2. Sắp xếp ID theo thứ tự Z-A                          |");
+            System.out.println("| 0. Quay lại                                            |");
+            System.out.println("---------------------------------------------------------");
+            System.out.println();
+            System.out.print("Lựa chọn :");
+            try {
+                choice = input.nextLine().charAt(0);
+            } catch (Exception e) {
+                choice = ' ';
+            }
+            switch (choice) {
+                case '1':
+                    System.out.println("Sắp xếp ID theo thứ tự A-Z    ");
+                    SortByIdStaffAZ sortISAZ = new SortByIdStaffAZ();
+                    Collections.sort(staffList, sortISAZ);
+                    displayAllStaff();
+                    staffList = readDataFromFile(SAVE_OBJECT_STAFF);
+                    break;
+                case '2':
+                    System.out.println("Sắp xếp theo thứ tự Z-A    ");
+                    SortByIdStaffZA sortISZA = new SortByIdStaffZA();
+                    Collections.sort(staffList, sortISZA);
+                    displayAllStaff();
+                    staffList = readDataFromFile(SAVE_OBJECT_STAFF);
+                    break;
+                case '0':
+                    optionDisplayStaff();
+                    isChoice = false;
+                default:
+                    System.out.println("Chọn lại !");
+            }
+        } while (isChoice);
+    }
+
+    public void displayStaffByName() {
+        boolean isChoice = true;
+        char choice = ' ';
+        do {
+            System.out.println("---------------SẮP XẾP THEO TÊN NHÂN VIÊN----------------");
+            System.out.println("| 1. Sắp xếp tên theo thứ tự A-Z                         |");
+            System.out.println("| 2. Sắp xếp tên theo thứ tự Z-A                         |");
+            System.out.println("| 0. Quay lại                                            |");
+            System.out.println("---------------------------------------------------------");
+            System.out.println();
+            System.out.print("Lựa chọn :");
+            try {
+                choice = input.nextLine().charAt(0);
+            } catch (Exception e) {
+                choice = ' ';
+            }
+            switch (choice) {
+                case '1':
+                    System.out.println("Sắp xếp theo thứ tự A-Z    ");
+                    SortByNameStaffAZ sortNSAZ = new SortByNameStaffAZ();
+                    Collections.sort(staffList, sortNSAZ);
+                    displayAllStaff();
+                    staffList = readDataFromFile(SAVE_OBJECT_STAFF);
+                    break;
+                case '2':
+                    System.out.println("Sắp xếp theo thứ tự Z-A    ");
+                    SortByNameStaffZA sortNSZA = new SortByNameStaffZA();
+                    Collections.sort(staffList, sortNSZA);
+                    displayAllStaff();
+                    staffList = readDataFromFile(SAVE_OBJECT_STAFF);
+                    break;
+                case '0':
+                    optionDisplayStaff();
+                    isChoice = false;
+                default:
+                    System.out.println("Chọn lại !");
+            }
+        } while (isChoice);
+    }
+
+    public void displayStaffByPay() {
+        boolean isChoice = true;
+        char choice = ' ';
+        do {
+            System.out.println("---------------SẮP XẾP THEO LƯƠNG----------------");
+            System.out.println("| 1. Sắp xếp lương tăng dần                      |");
+            System.out.println("| 2. Sắp xếp lương giảm dần                      |");
+            System.out.println("| 0. Quay lại                                    |");
+            System.out.println("-------------------------------------------------");
+            System.out.println();
+            System.out.print("Lựa chọn :");
+            try {
+                choice = input.nextLine().charAt(0);
+            } catch (Exception e) {
+                choice = ' ';
+            }
+            switch (choice) {
+                case '1':
+                    System.out.println("Sắp xếp lương tăng dần    ");
+                    SortByPayStaffAscending sortPSA = new SortByPayStaffAscending();
+                    Collections.sort(staffList, sortPSA);
+                    displayAllStaff();
+                    staffList = readDataFromFile(SAVE_OBJECT_STAFF);
+                    break;
+                case '2':
+                    System.out.println("Sắp xếp lương giảm dần    ");
+                    SortByPayStaffDecrease sortPSD = new SortByPayStaffDecrease();
+                    Collections.sort(staffList, sortPSD);
+                    displayAllStaff();
+                    staffList = readDataFromFile(SAVE_OBJECT_STAFF);
+                    break;
+                case '0':
+                    optionDisplayStaff();
+                    isChoice = false;
+                default:
+                    System.out.println("Chọn lại !");
+            }
+        } while (isChoice);
+    }
+
+    public void displayStaffByGender() {
+        boolean isChoice = true;
+        char choice = ' ';
+        do {
+            System.out.println("---------------SẮP XẾP THEO GIỚI TÍNH---------------");
+            System.out.println("| 1. Sắp xếp Nu - Nam                                |");
+            System.out.println("| 2. Sắp xếp Nam - Nu                                |");
+            System.out.println("| 0. Quay lại                                        |");
+            System.out.println("-----------------------------------------------------");
+            System.out.println();
+            System.out.print("Lựa chọn :");
+            try {
+                choice = input.nextLine().charAt(0);
+            } catch (Exception e) {
+                choice = ' ';
+            }
+            switch (choice) {
+                case '1':
+                    System.out.println("Sắp xếp Nu - Nam ");
+                    SortGenderFM sortGender = new SortGenderFM();
+                    Collections.sort(staffList, sortGender);
+                    displayAllStaff();
+                    staffList = readDataFromFile(SAVE_OBJECT_STAFF);
+                    break;
+                case '2':
+                    System.out.println("Sắp xếp Nam - Nu ");
+                    SortGenderMF sortGenderMF = new SortGenderMF();
+                    Collections.sort(staffList, sortGenderMF);
+                    displayAllStaff();
+                    staffList = readDataFromFile(SAVE_OBJECT_STAFF);
+                    break;
+                case '0':
+                    optionDisplayStaff();
+                    isChoice = false;
+                default:
+                    System.out.println("Chọn lại !");
+            }
+        } while (isChoice);
+    }
+
+    public void displayStaffByDateOfDay() {
+        boolean isChoice = true;
+        char choice = ' ';
+        do {
+            System.out.println("---------------SẮP XẾP THEO NGÀY SINH---------------");
+            System.out.println("| 1. Sắp xếp giảm dần độ tuổi                       |");
+            System.out.println("| 2. Sắp xếp tăng dần độ tuổi                       |");
+            System.out.println("| 0. Quay lại menu                                  |");
+            System.out.println("-----------------------------------------------------");
+            System.out.println();
+            System.out.print("Lựa chọn :");
+            try {
+                choice = input.nextLine().charAt(0);
+            } catch (Exception e) {
+                choice = ' ';
+            }
+            switch (choice) {
+                case '1':
+                    System.out.println("Sắp xếp giảm dần độ tuổi ");//ngay sinh tang dan
+                    SortByDateOfBirthAscending sortByDoBAsc = new SortByDateOfBirthAscending();
+                    Collections.sort(staffList, sortByDoBAsc);
+                    displayAllStaff();
+                    staffList = readDataFromFile(SAVE_OBJECT_STAFF);
+                    break;
+                case '2':
+                    System.out.println("Sắp xếp tăng dần độ tuổi "); //ngay sinh giam dần
+                    SortByDateOfBirthDecrease sortByDoBDec = new SortByDateOfBirthDecrease();
+                    Collections.sort(staffList, sortByDoBDec);
+                    displayAllStaff();
+                    staffList = readDataFromFile(SAVE_OBJECT_STAFF);
+                    break;
+                case '0':
+                    optionDisplayStaff();
+                    isChoice = false;
+                default:
+                    System.out.println("Chọn lại !");
+            }
+        } while (isChoice);
+
+    }
+
+
+    public void searchStaff() {
+        boolean isChoice = true;
+        char choice = ' ';
+        do {
+            System.out.println("----------------------TÌM KIẾM NHÂN VIÊN----------------------------");
+            System.out.println("| 1. Tìm kiếm theo ID nhân viên                                     |");
+            System.out.println("| 2. Tìm kiếm theo tên nhân viên                                    |");
+            System.out.println("| 3. Tìm kiếm theo giới tính                                        |");
+            System.out.println("| 4. Tìm kiếm theo ngày tháng năm sinh                              |");
+            System.out.println("| 5. Tìm kiếm theo số điện thoại                                    |");
+            System.out.println("| 6. Tìm kiếm theo địa chỉ                                          |");
+            System.out.println("| 7 .Tìm kiếm theo lương                                            |");
+            System.out.println("| 8. Tìm kiếm thông tin khác của nhân viên                          |");
+            System.out.println("| 0. Quay lại                                                       |");
+            System.out.println(" -------------------------------------------------------------------");
+            System.out.println();
+            System.out.print("Chọn : ");
+            try {
+                choice = input.nextLine().charAt(0);
+            } catch (Exception e) {
+                choice = ' ';
+            }
+            switch (choice) {
+                case '1':
+                    searchStaffById();
+                    break;
+                case '2':
+                    searchStaffByName();
+                    break;
+                case '3':
+                    searchStaffByGender();
+                    break;
+                case '4':
+                    searchStaffByDateOfBirth();
+                    break;
+                case '5':
+                    searchStaffByNumberPhone();
+                    break;
+                case '6':
+                    searchStaffByAddress();
+                    break;
+                case '7':
+                    searchStaffByPay();
+                    break;
+                case '8':
+                    searchStaffByOther();
+                case '0':
+                    menuStaffManager();
+                    isChoice = false;
+                    break;
+                default:
+                    System.out.println("Hãy chọn theo menu tìm kiếm !");
+            }
+
+        } while (isChoice);
+    }
+
+    public void searchStaffById() {
+        DecimalFormat formater = new DecimalFormat("###,###,###");
+        int count = 0;
+        String stt, id, fullname, gender, dateOfBirth, idCar, numberPhone, address, pay, other;
+        System.out.println();
+        System.out.print("Nhập ID nhân viên cần tìm kiếm : ");
+        String search = input.nextLine();
+        System.out.println("Kết quả tìm kiếm của từ khóa '" + search + "' là : ");
+        search = search.toLowerCase();
+        System.out.printf("%-5s%-15s%-30s%-15s%-15s%-15s%-20s%-35s%-20s%s\n", "STT", "ID", "HỌ VÀ TÊN", "GIỚI TÍNH", "NGÀY SINH", "CMND", "SĐT", "ĐỊA CHỈ", "LƯƠNG- VND", "THÔNG TIN KHÁC");
+        for (Staff staff : staffList) {
+            if (staff.getIdStaff().toLowerCase().contains(search)) {
+                count++;
+                stt = String.valueOf(count);
+                id = staff.getIdStaff();
+                fullname = staff.getFullName();
+                gender = staff.getGender();
+                dateOfBirth = staff.getDateOfBirth();
+                idCar = staff.getIdentityCard();
+                numberPhone = staff.getNumberPhone();
+                address = staff.getAddress();
+                pay = formater.format(staff.getPayStaff());
+                other = staff.getOther();
+                System.out.printf("%-5s%-15s%-30s%-15s%-15s%-15s%-20s%-35s%-20s%s\n", stt, id, fullname, gender, dateOfBirth, idCar, numberPhone, address, pay, other);
+            }
+        }
+        displayReturnSearch(count);
+    }
+
+    public void searchStaffByName() {
+        DecimalFormat formater = new DecimalFormat("###,###,###");
+        int count = 0;
+        String stt, id, fullname, gender, dateOfBirth, idCar, numberPhone, address, pay, other;
+        System.out.println();
+        System.out.print("Nhập tên nhân viên cần tìm kiếm : ");
+        String search = input.nextLine();
+        System.out.println("Kết quả tìm kiếm của từ khóa '" + search + "' là : ");
+        search = search.toLowerCase();
+        System.out.printf("%-5s%-15s%-30s%-15s%-15s%-15s%-20s%-35s%-20s%s\n", "STT", "ID", "HỌ VÀ TÊN", "GIỚI TÍNH", "NGÀY SINH", "CMND", "SĐT", "ĐỊA CHỈ", "LƯƠNG- VND", "THÔNG TIN KHÁC");
+        for (Staff staff : staffList) {
+            if (staff.getFullName().toLowerCase().contains(search)) {
+                count++;
+                stt = String.valueOf(count);
+                id = staff.getIdStaff();
+                fullname = staff.getFullName();
+                gender = staff.getGender();
+                dateOfBirth = staff.getDateOfBirth();
+                idCar = staff.getIdentityCard();
+                numberPhone = staff.getNumberPhone();
+                address = staff.getAddress();
+                pay = formater.format(staff.getPayStaff());
+                other = staff.getOther();
+                System.out.printf("%-5s%-15s%-30s%-15s%-15s%-15s%-20s%-35s%-20s%s\n", stt, id, fullname, gender, dateOfBirth, idCar, numberPhone, address, pay, other);
+            }
+        }
+        displayReturnSearch(count);
+    }
+
+    public void searchStaffByGender() {
+        DecimalFormat formater = new DecimalFormat("###,###,###");
+        int count = 0;
+        String stt, id, fullname, gender, dateOfBirth, idCar, numberPhone, address, pay, other;
+        System.out.println();
+        System.out.print("Nhập giới tính nhân viên cần tìm kiếm : ");
+        String search = input.nextLine();
+        System.out.println("Kết quả tìm kiếm của từ khóa '" + search + "' là : ");
+        search = search.toLowerCase();
+        System.out.printf("%-5s%-15s%-30s%-15s%-15s%-15s%-20s%-35s%-20s%s\n", "STT", "ID", "HỌ VÀ TÊN", "GIỚI TÍNH", "NGÀY SINH", "CMND", "SĐT", "ĐỊA CHỈ", "LƯƠNG- VND", "THÔNG TIN KHÁC");
+        for (Staff staff : staffList) {
+            if (staff.getGender().toLowerCase().contains(search)) {
+                count++;
+                stt = String.valueOf(count);
+                id = staff.getIdStaff();
+                fullname = staff.getFullName();
+                gender = staff.getGender();
+                dateOfBirth = staff.getDateOfBirth();
+                idCar = staff.getIdentityCard();
+                numberPhone = staff.getNumberPhone();
+                address = staff.getAddress();
+                pay = formater.format(staff.getPayStaff());
+                other = staff.getOther();
+                System.out.printf("%-5s%-15s%-30s%-15s%-15s%-15s%-20s%-35s%-20s%s\n", stt, id, fullname, gender, dateOfBirth, idCar, numberPhone, address, pay, other);
+            }
+        }
+        displayReturnSearch(count);
+    }
+
+    public void searchStaffByDateOfBirth() {
+        DecimalFormat formater = new DecimalFormat("###,###,###");
+        int count = 0;
+        String stt, id, fullname, gender, dateOfBirth, idCar, numberPhone, address, pay, other;
+        System.out.println();
+        System.out.print("Nhập ngày tháng năm sinh nhân viên cần tìm kiếm : ");
+        String search = input.nextLine();
+        System.out.println("Kết quả tìm kiếm của từ khóa '" + search + "' là : ");
+        search = search.toLowerCase();
+        System.out.printf("%-5s%-15s%-30s%-15s%-15s%-15s%-20s%-35s%-20s%s\n", "STT", "ID", "HỌ VÀ TÊN", "GIỚI TÍNH", "NGÀY SINH", "CMND", "SĐT", "ĐỊA CHỈ", "LƯƠNG- VND", "THÔNG TIN KHÁC");
+        for (Staff staff : staffList) {
+            if (staff.getDateOfBirth().toLowerCase().contains(search)) {
+                count++;
+                stt = String.valueOf(count);
+                id = staff.getIdStaff();
+                fullname = staff.getFullName();
+                gender = staff.getGender();
+                dateOfBirth = staff.getDateOfBirth();
+                idCar = staff.getIdentityCard();
+                numberPhone = staff.getNumberPhone();
+                address = staff.getAddress();
+                pay = formater.format(staff.getPayStaff());
+                other = staff.getOther();
+                System.out.printf("%-5s%-15s%-30s%-15s%-15s%-15s%-20s%-35s%-20s%s\n", stt, id, fullname, gender, dateOfBirth, idCar, numberPhone, address, pay, other);
+            }
+        }
+        displayReturnSearch(count);
+    }
+
+    public void searchStaffByNumberPhone() {
+        DecimalFormat formater = new DecimalFormat("###,###,###");
+        int count = 0;
+        String stt, id, fullname, gender, dateOfBirth, idCar, numberPhone, address, pay, other;
+        System.out.println();
+        System.out.print("Nhập số điện thoại nhân viên cần tìm kiếm : ");
+        String search = input.nextLine();
+        System.out.println("Kết quả tìm kiếm của từ khóa '" + search + "' là : ");
+        search = search.toLowerCase();
+        System.out.printf("%-5s%-15s%-30s%-15s%-15s%-15s%-20s%-35s%-20s%s\n", "STT", "ID", "HỌ VÀ TÊN", "GIỚI TÍNH", "NGÀY SINH", "CMND", "SĐT", "ĐỊA CHỈ", "LƯƠNG- VND", "THÔNG TIN KHÁC");
+        for (Staff staff : staffList) {
+            if (staff.getNumberPhone().toLowerCase().contains(search)) {
+                count++;
+                stt = String.valueOf(count);
+                id = staff.getIdStaff();
+                fullname = staff.getFullName();
+                gender = staff.getGender();
+                dateOfBirth = staff.getDateOfBirth();
+                idCar = staff.getIdentityCard();
+                numberPhone = staff.getNumberPhone();
+                address = staff.getAddress();
+                pay = formater.format(staff.getPayStaff());
+                other = staff.getOther();
+                System.out.printf("%-5s%-15s%-30s%-15s%-15s%-15s%-20s%-35s%-20s%s\n", stt, id, fullname, gender, dateOfBirth, idCar, numberPhone, address, pay, other);
+            }
+        }
+        displayReturnSearch(count);
+    }
+
+    public void searchStaffByAddress() {
+        DecimalFormat formater = new DecimalFormat("###,###,###");
+        int count = 0;
+        String stt, id, fullname, gender, dateOfBirth, idCar, numberPhone, address, pay, other;
+        System.out.println();
+        System.out.print("Nhập địa chỉ nhân viên cần tìm kiếm : ");
+        String search = input.nextLine();
+        System.out.println("Kết quả tìm kiếm của từ khóa '" + search + "' là : ");
+        search = search.toLowerCase();
+        System.out.printf("%-5s%-15s%-30s%-15s%-15s%-15s%-20s%-35s%-20s%s\n", "STT", "ID", "HỌ VÀ TÊN", "GIỚI TÍNH", "NGÀY SINH", "CMND", "SĐT", "ĐỊA CHỈ", "LƯƠNG- VND", "THÔNG TIN KHÁC");
+        for (Staff staff : staffList) {
+            if (staff.getAddress().toLowerCase().contains(search)) {
+                count++;
+                stt = String.valueOf(count);
+                id = staff.getIdStaff();
+                fullname = staff.getFullName();
+                gender = staff.getGender();
+                dateOfBirth = staff.getDateOfBirth();
+                idCar = staff.getIdentityCard();
+                numberPhone = staff.getNumberPhone();
+                address = staff.getAddress();
+                pay = formater.format(staff.getPayStaff());
+                other = staff.getOther();
+                System.out.printf("%-5s%-15s%-30s%-15s%-15s%-15s%-20s%-35s%-20s%s\n", stt, id, fullname, gender, dateOfBirth, idCar, numberPhone, address, pay, other);
+            }
+        }
+        displayReturnSearch(count);
+    }
+
+    public void searchStaffByPay() {
+        DecimalFormat formater = new DecimalFormat("###,###,###");
+        int count = 0;
+        String stt, id, fullname, gender, dateOfBirth, idCar, numberPhone, address, pay, other;
+        System.out.println();
+        System.out.print("Nhập lương nhân viên cần tìm kiếm : ");
+        String search = input.nextLine();
+        System.out.println("Kết quả tìm kiếm của từ khóa '" + search + "' là : ");
+        search = search.toLowerCase();
+        System.out.printf("%-5s%-15s%-30s%-15s%-15s%-15s%-20s%-35s%-20s%s\n", "STT", "ID", "HỌ VÀ TÊN", "GIỚI TÍNH", "NGÀY SINH", "CMND", "SĐT", "ĐỊA CHỈ", "LƯƠNG- VND", "THÔNG TIN KHÁC");
+        for (Staff staff : staffList) {
+            if (String.valueOf(staff.getPayStaff()).toLowerCase().contains(search)) {
+                count++;
+                stt = String.valueOf(count);
+                id = staff.getIdStaff();
+                fullname = staff.getFullName();
+                gender = staff.getGender();
+                dateOfBirth = staff.getDateOfBirth();
+                idCar = staff.getIdentityCard();
+                numberPhone = staff.getNumberPhone();
+                address = staff.getAddress();
+                pay = formater.format(staff.getPayStaff());
+                other = staff.getOther();
+                System.out.printf("%-5s%-15s%-30s%-15s%-15s%-15s%-20s%-35s%-20s%s\n", stt, id, fullname, gender, dateOfBirth, idCar, numberPhone, address, pay, other);
+            }
+        }
+        displayReturnSearch(count);
+    }
+
+    public void searchStaffByOther() {
+        DecimalFormat formater = new DecimalFormat("###,###,###");
+        int count = 0;
+        String stt, id, fullname, gender, dateOfBirth, idCar, numberPhone, address, pay, other;
+        System.out.println();
+        System.out.print("Nhập thông tin về nhân viên cần tìm kiếm : ");
+        String search = input.nextLine();
+        System.out.println("Kết quả tìm kiếm của từ khóa '" + search + "' là : ");
+        search = search.toLowerCase();
+        System.out.printf("%-5s%-15s%-30s%-15s%-15s%-15s%-20s%-35s%-20s%s\n", "STT", "ID", "HỌ VÀ TÊN", "GIỚI TÍNH", "NGÀY SINH", "CMND", "SĐT", "ĐỊA CHỈ", "LƯƠNG- VND", "THÔNG TIN KHÁC");
+        for (Staff staff : staffList) {
+            if (staff.getOther().toLowerCase().contains(search)) {
+                count++;
+                stt = String.valueOf(count);
+                id = staff.getIdStaff();
+                fullname = staff.getFullName();
+                gender = staff.getGender();
+                dateOfBirth = staff.getDateOfBirth();
+                idCar = staff.getIdentityCard();
+                numberPhone = staff.getNumberPhone();
+                address = staff.getAddress();
+                pay = formater.format(staff.getPayStaff());
+                other = staff.getOther();
+                System.out.printf("%-5s%-15s%-30s%-15s%-15s%-15s%-20s%-35s%-20s%s\n", stt, id, fullname, gender, dateOfBirth, idCar, numberPhone, address, pay, other);
+            }
+        }
+        displayReturnSearch(count);
+    }
+
+    private void displayReturnSearch(int count) {
+        System.out.println("Có '" + count + "' nhân viên được tìm thấy !");
+        char press = ' ';
+        boolean isChoice = true;
+        System.out.println();
+        do {
+            System.out.print("Nhấn 'R' để quay trở về menu tìm kiếm : ");
+            try {
+                press = input.nextLine().charAt(0);
+            } catch (Exception e) {
+                press = ' ';
+            }
+            switch (press) {
+                case 'r':
+                case 'R': {
+                    searchStaff();
+                    isChoice = false;
+                    break;
+                }
+                default:
+                    isChoice = true;
+            }
+        } while (isChoice);
+    }
+
+    public void deleteStaff() {
+        char choice = ' ';
+        do {
+            System.out.println("-----------------LỰA CHỌN NHÂN VIÊN MUỐN XÓA-------------------");
+            System.out.println("|  1. Xóa theo ID của nhân viên                                |");
+            System.out.println("|  2. Xóa theo tên của nhân viên                               |");
+            System.out.println("|  0. Quay lại                                                 |");
+            System.out.println("----------------------------------------------------------------");
+            System.out.println();
+            System.out.println("Lựa chọn : ");
+            try {
+                choice = input.nextLine().charAt(0);
+            } catch (Exception e) {
+                choice = ' ';
+            }
+            switch (choice) {
+                case '1':
+                    deteleStaffById();
+                    break;
+                case '2':
+                    deleteStaffByFullName();
+                    break;
+                case '0':
+                    menuStaffManager();
+                    break;
+                default:
+                    System.out.println("Lựa chọn theo menu trên !");
+            }
+        } while (choice != '0');
+    }
+
+    public void deteleStaffById() {
+        displayAllStaff();
+        String id = "";
+        System.out.print("Nhập ID nhân viên muốn xóa : ");
+        id = input.nextLine();
+        if (!isFormatPay(id)) {
+            System.out.println("Định dạng id phải có dạng 'NV123456' !");
+            deleteStaff();
+        } else {
+            if (!isIdHaveInList(id)) {
+                System.out.println("Không có nhân viên nào có ID = '" + id + "' !");
+                deleteStaff();
+            } else {
+                for (Staff staff : staffList) {
+                    if (staff.getIdStaff().equals(id)) {
+                        deteleStaffInList(staff);
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    public void deleteStaffByFullName() {
+        displayAllStaff();
+        String fullname = "";
+        System.out.print("Nhập họ và tên nhân viên muốn xóa : ");
+        fullname = input.nextLine();
+        if (!isFormatFullName(fullname)) {
+            System.out.println("Đinh dạng tên không đúng, vui lòng nhập theo mẫu để tìm kiếm chi tiết  !");
+            deleteStaff();
+        } else {
+            if (!isFullNameHaveInList(fullname)) {
+                System.out.println("Không có nhân viên nào tên '" + fullname + "' !");
+                deleteStaff();
+            } else {
+                int count = 0;
+                ArrayList<Staff> listStaffTemp = new ArrayList<>();
+                for (Staff staff : staffList) {
+                    if (staff.getFullName().equals(fullname)) {
+                        count++;
+                        listStaffTemp.add(staff);
+                    }
+                }
+                if (count == 1) {
+                    deteleStaffInList(listStaffTemp.get(0));
+                } else {
+                    int i = 1;
+                    for (Staff st : listStaffTemp) {
+                        System.out.println(i + "." + st);
+                        i++;
+                    }
+                    System.out.println();
+                    int choose = 0;
+                    do {
+                        System.out.println("Hãy nhập 'SỐ THỨ TỰ 'trong danh sách ở trên để xóa nhân viên, nhấn 'Q' để quay về menu quản lý");
+
+                        String num = input.nextLine();
+                        try {
+                            if (num.charAt(0) == 'q' || num.charAt(0) == 'Q') {
+                                deleteStaff();
+                                choose = -1;
+                            } else {
+                                choose = Integer.parseInt(num);
+                            }
+                        } catch (Exception e) {
+                            choose = 0;
+                        }
+                        if (choose > 0 && choose <= count) {
+                              deteleStaffInList(listStaffTemp.get(choose-1));
+                        }else choose = 0;
+                    } while (choose == 0);
+                }
+            }
+        }
+    }
+
+
+    public void deteleStaffInList(Staff staff) {
+        staffList.remove(staff);
+        System.out.println("Danh sách nhân viên sau khi xóa nhân viên '" + staff.getFullName() + "'");
+        displayAllStaff();
+        char choice;
+        boolean isChoice = true;
+        do {
+            System.out.println("Bạn muốn lưu thay đổi ? 'Y' = Yes / 'N' = No");
+            System.out.println("Chọn : ");
+            try {
+                choice = input.nextLine().charAt(0);
+            } catch (Exception e) {
+                choice = ' ';
+            }
+            switch (choice) {
+                case 'y':
+                case 'Y':
+                    writeToFile(SAVE_OBJECT_STAFF, staffList);
+                    writeDataFromFileFormatToCsv(SAVE_FORMAT_CSV_STAFF, staffList);
+                    isChoice = false;
+                    deleteStaff();
+                    break;
+                case 'n':
+                case 'N':
+                    staffList = readDataFromFile(SAVE_OBJECT_STAFF);
+                    isChoice = false;
+                    deleteStaff();
+                    break;
+                default:
+                    System.out.println();
+            }
+        } while (isChoice);
+    }
+
+    public void menuStaffManager() {
+        char choice = ' ';
+        do {
             System.out.println("------------------QUẢN LÝ NHÂN VIÊN------------------");
             System.out.println("|  1. Thêm nhân viên                                 |");
             System.out.println("|  2. Thay đổi thông tin nhân viên                   |");
@@ -424,11 +1186,11 @@ public class StaffManager implements Serializable {
             System.out.print("Chọn : ");
             try {
                 choice = input.nextLine().charAt(0);
-            }catch (Exception e){
+            } catch (Exception e) {
                 choice = ' ';
             }
 
-            switch (choice){
+            switch (choice) {
                 case '1':
                     addStaff();
                     break;
@@ -436,15 +1198,15 @@ public class StaffManager implements Serializable {
                     //editStaff();
                     break;
                 case '3':
-                    //deleteStaff();
-                   break;
+                    deleteStaff();
+                    break;
                 case '4':
-                    //searchStaff();
+                    searchStaff();
                     break;
                 case '5':
-                    //displayStaff();
+                    optionDisplayStaff();
                     break;
-                case '6' :
+                case '6':
                     exportFileStaffToCsv();
                     break;
                 case '0':
@@ -453,6 +1215,6 @@ public class StaffManager implements Serializable {
                 default:
                     System.out.println("Chọn theo menu !");
             }
-        }while (choice !='0');
+        } while (choice != '0');
     }
 }
