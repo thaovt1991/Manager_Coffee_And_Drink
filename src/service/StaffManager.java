@@ -466,6 +466,28 @@ public class StaffManager implements Serializable {
         System.out.println();
     }
 
+    public void displayAllStaff(ArrayList<Staff> staffList) {
+        DecimalFormat format = new DecimalFormat("###,###,###");
+        int count = 0;
+        String stt, id, fullname, gender, dateOfBirth, idCar, numberPhone, address, pay, other;
+        System.out.printf("%-5s%-15s%-30s%-15s%-15s%-15s%-20s%-35s%-20s%s\n", "STT", "ID", "HỌ VÀ TÊN", "GIỚI TÍNH", "NGÀY SINH", "CMND", "SĐT", "ĐỊA CHỈ", "LƯƠNG- VND", "THÔNG TIN KHÁC");
+        for (Staff staff : staffList) {
+            count++;
+            stt = String.valueOf(count);
+            id = staff.getIdStaff();
+            fullname = staff.getFullName();
+            gender = staff.getGender();
+            dateOfBirth = staff.getDateOfBirth();
+            idCar = staff.getIdentityCard();
+            numberPhone = staff.getNumberPhone();
+            address = staff.getAddress();
+            pay = format.format(staff.getPayStaff());
+            other = staff.getOther();
+            System.out.printf("%-5s%-15s%-30s%-15s%-15s%-15s%-20s%-35s%-20s%s\n", stt, id, fullname, gender, dateOfBirth, idCar, numberPhone, address, pay, other);
+        }
+        System.out.println();
+    }
+
     public void optionDisplayStaff() {
         char choice = ' ';
         boolean isChoice = true;
@@ -710,6 +732,22 @@ public class StaffManager implements Serializable {
             }
         } while (isChoice);
 
+    }
+
+    public  void displayOneStaff(Staff staff){
+        DecimalFormat format = new DecimalFormat("###,###,###");
+        String  id, fullname, gender, dateOfBirth, idCar, numberPhone, address, pay, other;
+        System.out.printf("%-15s%-30s%-15s%-15s%-15s%-20s%-35s%-20s%s\n", "ID", "HỌ VÀ TÊN", "GIỚI TÍNH", "NGÀY SINH", "CMND", "SĐT", "ĐỊA CHỈ", "LƯƠNG- VND", "THÔNG TIN KHÁC");
+        id = staff.getIdStaff();
+        fullname = staff.getFullName();
+        gender = staff.getGender();
+        dateOfBirth = staff.getDateOfBirth();
+        idCar = staff.getIdentityCard();
+        numberPhone = staff.getNumberPhone();
+        address = staff.getAddress();
+        pay = format.format(staff.getPayStaff());
+        other = staff.getOther();
+        System.out.printf("%-15s%-30s%-15s%-15s%-15s%-20s%-35s%-20s%s\n", id, fullname, gender, dateOfBirth, idCar, numberPhone, address, pay, other);
     }
 
 
@@ -1105,11 +1143,7 @@ public class StaffManager implements Serializable {
                 if (count == 1) {
                     deteleStaffInList(listStaffTemp.get(0));
                 } else {
-                    int i = 1;
-                    for (Staff st : listStaffTemp) {
-                        System.out.println(i + "." + st);
-                        i++;
-                    }
+                    displayAllStaff(listStaffTemp);
                     System.out.println();
                     int choose = 0;
                     do {
@@ -1127,14 +1161,13 @@ public class StaffManager implements Serializable {
                             choose = 0;
                         }
                         if (choose > 0 && choose <= count) {
-                              deteleStaffInList(listStaffTemp.get(choose-1));
-                        }else choose = 0;
+                            deteleStaffInList(listStaffTemp.get(choose - 1));
+                        } else choose = 0;
                     } while (choose == 0);
                 }
             }
         }
     }
-
 
     public void deteleStaffInList(Staff staff) {
         staffList.remove(staff);
@@ -1170,6 +1203,390 @@ public class StaffManager implements Serializable {
         } while (isChoice);
     }
 
+    public void editStaff() {
+        char choice = ' ';
+        do {
+            System.out.println("-----------------LỰA CHỌN THAY ĐỔI THÔNG TIN-------------------");
+            System.out.println("|  1. Sửa thông tin nhân viên theo ID                          |");
+            System.out.println("|  2. Sửa thông tin nhân viên theo tên                         |");
+            System.out.println("|  0. Quay lại                                                 |");
+            System.out.println("----------------------------------------------------------------");
+            System.out.println();
+            System.out.print("Lựa chọn : ");
+            try {
+                choice = input.nextLine().charAt(0);
+            } catch (Exception e) {
+                choice = ' ';
+            }
+            switch (choice) {
+                case '1':
+                    editStaffById();
+                    break;
+                case '2':
+                    editStaffByName();
+                    break;
+                case '0':
+                    menuStaffManager();
+                    break;
+                default:
+                    System.out.println("Lựa chọn theo hướng dẫn trên menu !");
+            }
+        } while (choice != '0');
+    }
+
+    public void editStaffById() {
+        displayAllStaff();
+        String id = "";
+        System.out.print("Nhập id nhân viên cần thay đổi thông tin : ");
+        id = input.nextLine();
+        if (!isFormatIdStaff(id)) {
+            System.out.println("Định dạng ID chưa hợp lệ ! ( ví dụ id đúng : NV201294)");
+            editStaff();
+        } else {
+            if (!isIdHaveInList(id)) {
+                System.out.println("Không có nhân viên nào có id '"+id+"' !");
+                editStaff();
+            } else {
+                for (Staff staff : staffList) {
+                    if (staff.getIdStaff().equals(id)) {
+                        System.out.println("Nhân viên tìm được là : ");
+                        displayOneStaff(staff);
+                        System.out.println("Có phải bạn muốn thay đổi thông tin nhân viên này !");
+
+                        char press = ' ';
+                        boolean isChoice = true;
+                        do {
+                            System.out.println("Nhấn 'Y' để tiếp tục, nhấn 'N' để tìm kiếm lại ");
+                            try {
+                                press = input.nextLine().charAt(0);
+                            } catch (Exception e) {
+                                press = ' ';
+                            }
+                            switch (press) {
+                                case 'Y':
+                                case 'y':
+                                    editOptionStaff(staff);
+                                    isChoice = false;
+                                    break;
+                                case 'n':
+                                case 'N':
+                                    editStaff();
+                                    isChoice = false;
+                                    break;
+                                default:
+                                    isChoice = true;
+                            }
+                        } while (isChoice);
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    public void  editStaffByName(){
+        displayAllStaff();
+        String fullname = "";
+        System.out.print("Nhập họ và tên nhân viên muốn thay đổi thông tin : ");
+        fullname = input.nextLine();
+        if (!isFormatFullName(fullname)) {
+            System.out.println("Đinh dạng tên không đúng, vui lòng nhập theo mẫu để tìm kiếm chi tiết  !");
+            editStaff();
+        } else {
+            if (!isFullNameHaveInList(fullname)) {
+                System.out.println("Không có nhân viên nào tên '" + fullname + "' !");
+                editStaff();
+            } else {
+                int count = 0;
+                ArrayList<Staff> listStaffTemp = new ArrayList<>();
+                for (Staff staff : staffList) {
+                    if (staff.getFullName().equals(fullname)) {
+                        count++;
+                        listStaffTemp.add(staff);
+                    }
+                }
+                if (count == 1) {
+                    editOptionStaff(listStaffTemp.get(0));
+                } else {
+                    displayAllStaff(listStaffTemp);
+                    System.out.println();
+                    int choose = 0;
+                    do {
+                        System.out.println("Hãy nhập 'SỐ THỨ TỰ 'trong danh sách ở trên để chọn nhân viên muốn thay dổi thông tin ! , nhấn 'Q' để quay về menu quản lý nhân viên");
+
+                        String num = input.nextLine();
+                        try {
+                            if (num.charAt(0) == 'q' || num.charAt(0) == 'Q') {
+                                editStaff();
+                                choose = -1;
+                            } else {
+                                choose = Integer.parseInt(num);
+                            }
+                        } catch (Exception e) {
+                            choose = 0;
+                        }
+                        if (choose > 0 && choose <= count) {
+                            editOptionStaff(listStaffTemp.get(choose - 1));
+                        } else choose = 0;
+                    } while (choose == 0);
+                }
+            }
+        }
+    };
+
+    public void editOptionStaff(Staff staff) {
+        char choice = ' ';
+        boolean isChoice = true;
+        do {
+            System.out.println("-----------------THAY ĐỔI THÔNG TIN NHÂN VIÊN--------------------");
+            System.out.println("|   1.  Thay đổi id nhân viên - Nhấn phím 'I'                    |");
+            System.out.println("|   2.  Thay đổi tên nhân viên - Nhấn phím 'F'                   |");
+            System.out.println("|   3.  Thay đổi giới tính - Nhấn phím 'G'                       |");
+            System.out.println("|   4.  Thay đổi ngày tháng năm sinh- Nhấn phím 'B'              |");
+            System.out.println("|   5.  Thay đổi CMND - Nhấn phím 'C'                            |");
+            System.out.println("|   6.  Thay đổi số điện thoại - Nhấn phím 'N'                   |");
+            System.out.println("|   7.  Thay đổi địa chỉ - Nhấn phím 'A'                         |");
+            System.out.println("|   8.  Thay đổi mức lương nhân viên - Nhấn phím 'P'             |");
+            System.out.println("|   9.  Thay đổi thông tin khác - Nhấn phím 'O'                  |");
+            System.out.println("|   10. Thay đổi toàn bộ thông tin nhân viên - Nhấn phím 'E'     |");
+            System.out.println("|   11.  Thoát và hủy thay đổi - Nhấn phím 'R'                   |");
+            System.out.println("|   12.  Thoát và lưu thay đổi - Nhấn phím 'S'                   |");
+            System.out.println("------------------------------------------------------------------");
+            System.out.println();
+            System.out.println("Chọn :");
+            try {
+                choice = input.nextLine().charAt(0);
+            } catch (Exception e) {
+                choice = ' ';
+            }
+
+            switch (choice) {
+                case 'I':
+                case 'i':
+                    System.out.println("----------Thay đổi id nhân viên ----------");
+                      editIdOfStaff(staff);
+                    break;
+                case 'F':
+                case 'f':
+                    System.out.println("---------Thay đổi tên nhân viên ----------");
+                    editFullNameOfStaff(staff);
+                    break;
+                case 'G':
+                case 'g':
+                    System.out.println("----------Thay đổi giới tính nhân viên----------");
+                    editGenderOfStaff(staff);
+                    break;
+                case 'B':
+                case 'b':
+                    System.out.println("----------Thay đổi ngày tháng năm sinh nhân viên-----------");
+                    editDateOfBirthOfStaff(staff);
+                    break;
+                case 'C':
+                case 'c':
+                    System.out.println("----------Thay đổi CMND của nhân viên-----------");
+                    editIdentifyCardOfStaff(staff);
+                    break;
+                case 'N':
+                case 'n':
+                    System.out.println("----------Thay đổi số điện thoại nhân viên--------");
+                    editNumberPhoneOfStaff(staff);
+                    break;
+                case 'A':
+                case 'a':
+                    System.out.println("----------Thay đổi địa chỉ nhân viên--------");
+                    editAddresssOfStaff(staff);
+                    break;
+                case 'P':
+                case 'p':
+                    System.out.println("----------Thay đổi  mức lương nhân viên--------");
+                    editPayOfStaff(staff);
+                    break;
+                case 'O':
+                case 'o':
+                    System.out.println("----------Thay đổi thông tin khác của nhân viên--------");
+                    editOtherOfStaff(staff);
+                    break;
+                case 'E':
+                case 'e':
+                    System.out.println("----------Thay đổi toàn bộ thông tin nhân viên--------");
+                    editIdOfStaff(staff);
+                    editFullNameOfStaff(staff);
+                    editGenderOfStaff(staff);
+                    editDateOfBirthOfStaff(staff);
+                    editIdentifyCardOfStaff(staff);
+                    editNumberPhoneOfStaff(staff);
+                    editAddresssOfStaff(staff);
+                    editPayOfStaff(staff);
+                    editOtherOfStaff(staff);
+                    break;
+                case 'R':
+                case 'r':
+                    staffList = readDataFromFile(SAVE_OBJECT_STAFF);
+                    editStaff();
+                    isChoice = false;
+                    break;
+                case 'S':
+                case 's':
+                    writeToFile(SAVE_OBJECT_STAFF, staffList);
+                    writeDataFromFileFormatToCsv(SAVE_FORMAT_CSV_STAFF, staffList);
+                    System.out.println("Danh sách nhân viên sau khi sửa là :");
+                    displayAllStaff();
+                    editStaff();
+                    isChoice = false;
+                    break;
+                default:
+                    System.out.println("Hãy chọn theo hướng của menu ở trên !");
+            }
+        } while (isChoice);
+    }
+
+    public void  editIdOfStaff(Staff staff){
+        String idStaff = "";
+        do {
+            System.out.print("Nhập id mới của nhân viên :");
+            idStaff = input.nextLine();
+            if (!isFormatIdStaff(idStaff)) {
+                System.out.println("Định dạng ID chưa hợp lệ ! ( ví dụ id đúng : NV201294)");
+            } else if (isIdHaveInList(idStaff)) {
+                System.out.println("Id đã được đăng kí , vui lòng nhập lại id mới !");
+            }
+        } while (isIdHaveInList(idStaff) || !isFormatIdStaff(idStaff));
+        staff.setIdStaff(idStaff);
+    }
+
+    public void editFullNameOfStaff(Staff staff){
+        String fullName = "";
+        do {
+            System.out.print("Nhập họ và tên mới của nhân viên : ");
+            fullName = input.nextLine();
+            if (!isFormatFullName(fullName)) {
+                System.out.println("Định dạng tên chưa hợp lệ ! ( ví dụ tên đúng :Nguyen Van A)");
+            } else if (isFullNameHaveInList(fullName)) {
+                //in doi tuong da co ten ra ;
+                System.out.println("'" + fullName + "' đã có trong dãy , bạn có chắc chắn muốn thêm !");
+                char choice = ' ';
+                boolean isChoice = true;
+                do {
+                    System.out.print("Nhấn 'Y' để tiếp tục , nhấn 'N' để thay đổi ! : ");
+                    try {
+                        choice = input.nextLine().charAt(0);
+                    } catch (Exception e) {
+                        choice = ' ';
+                    }
+                    switch (choice) {
+                        case 'y':
+                        case 'Y':
+                            isChoice = false;
+                            break;
+                        case 'n':
+                        case 'N':
+                            fullName = "";
+                            isChoice = false;
+                            break;
+                        default:
+                    }
+                } while (isChoice);
+            }
+        } while (!isFormatFullName(fullName));
+        staff.setFullName(fullName);
+    }
+
+    public void editGenderOfStaff(Staff staff){
+        String gender = "";
+        char press = ' ';
+        boolean isPress = true;
+        System.out.println("Thay đổi giới tính của nhân viên ");
+        do {
+            System.out.print("Nhấn 'M' nếu nhân viên là nam , nhấn 'F' nếu nhân viên là nữ ?  ");
+            try {
+                press = input.nextLine().charAt(0);
+            } catch (Exception e) {
+                press = ' ';
+            }
+            switch (press) {
+                case 'm':
+                case 'M':
+                    gender = "Nam";
+                    isPress = false;
+                    break;
+                case 'f':
+                case 'F':
+                    gender = "Nu";
+                    isPress = false;
+                    break;
+                default:
+            }
+        } while (isPress);
+        staff.setGender(gender);
+    }
+
+    public void editDateOfBirthOfStaff(Staff staff){
+        String dateOfBirth = "";
+        do {
+            System.out.print("Nhập ngày tháng năm sinh mới cho nhân viên, có dạng day/month/year, ví dụ 2/2/1992 : ");
+            dateOfBirth = input.nextLine();
+            if (!isFormatDateOfBirth(dateOfBirth)) {
+                System.out.println("Không phải định dạng đúng !");
+            } else if (!isDatOfBirth(dateOfBirth)) {
+                System.out.println("Không phải ngày thực tế hoặc đã vượt ra khỏi nằm ngoài độ tuổi cho phép ! ");
+            }
+        } while (!isDatOfBirth(dateOfBirth));
+        staff.setDateOfBirth(dateOfBirth);
+    }
+
+    public void editIdentifyCardOfStaff(Staff staff){
+        String idCar = "";
+        do {
+            System.out.print("Nhập số CMND mới cho nhân viên : ");
+            idCar = input.nextLine();
+            if (!isFormatIdentityCard(idCar)) {
+                System.out.println("CMND phải có 9 số và bắt đầu từ  1 hoặc 2 !");
+            } else if (isIdentityCardHaveInList(idCar)) {
+                System.out.println("CMND này đã được đăng kí , hãy kiểm tra lại !");
+            }
+        } while (!isFormatIdentityCard(idCar) || isIdentityCardHaveInList(idCar));
+        staff.setIdentityCard(idCar);
+    }
+
+    public  void editNumberPhoneOfStaff(Staff staff){
+        String numberPhone = "";
+        do {
+            System.out.print("Nhập số điện thoại mới nhân viên : ");
+            numberPhone = input.nextLine();
+            if (!isFormatNumberPhone(numberPhone)) {
+                System.out.println("Định dạng số điện chưa hợp lệ !  ");
+            }
+        } while (!isFormatNumberPhone(numberPhone));
+        staff.setNumberPhone(numberPhone);
+    }
+
+    public void editAddresssOfStaff(Staff staff){
+        String address = "";
+        System.out.print("Nhập địa chỉ mới của nhân viên : ");
+        address = input.nextLine();
+        staff.setAddress(address);
+    }
+
+    public void editPayOfStaff(Staff staff){
+        String strPay = "";
+        do {
+            System.out.print("Nhập mức lương mới của nhân viên : ");
+            strPay = input.nextLine();
+            if (!isFormatPay(strPay)) {
+                System.out.println("Định dạng tiền lương chưa hợp lý !");
+            }
+        } while (!isFormatPay(strPay));
+        staff.setPayStaff(Long.parseLong(strPay));
+    }
+
+    public void editOtherOfStaff(Staff staff){
+        String other = "";
+        System.out.print("Thay đổi thông tin khác cho nhân viên (có thể bỏ trống) !");
+        other = input.nextLine();
+        staff.setOther(other);
+    }
+
+
     public void menuStaffManager() {
         char choice = ' ';
         do {
@@ -1195,7 +1612,7 @@ public class StaffManager implements Serializable {
                     addStaff();
                     break;
                 case '2':
-                    //editStaff();
+                    editStaff();
                     break;
                 case '3':
                     deleteStaff();

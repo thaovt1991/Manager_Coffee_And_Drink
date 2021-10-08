@@ -800,8 +800,7 @@ public class DrinksManager implements Serializable {
 
     public void displayOneDrinks(Drinks drinks) {
         DecimalFormat formater = new DecimalFormat("###,###,###");
-        int count = 0;
-        String stt, id, name, ql, pr, other;
+        String  id, name, ql, pr, other;
         System.out.println();
         System.out.printf("%-3s%-12s%-40s%-20s%-23s%s\n", "", "ID", "TÊN THỨC UỐNG", "SỐ LƯỢNG", "GIÁ (VND)", "THÔNG TIN KHÁC");
         id = drinks.getIdDrink();
