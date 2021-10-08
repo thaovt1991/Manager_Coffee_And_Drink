@@ -22,11 +22,11 @@ public class DrinksManager implements Serializable {
     public static final String FORMAT_CSV_DRINKS = "ID,NAME,QUALITY,PRICE,OTHER";
     public static final String DOWN_THE_LINE = "\n";
     public static final String COMMA_DELIMITER = ",";
-    public static final String SAVE_OBJECT_DRINKS = "D:\\Manager_Coffee_And_Drink\\src\\data\\list_drinks.txt";
-    public static final String SAVE_FORMAT_CSV_DRINKS = "D:\\Manager_Coffee_And_Drink\\out_data\\list_drinks.csv";
+    public static final String LINK_SAVE_OBJECT_DRINKS = "D:\\Manager_Coffee_And_Drink\\src\\data\\list_drinks.txt";
+    public static final String LINK_SAVE_FORMAT_CSV_DRINKS = "D:\\Manager_Coffee_And_Drink\\out_data\\list_drinks.csv";
 
     public DrinksManager() {
-        drinksList = readDataFromFile(SAVE_OBJECT_DRINKS);
+        drinksList = readDataFromFile(LINK_SAVE_OBJECT_DRINKS);
     }
 
     public DrinksManager(ArrayList<Drinks> drinksList) {
@@ -124,8 +124,8 @@ public class DrinksManager implements Serializable {
                 case 'Y':
                 case 'y': {
                     drinksList.add(drink);
-                    writeToFile(SAVE_OBJECT_DRINKS, drinksList);
-                    writeDataFromFileFormatToCsv(SAVE_FORMAT_CSV_DRINKS, drinksList);
+                    writeToFile(LINK_SAVE_OBJECT_DRINKS, drinksList);
+                    writeDataFromFileFormatToCsv(LINK_SAVE_FORMAT_CSV_DRINKS, drinksList);
                     isChoice = false;
                     break;
                 }
@@ -299,7 +299,7 @@ public class DrinksManager implements Serializable {
 
             }
         }
-        while (isHaveNameDrinksList(name) || !isNameFormat(name));
+        while (!isHaveNameDrinksList(name) || !isNameFormat(name));
     }
 
     public void editDrinkOption(Drinks drinks) {
@@ -354,13 +354,13 @@ public class DrinksManager implements Serializable {
                     editOtherDescription(drinks);
                     break;
                 case '7':
-                    drinksList = readDataFromFile(SAVE_OBJECT_DRINKS);
+                    drinksList = readDataFromFile(LINK_SAVE_OBJECT_DRINKS);
                     editDrink();
                     isChoice = false;
                     break;
                 case '8':
-                    writeToFile(SAVE_OBJECT_DRINKS, drinksList);
-                    writeDataFromFileFormatToCsv(SAVE_FORMAT_CSV_DRINKS, drinksList);
+                    writeToFile(LINK_SAVE_OBJECT_DRINKS, drinksList);
+                    writeDataFromFileFormatToCsv(LINK_SAVE_FORMAT_CSV_DRINKS, drinksList);
                     System.out.println("Menu sau khi sửa là :");
                     displayDrinkFornmat();
                     editDrink();
@@ -391,7 +391,7 @@ public class DrinksManager implements Serializable {
             System.out.printf("%-3s%-12s%-12s%-40s%-20s%-23s%s\n", "|", stt, id, name, ql, pr, "|");
         }
         System.out.println("------------------------------------------######################-----------------------------------------------");
-        drinksList = readDataFromFile(SAVE_OBJECT_DRINKS);
+        drinksList = readDataFromFile(LINK_SAVE_OBJECT_DRINKS);
     }
 
     public void editIdDrink(Drinks drinks) {
@@ -559,14 +559,14 @@ public class DrinksManager implements Serializable {
             switch (choice) {
                 case 'y':
                 case 'Y':
-                    writeToFile(SAVE_OBJECT_DRINKS, drinksList);
-                    writeDataFromFileFormatToCsv(SAVE_FORMAT_CSV_DRINKS, drinksList);
+                    writeToFile(LINK_SAVE_OBJECT_DRINKS, drinksList);
+                    writeDataFromFileFormatToCsv(LINK_SAVE_FORMAT_CSV_DRINKS, drinksList);
                     isChoice = false;
                     deleteDrink();
                     break;
                 case 'n':
                 case 'N':
-                    drinksList = readDataFromFile(SAVE_OBJECT_DRINKS);
+                    drinksList = readDataFromFile(LINK_SAVE_OBJECT_DRINKS);
                     isChoice = false;
                     deleteDrink();
                     break;
@@ -639,14 +639,14 @@ public class DrinksManager implements Serializable {
                     SortIdDrinksAZ sortIdAZ = new SortIdDrinksAZ();
                     Collections.sort(drinksList, sortIdAZ);
                     displayFullDrinks();
-                    drinksList = readDataFromFile(SAVE_OBJECT_DRINKS);
+                    drinksList = readDataFromFile(LINK_SAVE_OBJECT_DRINKS);
                     break;
                 case '2':
                     System.out.println("Sắp xếp theo ID từ Z-A");
                     SortIdDrinksZA sortIdZA = new SortIdDrinksZA();
                     Collections.sort(drinksList, sortIdZA);
                     displayFullDrinks();
-                    drinksList = readDataFromFile(SAVE_OBJECT_DRINKS);
+                    drinksList = readDataFromFile(LINK_SAVE_OBJECT_DRINKS);
                     break;
                 case '0':
                     optionDisplay();
@@ -679,14 +679,14 @@ public class DrinksManager implements Serializable {
                     SortToNameDrinksAZ sortNameAZ = new SortToNameDrinksAZ();
                     Collections.sort(drinksList, sortNameAZ);
                     displayFullDrinks();
-                    drinksList = readDataFromFile(SAVE_OBJECT_DRINKS);
+                    drinksList = readDataFromFile(LINK_SAVE_OBJECT_DRINKS);
                     break;
                 case '2':
                     System.out.println("Sắp xếp theo tên từ Z-A");
                     SortToNameDrinksZA sortNameZA = new SortToNameDrinksZA();
                     Collections.sort(drinksList, sortNameZA);
                     displayFullDrinks();
-                    drinksList = readDataFromFile(SAVE_OBJECT_DRINKS);
+                    drinksList = readDataFromFile(LINK_SAVE_OBJECT_DRINKS);
                     break;
                 case '0':
                     optionDisplay();
@@ -719,14 +719,14 @@ public class DrinksManager implements Serializable {
                     SortQualityDrinksAscending sortQualityDrinksAscending = new SortQualityDrinksAscending();
                     Collections.sort(drinksList, sortQualityDrinksAscending);
                     displayFullDrinks();
-                    drinksList = readDataFromFile(SAVE_OBJECT_DRINKS);
+                    drinksList = readDataFromFile(LINK_SAVE_OBJECT_DRINKS);
                     break;
                 case '2':
                     System.out.println("Sắp xếp theo số lượng giảm dần");
                     SortQualityDrinksDecrease sortQualityDrinksDecrease = new SortQualityDrinksDecrease();
                     Collections.sort(drinksList, sortQualityDrinksDecrease);
                     displayFullDrinks();
-                    drinksList = readDataFromFile(SAVE_OBJECT_DRINKS);
+                    drinksList = readDataFromFile(LINK_SAVE_OBJECT_DRINKS);
                     break;
                 case '0':
                     optionDisplay();
@@ -760,14 +760,14 @@ public class DrinksManager implements Serializable {
                     SortPriceDrinksAscending sortPriceDrinksAscending = new SortPriceDrinksAscending();
                     Collections.sort(drinksList, sortPriceDrinksAscending);
                     displayFullDrinks();
-                    drinksList = readDataFromFile(SAVE_OBJECT_DRINKS);
+                    drinksList = readDataFromFile(LINK_SAVE_OBJECT_DRINKS);
                     break;
                 case '2':
                     System.out.println("Sắp xếp theo giá thức uống giảm dần");
                     SortPriceDrinksDecrease sortPriceDrinksDecrease = new SortPriceDrinksDecrease();
                     Collections.sort(drinksList, sortPriceDrinksDecrease);
                     displayFullDrinks();
-                    drinksList = readDataFromFile(SAVE_OBJECT_DRINKS);
+                    drinksList = readDataFromFile(LINK_SAVE_OBJECT_DRINKS);
                     break;
                 case '0':
                     optionDisplay();
@@ -878,7 +878,7 @@ public class DrinksManager implements Serializable {
                 writer.append(COMMA_DELIMITER);
                 writer.append(String.valueOf(drink.getPriceDrink()));
                 writer.append(COMMA_DELIMITER);
-                writer.append(drink.getOtherDescription());
+                writer.append(drink.getOtherDescription().replace(",",";"));
                 writer.append(DOWN_THE_LINE);
             }
             writer.close();

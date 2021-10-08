@@ -1,9 +1,6 @@
 package service;
 
-import model.Drinks;
 import model.Staff;
-import sort.sortDrinks.SortIdDrinksAZ;
-import sort.sortDrinks.SortIdDrinksZA;
 import sort.sortStaff.*;
 
 import java.io.*;
@@ -17,8 +14,8 @@ import java.util.regex.Pattern;
 public class StaffManager implements Serializable {
     public ArrayList<Staff> staffList;
     static Scanner input = new Scanner(System.in);
-    public static final String SAVE_OBJECT_STAFF = "D:\\Manager_Coffee_And_Drink\\src\\data\\list_staff.txt";
-    public static final String SAVE_FORMAT_CSV_STAFF = "D:\\Manager_Coffee_And_Drink\\out_data\\list_staff.csv";
+    public static final String LINK_SAVE_OBJECT_STAFF = "D:\\Manager_Coffee_And_Drink\\src\\data\\list_staff.txt";
+    public static final String LINK_SAVE_FORMAT_CSV_STAFF = "D:\\Manager_Coffee_And_Drink\\out_data\\list_staff.csv";
     public static final String FORMAT_CSV_STAFF = "ID,HO VA TEN,GIOI TINH,NGAY SINH,CMND,SO DIEN THOAI,LUONG,THONG TIN KHAC";
     public static final String DOWN_THE_LINE = "\n";
     public static final String COMMA_DELIMITER = ",";
@@ -32,7 +29,7 @@ public class StaffManager implements Serializable {
 
 
     public StaffManager() {
-        staffList = readDataFromFile(SAVE_OBJECT_STAFF);
+        staffList = readDataFromFile(LINK_SAVE_OBJECT_STAFF);
     }
 
     public boolean isEmpty() {
@@ -208,8 +205,8 @@ public class StaffManager implements Serializable {
                 case 'y':
                 case 'Y':
                     staffList.add(staff);
-                    writeToFile(SAVE_OBJECT_STAFF, staffList);
-                    writeDataFromFileFormatToCsv(SAVE_FORMAT_CSV_STAFF, staffList);
+                    writeToFile(LINK_SAVE_OBJECT_STAFF, staffList);
+                    writeDataFromFileFormatToCsv(LINK_SAVE_FORMAT_CSV_STAFF, staffList);
                     isChoice = false;
                     menuStaffManager();
                     break;
@@ -349,11 +346,11 @@ public class StaffManager implements Serializable {
                 writer.append(COMMA_DELIMITER);
                 writer.append(staff.getNumberPhone());
                 writer.append(COMMA_DELIMITER);
-                writer.append(staff.getAddress());
+                writer.append(staff.getAddress().replace(",",";"));
                 writer.append(COMMA_DELIMITER);
                 writer.append(String.valueOf(staff.getPayStaff()));
                 writer.append(COMMA_DELIMITER);
-                writer.append(staff.getOther());
+                writer.append(staff.getOther().replace(",",";"));
                 writer.append(DOWN_THE_LINE);
             }
             writer.close();
@@ -555,14 +552,14 @@ public class StaffManager implements Serializable {
                     SortByIdStaffAZ sortISAZ = new SortByIdStaffAZ();
                     Collections.sort(staffList, sortISAZ);
                     displayAllStaff();
-                    staffList = readDataFromFile(SAVE_OBJECT_STAFF);
+                    staffList = readDataFromFile(LINK_SAVE_OBJECT_STAFF);
                     break;
                 case '2':
                     System.out.println("Sắp xếp theo thứ tự Z-A    ");
                     SortByIdStaffZA sortISZA = new SortByIdStaffZA();
                     Collections.sort(staffList, sortISZA);
                     displayAllStaff();
-                    staffList = readDataFromFile(SAVE_OBJECT_STAFF);
+                    staffList = readDataFromFile(LINK_SAVE_OBJECT_STAFF);
                     break;
                 case '0':
                     optionDisplayStaff();
@@ -595,14 +592,14 @@ public class StaffManager implements Serializable {
                     SortByNameStaffAZ sortNSAZ = new SortByNameStaffAZ();
                     Collections.sort(staffList, sortNSAZ);
                     displayAllStaff();
-                    staffList = readDataFromFile(SAVE_OBJECT_STAFF);
+                    staffList = readDataFromFile(LINK_SAVE_OBJECT_STAFF);
                     break;
                 case '2':
                     System.out.println("Sắp xếp theo thứ tự Z-A    ");
                     SortByNameStaffZA sortNSZA = new SortByNameStaffZA();
                     Collections.sort(staffList, sortNSZA);
                     displayAllStaff();
-                    staffList = readDataFromFile(SAVE_OBJECT_STAFF);
+                    staffList = readDataFromFile(LINK_SAVE_OBJECT_STAFF);
                     break;
                 case '0':
                     optionDisplayStaff();
@@ -635,14 +632,14 @@ public class StaffManager implements Serializable {
                     SortByPayStaffAscending sortPSA = new SortByPayStaffAscending();
                     Collections.sort(staffList, sortPSA);
                     displayAllStaff();
-                    staffList = readDataFromFile(SAVE_OBJECT_STAFF);
+                    staffList = readDataFromFile(LINK_SAVE_OBJECT_STAFF);
                     break;
                 case '2':
                     System.out.println("Sắp xếp lương giảm dần    ");
                     SortByPayStaffDecrease sortPSD = new SortByPayStaffDecrease();
                     Collections.sort(staffList, sortPSD);
                     displayAllStaff();
-                    staffList = readDataFromFile(SAVE_OBJECT_STAFF);
+                    staffList = readDataFromFile(LINK_SAVE_OBJECT_STAFF);
                     break;
                 case '0':
                     optionDisplayStaff();
@@ -675,14 +672,14 @@ public class StaffManager implements Serializable {
                     SortGenderFM sortGender = new SortGenderFM();
                     Collections.sort(staffList, sortGender);
                     displayAllStaff();
-                    staffList = readDataFromFile(SAVE_OBJECT_STAFF);
+                    staffList = readDataFromFile(LINK_SAVE_OBJECT_STAFF);
                     break;
                 case '2':
                     System.out.println("Sắp xếp Nam - Nu ");
                     SortGenderMF sortGenderMF = new SortGenderMF();
                     Collections.sort(staffList, sortGenderMF);
                     displayAllStaff();
-                    staffList = readDataFromFile(SAVE_OBJECT_STAFF);
+                    staffList = readDataFromFile(LINK_SAVE_OBJECT_STAFF);
                     break;
                 case '0':
                     optionDisplayStaff();
@@ -715,14 +712,14 @@ public class StaffManager implements Serializable {
                     SortByDateOfBirthAscending sortByDoBAsc = new SortByDateOfBirthAscending();
                     Collections.sort(staffList, sortByDoBAsc);
                     displayAllStaff();
-                    staffList = readDataFromFile(SAVE_OBJECT_STAFF);
+                    staffList = readDataFromFile(LINK_SAVE_OBJECT_STAFF);
                     break;
                 case '2':
                     System.out.println("Sắp xếp tăng dần độ tuổi "); //ngay sinh giam dần
                     SortByDateOfBirthDecrease sortByDoBDec = new SortByDateOfBirthDecrease();
                     Collections.sort(staffList, sortByDoBDec);
                     displayAllStaff();
-                    staffList = readDataFromFile(SAVE_OBJECT_STAFF);
+                    staffList = readDataFromFile(LINK_SAVE_OBJECT_STAFF);
                     break;
                 case '0':
                     optionDisplayStaff();
@@ -1074,7 +1071,7 @@ public class StaffManager implements Serializable {
             System.out.println("|  0. Quay lại                                                 |");
             System.out.println("----------------------------------------------------------------");
             System.out.println();
-            System.out.println("Lựa chọn : ");
+            System.out.print("Lựa chọn : ");
             try {
                 choice = input.nextLine().charAt(0);
             } catch (Exception e) {
@@ -1186,14 +1183,14 @@ public class StaffManager implements Serializable {
             switch (choice) {
                 case 'y':
                 case 'Y':
-                    writeToFile(SAVE_OBJECT_STAFF, staffList);
-                    writeDataFromFileFormatToCsv(SAVE_FORMAT_CSV_STAFF, staffList);
+                    writeToFile(LINK_SAVE_OBJECT_STAFF, staffList);
+                    writeDataFromFileFormatToCsv(LINK_SAVE_FORMAT_CSV_STAFF, staffList);
                     isChoice = false;
                     deleteStaff();
                     break;
                 case 'n':
                 case 'N':
-                    staffList = readDataFromFile(SAVE_OBJECT_STAFF);
+                    staffList = readDataFromFile(LINK_SAVE_OBJECT_STAFF);
                     isChoice = false;
                     deleteStaff();
                     break;
@@ -1353,7 +1350,7 @@ public class StaffManager implements Serializable {
             System.out.println("|   12.  Thoát và lưu thay đổi - Nhấn phím 'S'                   |");
             System.out.println("------------------------------------------------------------------");
             System.out.println();
-            System.out.println("Chọn :");
+            System.out.print("Chọn :");
             try {
                 choice = input.nextLine().charAt(0);
             } catch (Exception e) {
@@ -1421,14 +1418,14 @@ public class StaffManager implements Serializable {
                     break;
                 case 'R':
                 case 'r':
-                    staffList = readDataFromFile(SAVE_OBJECT_STAFF);
+                    staffList = readDataFromFile(LINK_SAVE_OBJECT_STAFF);
                     editStaff();
                     isChoice = false;
                     break;
                 case 'S':
                 case 's':
-                    writeToFile(SAVE_OBJECT_STAFF, staffList);
-                    writeDataFromFileFormatToCsv(SAVE_FORMAT_CSV_STAFF, staffList);
+                    writeToFile(LINK_SAVE_OBJECT_STAFF, staffList);
+                    writeDataFromFileFormatToCsv(LINK_SAVE_FORMAT_CSV_STAFF, staffList);
                     System.out.println("Danh sách nhân viên sau khi sửa là :");
                     displayAllStaff();
                     editStaff();
