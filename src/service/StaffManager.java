@@ -1,6 +1,7 @@
 package service;
 
 import model.Staff;
+import precentation.Menu;
 import sort.sortStaff.*;
 
 import java.io.*;
@@ -1624,7 +1625,7 @@ public class StaffManager implements Serializable {
                     exportFileStaffToCsv();
                     break;
                 case '0':
-                    //menuManager
+                    Menu.menuWorkWithAdmin();
                     break;
                 default:
                     System.out.println("Chọn theo menu !");

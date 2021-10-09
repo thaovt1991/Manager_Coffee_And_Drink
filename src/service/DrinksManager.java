@@ -1,6 +1,7 @@
 package service;
 
 import model.Drinks;
+import precentation.Menu;
 import sort.sortDrinks.*;
 
 import java.io.*;
@@ -12,6 +13,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class DrinksManager implements Serializable {
+
+
     public ArrayList<Drinks> drinksList;
     static Scanner input = new Scanner(System.in);
     public static final String ID_REGEX = "[A-Z]{2}+\\d{3}$";
@@ -372,7 +375,7 @@ public class DrinksManager implements Serializable {
         } while (isChoice);
     }
 
- ////fornmat theo thu tu id
+    ////fornmat theo thu tu id
     public void displayDrinkFornmat() {
         DecimalFormat formater = new DecimalFormat("###,###,###");
         int count = 0;
@@ -800,7 +803,7 @@ public class DrinksManager implements Serializable {
 
     public void displayOneDrinks(Drinks drinks) {
         DecimalFormat formater = new DecimalFormat("###,###,###");
-        String  id, name, ql, pr, other;
+        String id, name, ql, pr, other;
         System.out.println();
         System.out.printf("%-3s%-12s%-40s%-20s%-23s%s\n", "", "ID", "TÊN THỨC UỐNG", "SỐ LƯỢNG", "GIÁ (VND)", "THÔNG TIN KHÁC");
         id = drinks.getIdDrink();
@@ -878,7 +881,7 @@ public class DrinksManager implements Serializable {
                 writer.append(COMMA_DELIMITER);
                 writer.append(String.valueOf(drink.getPriceDrink()));
                 writer.append(COMMA_DELIMITER);
-                writer.append(drink.getOtherDescription().replace(",",";"));
+                writer.append(drink.getOtherDescription().replace(",", ";"));
                 writer.append(DOWN_THE_LINE);
             }
             writer.close();
@@ -1210,8 +1213,7 @@ public class DrinksManager implements Serializable {
                     exportDataDrinksToCsv();
                     break;
                 case '0':
-                    System.out.println("quay lai menu chinh");///dien menu chonh vao xos cai kia
-                    System.exit(0);
+                    Menu.menuWorkWithAdmin();
                     isChoice = false;
                     break;
                 default:

@@ -3,6 +3,7 @@ package service;
 import model.Account;
 import model.Drinks;
 import model.Staff;
+import precentation.Menu;
 import sort.sortAccount.*;
 import sort.sortDrinks.SortIdDrinksAZ;
 import sort.sortDrinks.SortIdDrinksZA;
@@ -155,39 +156,42 @@ public class AccountManager implements Serializable {
             ownerID = input.nextLine();
             if (!isFormatOwnerId(ownerID)) {
                 System.out.println("Không phải định dạng id nhân viên ");
+                menuAccountManager();
             } else if (!isOwerIdHaveInListStaff(ownerID)) {
                 System.out.println("Id không có nhân viên nào có id '" + ownerID + "'");
+                menuAccountManager();
             } else if (isOwnerIdHaveInListAccount(ownerID)) {
                 System.out.println("Id đã được đăng kí tài khoản ");
+                menuAccountManager();
             } else isChoice = false;
         } while (isChoice);
 
-        String userName = "" ;
-        do{
+        String userName = "";
+        do {
             System.out.print("Nhập username : ");
             userName = input.nextLine();
-            if(!isFormatUserName(userName)){
+            if (!isFormatUserName(userName)) {
                 System.out.println("Username gồm số và chữ thường, phải bắt đầu là một chữ và có 6-16 kí tự !");
-            }else if (isUserNameHaveInListAccount(userName)){
+            } else if (isUserNameHaveInListAccount(userName)) {
                 System.out.println("username đã được sử dụng !");
             }
-        }while (isUserNameHaveInListAccount(userName) || !isFormatUserName(userName));
+        } while (isUserNameHaveInListAccount(userName) || !isFormatUserName(userName));
 
-        String pass = "" ;
+        String pass = "";
         String pass2 = "";
         do {
             System.out.print("Nhập pass lần 1 : ");
             pass = input.nextLine();
-            if(!isFormatPassword(pass)){
+            if (!isFormatPassword(pass)) {
                 System.out.println("password có ít nhất 8 kí tự gồm chữ và số, bắt đầu bằng chữ và có ít nhất 1 chữ số");
-            }else {
+            } else {
                 System.out.print("Nhập pass lần 2 : ");
-                pass2= input.nextLine();
-                if(!pass2.equals(pass)){
+                pass2 = input.nextLine();
+                if (!pass2.equals(pass)) {
                     System.out.println("Hai lần nhập password phải giống nhau !");
                 }
             }
-        }while (!isFormatPassword(pass)|| !pass2.equals(pass));
+        } while (!isFormatPassword(pass) || !pass2.equals(pass));
 
         String decentralization = "";
         char press = ' ';
@@ -215,12 +219,12 @@ public class AccountManager implements Serializable {
             }
         } while (isPress);
 
-        Account account = new Account(ownerID,userName,pass,decentralization) ;
+        Account account = new Account(ownerID, userName, pass, decentralization);
         System.out.println("Tài khoản bạn vừa tạo có :");
-        System.out.println("Là tài khoản của người dùng có  ID = " + ownerID );
-        System.out.println("Tài khoản đăng nhập có username =  "+userName);
-        System.out.println("Tài khoản đăng nhập có password = "+ pass);
-        System.out.println("Tài khoản được phân quyền là '"+decentralization+"'");
+        System.out.println("Là tài khoản của người dùng có  ID = " + ownerID);
+        System.out.println("Tài khoản đăng nhập có username =  " + userName);
+        System.out.println("Tài khoản đăng nhập có password = " + pass);
+        System.out.println("Tài khoản được phân quyền là '" + decentralization + "'");
         System.out.println("Bạn có muốn lưu tài khoản vào dữ liệu quản lý !");
         char choose = ' ';
         boolean isChoose = true;
@@ -251,7 +255,8 @@ public class AccountManager implements Serializable {
         } while (isChoose);
     }
 
-    public void editAccount(){
+
+    public void editAccount() {
         char choice = ' ';
         do {
             System.out.println("-----------------THAY ĐỔI THÔNG TIN TÀI KHOẢN-------------------");
@@ -282,7 +287,7 @@ public class AccountManager implements Serializable {
         } while (choice != '0');
     }
 
-    public void editAccountById(){
+    public void editAccountById() {
         displayFullAccount();
         String id = "";
         System.out.print("Nhập id nhân viên của tài khoản cần thay đổi thông tin : ");
@@ -292,7 +297,7 @@ public class AccountManager implements Serializable {
             editAccount();
         } else {
             if (!isOwnerIdHaveInListAccount(id)) {
-                System.out.println("Không có tài khoản đăng kí cho nhân viên nào có id '"+id+"' !");
+                System.out.println("Không có tài khoản đăng kí cho nhân viên nào có id '" + id + "' !");
                 editAccount();
             } else {
                 for (Account account : accountsList) {
@@ -332,7 +337,7 @@ public class AccountManager implements Serializable {
         }
     }
 
-    public void editAccountByUserName(){
+    public void editAccountByUserName() {
         displayFullAccount();
         String username = "";
         do {
@@ -387,7 +392,7 @@ public class AccountManager implements Serializable {
         while (!isUserNameHaveInListAccount(username) || !isFormatUserName(username));
     }
 
-    public void editOptionAccount(Account account){
+    public void editOptionAccount(Account account) {
         char choice = ' ';
         boolean isChoice = true;
         do {
@@ -419,7 +424,7 @@ public class AccountManager implements Serializable {
                     break;
                 case '3':
                     System.out.println("----------Thay đổi password --------------");
-                    editPasswordAccount(account) ;
+                    editPasswordAccount(account);
                     break;
                 case '4':
                     System.out.println("----------Thay đổi quyền truy cập -----------");
@@ -429,7 +434,7 @@ public class AccountManager implements Serializable {
                     System.out.println("----------Thay đổi toàn bộ thông tin tài khoản--------");
                     editOwnerId(account);
                     editUserNameAccount(account);
-                    editPasswordAccount(account) ;
+                    editPasswordAccount(account);
                     editDecentralizationAccount(account);
                     break;
                 case '7':
@@ -451,7 +456,7 @@ public class AccountManager implements Serializable {
         } while (isChoice);
     }
 
-    public void editOwnerId(Account account){
+    public void editOwnerId(Account account) {
         String ownerID = "";
         boolean isChoice = true;
         do {
@@ -468,40 +473,40 @@ public class AccountManager implements Serializable {
         account.setOwnerId(ownerID);
     }
 
-    public void editUserNameAccount(Account account){
-        String userName = "" ;
-        do{
+    public void editUserNameAccount(Account account) {
+        String userName = "";
+        do {
             System.out.print("Nhập username mới : ");
             userName = input.nextLine();
-            if(!isFormatUserName(userName)){
+            if (!isFormatUserName(userName)) {
                 System.out.println("Username gồm số và chữ thường, phải bắt đầu là một chữ và có 6-16 kí tự !");
-            }else if (isUserNameHaveInListAccount(userName)){
+            } else if (isUserNameHaveInListAccount(userName)) {
                 System.out.println("username đã được sử dụng !");
             }
-        }while (isUserNameHaveInListAccount(userName) || !isFormatUserName(userName));
+        } while (isUserNameHaveInListAccount(userName) || !isFormatUserName(userName));
         account.setUserName(userName);
     }
 
-    public void editPasswordAccount(Account account){
-        String pass = "" ;
+    public void editPasswordAccount(Account account) {
+        String pass = "";
         String pass2 = "";
         do {
             System.out.print("Nhập pass mới lần 1 : ");
             pass = input.nextLine();
-            if(!isFormatPassword(pass)){
+            if (!isFormatPassword(pass)) {
                 System.out.println("password có ít nhất 8 kí tự gồm chữ và số, bắt đầu bằng chữ và có ít nhất 1 chữ số");
-            }else {
+            } else {
                 System.out.print("Nhập pass mới lần 2 : ");
-                pass2= input.nextLine();
-                if(!pass2.equals(pass)){
+                pass2 = input.nextLine();
+                if (!pass2.equals(pass)) {
                     System.out.println("Hai lần nhập password phải giống nhau !");
                 }
             }
-        }while (!isFormatPassword(pass)|| !pass2.equals(pass));
+        } while (!isFormatPassword(pass) || !pass2.equals(pass));
         account.setPassword(pass);
     }
 
-    public void editDecentralizationAccount(Account account){
+    public void editDecentralizationAccount(Account account) {
         String decentralization = "";
         char press = ' ';
         boolean isPress = true;
@@ -530,6 +535,224 @@ public class AccountManager implements Serializable {
         account.setDecentralization(decentralization);
     }
 
+    public void deleteAccount() {
+        char choice = ' ';
+        do {
+            System.out.println("-----------------XÓA TÀI KHOẢN-------------------");
+            System.out.println("|  1. Xóa theo ID của người dùng                 |");
+            System.out.println("|  2. Xóa theo username của tài khoản            |");
+            System.out.println("|  0. Quay lại                                   |");
+            System.out.println("--------------------------------------------------");
+            System.out.println();
+            System.out.println("Lựa chọn : ");
+            try {
+                choice = input.nextLine().charAt(0);
+            } catch (Exception e) {
+                choice = ' ';
+            }
+            switch (choice) {
+                case '1':
+                    deteleAccountById();
+                    break;
+                case '2':
+                    deteleAccountByUserName();
+                    break;
+                case '0':
+                    menuAccountManager();
+                    break;
+                default:
+                    System.out.println("Lựa chọn theo menu trên !");
+            }
+        } while (choice != '0');
+    }
+
+    public void deteleAccountById() {
+        displayFullAccount();
+        String id = "";
+        System.out.print("Nhập ID muốn xóa : ");
+        id = input.nextLine();
+        if (!isFormatOwnerId(id)) {
+            System.out.println("Hãy nhập đúng ID của người đang dùng tài khoản !");
+            deleteAccount();
+        } else {
+            if (!isOwnerIdHaveInListAccount(id)) {
+                System.out.println("ID này chưa được đăng kí tài khoản !");
+                deleteAccount();
+            } else {
+                for (Account account : accountsList) {
+                    if (account.getOwnerId().equals(id)) {
+                        deteleAccountInList(account);
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    public void deteleAccountByUserName() {
+        displayFullAccount();
+        String username = "";
+        System.out.print("Nhập username của tài khoản muốn xóa : ");
+        username = input.nextLine();
+        if (!isFormatUserName(username)) {
+            System.out.println("Username gồm số và chữ thường, phải bắt đầu là một chữ và có 6-16 kí tự  !");
+            deleteAccount();
+        } else {
+            if (!isUserNameHaveInListAccount(username)) {
+                System.out.println(username + " chưa được đăng kí  !");
+                deleteAccount();
+            } else {
+                for (Account account : accountsList) {
+                    if (account.getUserName().equals(username)) {
+                        deteleAccountInList(account);
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    public void deteleAccountInList(Account account) {
+        accountsList.remove(account);
+        System.out.println("Danh sach tài khoảnn sau khi xóa tài khoản tìm thấy là");
+        displayFullAccount();
+        char choice;
+        boolean isChoice = true;
+        do {
+            System.out.println("Bạn muốn lưu thay đổi ? 'Y' = Yes / 'N' = No");
+            System.out.println("Chọn : ");
+            try {
+                choice = input.nextLine().charAt(0);
+            } catch (Exception e) {
+                choice = ' ';
+            }
+            switch (choice) {
+                case 'y':
+                case 'Y':
+                    writeDataAccountToFile(LINK_SAVE_OBJECT_ACCOUNT, accountsList);
+                    writeDataAccountToFileCsv(LINK_SAVE_FORMAT_CSV_ACCOUNT, accountsList);
+                    isChoice = false;
+                    deleteAccount();
+                    break;
+                case 'n':
+                case 'N':
+                    accountsList = readDataAccountToFile(LINK_SAVE_OBJECT_ACCOUNT);
+                    isChoice = false;
+                    deleteAccount();
+                    break;
+                default:
+                    System.out.println();
+            }
+        } while (isChoice);
+    }
+
+
+    public void searchAccount() {
+        boolean isChoice = true;
+        char choice = ' ';
+        do {
+            System.out.println("----------------------TÌM KIẾM NHÂN VIÊN----------------------------");
+            System.out.println("| 1. Tìm kiếm theo tài khoản theo ID người sử dụng                  |");
+            System.out.println("| 2. Tìm kiếm theo username                                         |");
+            System.out.println("| 3. Tìm kiếm theo phân quyền                                       |");
+            System.out.println("| 0. Quay lại                                                       |");
+            System.out.println(" -------------------------------------------------------------------");
+            System.out.println();
+            System.out.print("Chọn : ");
+            try {
+                choice = input.nextLine().charAt(0);
+            } catch (Exception e) {
+                choice = ' ';
+            }
+            switch (choice) {
+                case '1':
+                    searchAccountById();
+                    break;
+                case '2':
+                    searchAccountByUserName();
+                    break;
+                case '3':
+                    searchAccountByDecentralization();
+                    break;
+                case '0':
+                    menuAccountManager();
+                    isChoice = false;
+                    break;
+                default:
+                    System.out.println("Hãy chọn theo menu tìm kiếm !");
+            }
+
+        } while (isChoice);
+    }
+
+    public void searchAccountById() {
+        int count = 0;
+        String stt, id, username, pass, decentralization;
+        System.out.println();
+        System.out.print("Nhập ID của nhân viên có tài khoản cần tìm kiếm : ");
+        String search = input.nextLine();
+        System.out.println("Kết quả tìm kiếm của từ khóa '" + search + "' là : ");
+        search = search.toLowerCase();
+        System.out.printf("%-3s%-7s%-15s%-25s%-25s%s\n", "", "STT", "ID", "USER NAME", "PASSWORD", "DECENTRALIZATION");
+        for (Account account : accountsList) {
+            if (account.getOwnerId().toLowerCase().contains(search)) {
+                count++;
+                stt = String.valueOf(count);
+                id = account.getOwnerId();
+                username = account.getUserName();
+                pass = account.getPassword();
+                decentralization = account.getDecentralization();
+                System.out.printf("%-3s%-7s%-15s%-25s%-25s%s\n", "", stt, id, username, pass, decentralization);
+            }
+        }
+        displayReturnSearch(count);
+    }
+
+    public void searchAccountByUserName() {
+        int count = 0;
+        String stt, id, username, pass, decentralization;
+        System.out.println();
+        System.out.print("Nhập username của tài khoản cần tìm kiếm : ");
+        String search = input.nextLine();
+        System.out.println("Kết quả tìm kiếm của từ khóa '" + search + "' là : ");
+        search = search.toLowerCase();
+        System.out.printf("%-3s%-7s%-15s%-25s%-25s%s\n", "", "STT", "ID", "USER NAME", "PASSWORD", "DECENTRALIZATION");
+        for (Account account : accountsList) {
+            if (account.getUserName().toLowerCase().contains(search)) {
+                count++;
+                stt = String.valueOf(count);
+                id = account.getOwnerId();
+                username = account.getUserName();
+                pass = account.getPassword();
+                decentralization = account.getDecentralization();
+                System.out.printf("%-3s%-7s%-15s%-25s%-25s%s\n", "", stt, id, username, pass, decentralization);
+            }
+        }
+        displayReturnSearch(count);
+    }
+
+    public void searchAccountByDecentralization() {
+        int count = 0;
+        String stt, id, username, pass, decentralization;
+        System.out.println();
+        System.out.print("Nhập quyền hạn của tài khoản cần tìm kiếm : ");
+        String search = input.nextLine();
+        System.out.println("Kết quả tìm kiếm của từ khóa '" + search + "' là : ");
+        search = search.toLowerCase();
+        System.out.printf("%-3s%-7s%-15s%-25s%-25s%s\n", "", "STT", "ID", "USER NAME", "PASSWORD", "DECENTRALIZATION");
+        for (Account account : accountsList) {
+            if (account.getDecentralization().toLowerCase().contains(search)) {
+                count++;
+                stt = String.valueOf(count);
+                id = account.getOwnerId();
+                username = account.getUserName();
+                pass = account.getPassword();
+                decentralization = account.getDecentralization();
+                System.out.printf("%-3s%-7s%-15s%-25s%-25s%s\n", "", stt, id, username, pass, decentralization);
+            }
+        }
+        displayReturnSearch(count);
+    }
 
 
     private void displayReturnSearch(int count) {
@@ -547,7 +770,7 @@ public class AccountManager implements Serializable {
             switch (press) {
                 case 'r':
                 case 'R': {
-                 //   searchAccount();
+                    //   searchAccount();
                     isChoice = false;
                     break;
                 }
@@ -597,31 +820,31 @@ public class AccountManager implements Serializable {
         int count = 0;
         String stt, id, username, pass, decentralization;
         System.out.println();
-        System.out.printf("%-3s%-7s%-15s%-25s%-25s%s\n", "", "STT", "ID", "USER NAME", "PASSWORD", "DECENTRALIZATION" );
+        System.out.printf("%-3s%-7s%-15s%-25s%-25s%s\n", "", "STT", "ID", "USER NAME", "PASSWORD", "DECENTRALIZATION");
         for (Account account : accountsList) {
             count++;
             stt = String.valueOf(count);
             id = account.getOwnerId();
             username = account.getUserName();
             pass = account.getPassword();
-            decentralization = account.getDecentralization() ;
+            decentralization = account.getDecentralization();
             System.out.printf("%-3s%-7s%-15s%-25s%-25s%s\n", "", stt, id, username, pass, decentralization);
         }
         System.out.println();
     }
 
     public void displayOneAccount(Account account) {
-        String  id, username, pass, decentralization;
+        String id, username, pass, decentralization;
         System.out.println();
-        System.out.printf("%-3s%-15s%-25s%-25s%s\n", "", "ID", "USER NAME", "PASSWORD", "DECENTRALIZATION" );
+        System.out.printf("%-3s%-15s%-25s%-25s%s\n", "", "ID", "USER NAME", "PASSWORD", "DECENTRALIZATION");
         id = account.getOwnerId();
         username = account.getUserName();
         pass = account.getPassword();
-        decentralization = account.getDecentralization() ;
+        decentralization = account.getDecentralization();
         System.out.printf("%-3s%-15s%-25s%-25s%s\n", "", id, username, pass, decentralization);
     }
 
-    public void displayAccountByOwnerId(){
+    public void displayAccountByOwnerId() {
         boolean isChoice = true;
         char choice = ' ';
         do {
@@ -661,7 +884,7 @@ public class AccountManager implements Serializable {
         } while (isChoice);
     }
 
-    public void displayAccountByUsername(){
+    public void displayAccountByUsername() {
         boolean isChoice = true;
         char choice = ' ';
         do {
@@ -701,7 +924,7 @@ public class AccountManager implements Serializable {
         } while (isChoice);
     }
 
-    public void displayAccountByDecentralization(){
+    public void displayAccountByDecentralization() {
         boolean isChoice = true;
         char choice = ' ';
         do {
@@ -741,116 +964,8 @@ public class AccountManager implements Serializable {
         } while (isChoice);
     }
 
-    public void   searchAccount(){
-        boolean isChoice = true;
-        char choice = ' ';
-        do {
-            System.out.println("----------------------TÌM KIẾM NHÂN VIÊN----------------------------");
-            System.out.println("| 1. Tìm kiếm theo tài khoản theo ID người sử dụng                  |");
-            System.out.println("| 2. Tìm kiếm theo username                                         |");
-            System.out.println("| 3. Tìm kiếm theo phân quyền                                       |");
-            System.out.println("| 0. Quay lại                                                       |");
-            System.out.println(" -------------------------------------------------------------------");
-            System.out.println();
-            System.out.print("Chọn : ");
-            try {
-                choice = input.nextLine().charAt(0);
-            } catch (Exception e) {
-                choice = ' ';
-            }
-            switch (choice) {
-                case '1':
-                    searchAccountById();
-                    break;
-                case '2':
-                    searchAccountByUserName();
-                    break;
-                case '3':
-                    searchAccountByDecentralization();
-                    break;
-                case '0':
-                    menuAccountManager();
-                    isChoice = false;
-                    break;
-                default:
-                    System.out.println("Hãy chọn theo menu tìm kiếm !");
-            }
 
-        } while (isChoice);
-    }
-
-    public  void searchAccountById(){
-        int count = 0;
-        String stt, id, username, pass, decentralization;
-        System.out.println();
-        System.out.print("Nhập ID của nhân viên có tài khoản cần tìm kiếm : ");
-        String search = input.nextLine();
-        System.out.println("Kết quả tìm kiếm của từ khóa '" + search + "' là : ");
-        search = search.toLowerCase();
-        System.out.printf("%-3s%-7s%-15s%-25s%-25s%s\n", "", "STT", "ID", "USER NAME", "PASSWORD", "DECENTRALIZATION" );
-        for (Account account : accountsList) {
-            if (account.getOwnerId().toLowerCase().contains(search)) {
-                count++;
-                stt = String.valueOf(count);
-                id = account.getOwnerId();
-                username = account.getUserName();
-                pass = account.getPassword();
-                decentralization = account.getDecentralization() ;
-                System.out.printf("%-3s%-7s%-15s%-25s%-25s%s\n", "", stt, id, username, pass, decentralization);
-            }
-        }
-        displayReturnSearch(count);
-    }
-
-    public  void searchAccountByUserName(){
-        int count = 0;
-        String stt, id, username, pass, decentralization;
-        System.out.println();
-        System.out.print("Nhập username của tài khoản cần tìm kiếm : ");
-        String search = input.nextLine();
-        System.out.println("Kết quả tìm kiếm của từ khóa '" + search + "' là : ");
-        search = search.toLowerCase();
-        System.out.printf("%-3s%-7s%-15s%-25s%-25s%s\n", "", "STT", "ID", "USER NAME", "PASSWORD", "DECENTRALIZATION" );
-        for (Account account : accountsList) {
-            if (account.getUserName().toLowerCase().contains(search)) {
-                count++;
-                stt = String.valueOf(count);
-                id = account.getOwnerId();
-                username = account.getUserName();
-                pass = account.getPassword();
-                decentralization = account.getDecentralization() ;
-                System.out.printf("%-3s%-7s%-15s%-25s%-25s%s\n", "", stt, id, username, pass, decentralization);
-            }
-        }
-        displayReturnSearch(count);
-    }
-
-    public  void searchAccountByDecentralization(){
-        int count = 0;
-        String stt, id, username, pass, decentralization;
-        System.out.println();
-        System.out.print("Nhập quyền hạn của tài khoản cần tìm kiếm : ");
-        String search = input.nextLine();
-        System.out.println("Kết quả tìm kiếm của từ khóa '" + search + "' là : ");
-        search = search.toLowerCase();
-        System.out.printf("%-3s%-7s%-15s%-25s%-25s%s\n", "", "STT", "ID", "USER NAME", "PASSWORD", "DECENTRALIZATION" );
-        for (Account account : accountsList) {
-            if (account.getDecentralization().toLowerCase().contains(search)) {
-                count++;
-                stt = String.valueOf(count);
-                id = account.getOwnerId();
-                username = account.getUserName();
-                pass = account.getPassword();
-                decentralization = account.getDecentralization() ;
-                System.out.printf("%-3s%-7s%-15s%-25s%-25s%s\n", "", stt, id, username, pass, decentralization);
-            }
-        }
-        displayReturnSearch(count);
-    }
-
-
-
-    public void exportFileAccountToCsv(){
+    public void exportFileAccountToCsv() {
         String link = "";
         String nameFileCsv = "";
         String linkFull = "";
@@ -883,7 +998,7 @@ public class AccountManager implements Serializable {
 
             File file = new File(linkFull);
             if (!file.exists()) {
-                writeDataAccountToFileCsv(linkFull,accountsList);
+                writeDataAccountToFileCsv(linkFull, accountsList);
                 System.out.println("Đã xuất file thành công đến đường dẫn : " + linkFull);
                 System.out.println();
                 menuAccountManager();
@@ -924,9 +1039,115 @@ public class AccountManager implements Serializable {
 
         } while (isChoice);
     }
-    private boolean isLink(String link){
+
+    private boolean isLink(String link) {
         return Pattern.compile(LINK_REGEX).matcher(link).matches();
     }
+
+    public void displayFullInformationUserAccount() {
+        char choice = ' ';
+        do {
+            System.out.println("---------------HIỂN THỊ THÔNG TIN NGƯỜI SỬ DỤNG TÀI KHOẢN------------");
+            System.out.println("|  1. Hiển thị theo ID của tài khoản                                 |");
+            System.out.println("|  2. Hiển thị theo username                                         |");
+            System.out.println("|  0. Quay lại                                                       |");
+            System.out.println("----------------------------------------------------------------------");
+            System.out.println();
+            System.out.print("Chọn: ");
+            try {
+                choice = input.nextLine().charAt(0);
+            } catch (Exception e) {
+                choice = ' ';
+            }
+            switch (choice) {
+                case '1':
+                    displayFullInformationById();
+                    break;
+                case '2':
+                    displayFullInformationByUserName();
+                    break;
+                case '0':
+                    menuAccountManager();
+                    break;
+                default:
+                    System.out.println("Chọn lại theo menu");
+            }
+        } while (choice != '0');
+    }
+
+    public void displayFullInformationById() {
+        displayFullAccount();
+        String id = "";
+        System.out.print("Nhập ID muốn hiển thị thông tin người dùng : ");
+        id = input.nextLine();
+        if (!isFormatOwnerId(id)) {
+            System.out.println("Hãy nhập đúng ID của người đang dùng tài khoản !");
+            displayFullInformationUserAccount();
+        } else {
+            if (!isOwnerIdHaveInListAccount(id)) {
+                System.out.println("ID này chưa được đăng kí tài khoản !");
+                displayFullInformationUserAccount();
+            } else {
+                for (Account account : accountsList) {
+                    if (account.getOwnerId().equals(id)) {
+                        displayFullInformation(account);
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    public void displayFullInformationByUserName() {
+        displayFullAccount();
+        String username = "";
+        System.out.print("Nhập username của tài khoản muốn hiển thị thông tin người dùng : ");
+        username = input.nextLine();
+        if (!isFormatUserName(username)) {
+            System.out.println("Username gồm số và chữ thường, phải bắt đầu là một chữ và có 6-16 kí tự  !");
+            displayFullInformationUserAccount();
+        } else {
+            if (!isUserNameHaveInListAccount(username)) {
+                System.out.println(username + " chưa được đăng kí  !");
+                displayFullInformationUserAccount();
+            } else {
+                for (Account account : accountsList) {
+                    if (account.getUserName().equals(username)) {
+                        displayFullInformation(account);
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+
+    public void displayFullInformation(Account account) {
+        boolean isNotHave = true;
+        for (Staff staff : staffList) {
+            if (staff.getIdStaff().equals(account.getOwnerId())) {
+                System.out.println("Thông tin người dùng được tìm thấy là : ");
+                DecimalFormat format = new DecimalFormat("###,###,###");
+                String id, fullname, gender, dateOfBirth, idCar, numberPhone, address, pay, other;
+                System.out.printf("%-15s%-30s%-15s%-15s%-15s%-20s%-35s%-20s%s\n", "ID", "HỌ VÀ TÊN", "GIỚI TÍNH", "NGÀY SINH", "CMND", "SĐT", "ĐỊA CHỈ", "LƯƠNG- VND", "THÔNG TIN KHÁC");
+                id = staff.getIdStaff();
+                fullname = staff.getFullName();
+                gender = staff.getGender();
+                dateOfBirth = staff.getDateOfBirth();
+                idCar = staff.getIdentityCard();
+                numberPhone = staff.getNumberPhone();
+                address = staff.getAddress();
+                pay = format.format(staff.getPayStaff());
+                other = staff.getOther();
+                System.out.printf("%-15s%-30s%-15s%-15s%-15s%-20s%-35s%-20s%s\n", id, fullname, gender, dateOfBirth, idCar, numberPhone, address, pay, other);
+                isNotHave = false;
+                break;
+            }
+        }
+        if (isNotHave) System.out.println("Người dùng không còn được đăng kí trong danh sách nhân viên ! Hãy vào trình quản lý nhân viên để kiểm tra !");
+        System.out.println();
+    }
+
 
     public void menuAccountManager() {
         char choice = ' ';
@@ -954,25 +1175,25 @@ public class AccountManager implements Serializable {
                     createAccount();
                     break;
                 case '2':
-                     editAccount();
+                    editAccount();
                     break;
                 case '3':
-                    //  deleteAccount();
+                    deleteAccount();
                     break;
                 case '4':
-                     searchAccount();
+                    searchAccount();
                     break;
                 case '5':
-                      optionDisplayAccount();
+                    optionDisplayAccount();
                     break;
                 case '6':
-                   //xem thong tin nguoi su dung tk
+                    displayFullInformationUserAccount();
                     break;
                 case '7':
-                      exportFileAccountToCsv();
+                    exportFileAccountToCsv();
                     break;
                 case '0':
-                    //menuManager
+                    Menu.menuWorkWithAdmin();
                     break;
                 default:
                     System.out.println("Chọn theo menu !");
