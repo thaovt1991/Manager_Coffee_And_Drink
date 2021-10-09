@@ -11,15 +11,15 @@ import java.util.Scanner;
 
 public class Menu {
 
-    public static final String USERNAME_DEFAULT ="admin" ;
-    public static final String PASSWORD_DEFAULT ="Admin123" ;
+    public static final String USERNAME_DEFAULT = "admin";
+    public static final String PASSWORD_DEFAULT = "Admin123";
     public static Scanner input = new Scanner(System.in);
     public static final String LINK_SAVE_OBJECT_ACCOUNT = "D:\\Manager_Coffee_And_Drink\\src\\data\\list_account.txt";
     public static AccountManager accountManager = new AccountManager();
     public static StaffManager staffManager = new StaffManager();
     public static DrinksManager drinksManager = new DrinksManager();
-    public static ArrayList<Account> listAccount ;
-    public static String username, password, decentralization, timelogin;
+    public static ArrayList<Account> listAccount;
+    public static String username, password, decentralization, timelogin, timeOut;
 
     public static boolean isUserName(String username) {
         accountManager = new AccountManager();
@@ -31,15 +31,15 @@ public class Menu {
         return false;
     }
 
-    public static void updateData(){
+    public static void updateData() {
         drinksManager = new DrinksManager();
-        accountManager = new AccountManager() ;
+        accountManager = new AccountManager();
         staffManager = new StaffManager();
         listAccount = (new AccountManager()).readDataAccountToFile(LINK_SAVE_OBJECT_ACCOUNT);
     }
 
     public static boolean isTruePass(String username, String pass) {
-         updateData();
+        updateData();
         if (username.equals(USERNAME_DEFAULT) && pass.equals(PASSWORD_DEFAULT)) return true;
         for (Account account : listAccount) {
             if (account.getUserName().equals(username) && account.getPassword().equals(pass)) return true;
@@ -66,7 +66,7 @@ public class Menu {
         if (!username.equals(USERNAME_DEFAULT)) {
             String ownerId = "";
             for (Account account : listAccount) {
-                if (account.getUserName().equals(username)){
+                if (account.getUserName().equals(username)) {
                     ownerId = account.getOwnerId();
                     break;
                 }
@@ -88,6 +88,7 @@ public class Menu {
                 System.out.println("| 4. Quản lý account                                                    |");
                 System.out.println("| 5. Quản lý doanh thu                                                  |");
                 System.out.println("| 6. Quản lý hệ thống                                                   |");
+                System.out.println("| 7. Đổi password                                                       |");
                 System.out.println("| 0. Đăng xuất                                                          |");
                 System.out.println("-------------------------------------------------------------------------");
                 System.out.println();
@@ -99,18 +100,16 @@ public class Menu {
                 }
                 switch (choice) {
                     case '1':
-                    //   drinksManager = new DrinksManager();
+
                         drinksManager.menuDrinksManager();
                         break;
                     case '2':
                         //sellManager.menuSellManager();
                         break;
                     case '3':
-                 //     staffManager = new StaffManager();
                         staffManager.menuStaffManager();
                         break;
                     case '4':
-                 //      accountManager = new AccountManager() ;
                         accountManager.menuAccountManager();
                         break;
                     case '5':
@@ -119,7 +118,10 @@ public class Menu {
                     case '6':
                         //systemManager.menuManager() ;
                         break;
+                    case '7':
+                        changePassword();
                     case '0':
+                        timeOut = String.valueOf(java.time.LocalTime.now()) + " " + String.valueOf(java.time.LocalDate.now());
                         menuLogIn();
                 }
 
@@ -127,49 +129,118 @@ public class Menu {
         } else System.out.println("Tài khoản hiện tại dang bị khóa, liên hệ người quản lý để được kiểm tra lại");
     }
 
-//    public static void menuWorkWithGuest() {
-//        String ownerId = "";
-//        for (Account account : listAccount) {
-//            if (account.getUserName().equals(username))
-//                ownerId = account.getOwnerId();
-//            break;
-//        }
-//        if (staffManager.isIdHaveInList(ownerId)) {
-//
-//            System.out.println("User name : " + username + "- Time login : " + timelogin);
-//            System.out.println();
-//            char choice = ' ';
-//            do {
-//                System.out.println("--------------------------QUẢN LÝ - GUEST ------------------------------");
-//                System.out.println("| 1. Quản lý bán hàng                                                   |");
-//                System.out.println("| 2. Kiểm tra doanh thu cá nhân                                         |");
-//                System.out.println("| 3. Đổi password                                                       |");
-//                System.out.println("| 0. Đăng xuất                                                          |");
-//                System.out.println("-------------------------------------------------------------------------");
-//                System.out.println();
-//                System.out.print("Chọn : ");
-//                try {
-//                    choice = input.nextLine().charAt(0);
-//                } catch (Exception e) {
-//                    choice = ' ';
-//                }
-//                switch (choice) {
-//                    case '1':
-//                        // sellManager.menuSellManager();
-//                        break;
-//                    case '2':
-//                        //displayRevenue();
-//                        break;
-//                    case '3':
-//                        //editPassword() ;
-//                        break;
-//                    case '0':
-//                        menuLogIn();
-//                }
-//            } while (choice != '0');
-//        } else System.out.println("Tài khoản hiện tại dang bị khóa, liên hệ người quản lý để được kiểm tra lại");
-//
-//    }
+    public static void menuWorkWithGuest() {
+        updateData();
+        String ownerId = "";
+        for (Account account : listAccount) {
+            if (account.getUserName().equals(username)) {
+                ownerId = account.getOwnerId();
+                break;
+            }
+        }
+        if (staffManager.isIdHaveInList(ownerId)) {
+            System.out.println("User name : " + username + "- Time login : " + timelogin);
+            System.out.println();
+            char choice = ' ';
+            do {
+                System.out.println("--------------------------QUẢN LÝ - GUEST ------------------------------");
+                System.out.println("| 1. Quản lý bán hàng                                                   |");
+                System.out.println("| 2. Kiểm tra doanh thu cá nhân                                         |");
+                System.out.println("| 3. Đổi password                                                       |");
+                System.out.println("| 0. Đăng xuất                                                          |");
+                System.out.println("-------------------------------------------------------------------------");
+                System.out.println();
+                System.out.print("Chọn : ");
+                try {
+                    choice = input.nextLine().charAt(0);
+                } catch (Exception e) {
+                    choice = ' ';
+                }
+                switch (choice) {
+                    case '1':
+                        // sellManager.menuSellManager();
+                        break;
+                    case '2':
+                        //displayRevenue();
+                        break;
+                    case '3':
+                       changePassword();
+                        break;
+                    case '0':
+                        menuLogIn();
+                }
+            } while (choice != '0');
+        } else System.out.println("Tài khoản hiện tại dang bị khóa, liên hệ người quản lý để được kiểm tra lại");
+
+    }
+
+
+
+    public static void changePassword() {
+
+        if (username.equals(USERNAME_DEFAULT)) {
+            System.out.println("Đây là tài khoản 'Admin' mặc định của hệ thống, hãy liên hệ với bên cung cấp phần mềm để tiến hành đổi password !");
+            menuWorkWithAdmin();
+        } else {
+            updateData();
+            String passOld = "";
+            String passNew1 = "";
+            String passNew2 = "";
+            char choice = ' ';
+            boolean isChoice = false;
+            do {
+                System.out.print("Bạn có muốn đổi password ? Nhấn 'Y' để đồng ý, nhấn 'N' để quay trờ về menu !");
+                try {
+                    choice = input.nextLine().charAt(0);
+                } catch (Exception e) {
+                    choice = ' ';
+                }
+                switch (choice) {
+                    case 'y':
+                    case 'Y':
+                        do {
+                            System.out.print("Nhập password cũ : ");
+                            passOld = input.nextLine();
+                            System.out.print("Nhập password mới lần 1:");
+                            passNew1 = input.nextLine();
+                            System.out.print("Nhập password mới lần 2 :");
+                            passNew2 = input.nextLine();
+                            if (!passOld.equals(password)) {
+                                System.out.println("Password cũ không đúng !");
+                            } else {
+                                if (!accountManager.isFormatPassword(passNew1)) {
+                                    System.out.println("password có ít nhất 8 kí tự gồm chữ và số, bắt đầu bằng chữ và có ít nhất 1 chữ số");
+                                } else if (!passNew1.equals(passNew2)) {
+                                    System.out.println("Password lần 2 không trùng khớp với lần 1 !");
+                                }
+                            }
+                        } while (!passOld.equals(password) || !accountManager.isFormatPassword(passNew1) || !passNew1.equals(passNew2));
+                        password = passNew1;
+                        for (Account account : listAccount) {
+                            if (account.getUserName().equals(username)) {
+                                account.setPassword(passNew1);
+                                System.out.println("Thay đổi password thành công !");
+                                accountManager.writeDataAccountToFile(LINK_SAVE_OBJECT_ACCOUNT, listAccount);
+                                accountManager.writeDataAccountToFileCsv(AccountManager.LINK_SAVE_FORMAT_CSV_ACCOUNT, listAccount);
+                                break;
+                            }
+                        }
+                        if (decentralization.equals("Guest")) {
+                             menuWorkWithGuest();
+                        } else menuWorkWithAdmin();
+                        break;
+                    case 'n':
+                    case 'N':
+                        if (decentralization.equals("Guest")) {
+                             menuWorkWithGuest();
+                        } else menuWorkWithAdmin();
+                        break;
+                    default:
+                        isChoice = true;
+                }
+            } while (isChoice);
+        }
+    }
 
     public static void menuLogIn() {
         updateData();
@@ -180,7 +251,7 @@ public class Menu {
             System.out.println("----------------ĐĂNG NHẬP-----------------");
             System.out.println("| 1.  Đăng nhập                           |");
             System.out.println("| 2.  Thoát                               |");
-            System.out.println("| 3. Thông tin nhà hàng                   |");
+            System.out.println("| 3.  Thông tin nhà hàng                  |");
             System.out.println(" ------------------------------------------");
             System.out.println();
             System.out.print("Chọn :");
@@ -197,15 +268,15 @@ public class Menu {
                         System.out.print("Password : ");
                         password = input.nextLine();
                         if (!isUserName(username)) {
-                            System.out.println("Tên đăng nhập không đúng ! Hãy thử lại !");
+                            System.out.println("Tên đăng nhập hoặc password không đúng ! Hãy thử lại !");
                         } else if (!isTruePass(username, password)) {
                             System.out.println("Password không đúng ! Hãy thử lại !");
                         }
                     } while (!isTruePass(username, password));
 
-                    timelogin = String.valueOf(java.time.LocalDateTime.now());
+                    timelogin = String.valueOf(java.time.LocalTime.now()) + " " + String.valueOf(java.time.LocalDate.now());
                     if (decentralizationAccount(username).equals("Guest")) {
-                        System.out.println("làm viec vói menu guest");
+                        menuWorkWithGuest();
                     } else {
                         menuWorkWithAdmin();
                     }

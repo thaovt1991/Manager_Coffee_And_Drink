@@ -63,84 +63,105 @@ public class DrinksManager implements Serializable {
     }
 
     public void addDrinksList() {
-        String id;
-        String name;
-        int quality = 0;
-        long price = 0;
-        String other;
+        char check = ' ';
+        boolean isCheck = false;
         do {
-            System.out.print("Nhập id thức uống : ");
-            id = input.nextLine();
-            if (!isIdFormat(id)) {
-                System.out.println("Định dạng id phải có dạng 'AA001' !");
-            } else {
-                if (isHaveIdDrinksList(id))
-                    System.out.println("Id đã có trong danh sách thức uống");
-            }
-        } while (isHaveIdDrinksList(id) || !isIdFormat(id));
-        do {
-            System.out.print("Nhập tên thức uống : ");
-            name = input.nextLine();
-            if (!isNameFormat(name)) {
-                System.out.println("Định dạng tên sai (ví dụ : 'Coffee Đen Đá' !");
-            } else {
-                if (isHaveNameDrinksList(name))
-                    System.out.println("Tên thức uống đã có trong danh sách");
-            }
-        }
-        while (isHaveNameDrinksList(name) || !isNameFormat(name));
-        String q;
-        do {
-            System.out.print("Nhập số lượng thức uống : ");
-            q = input.nextLine();
-            if (!isQualityFormat(q)) {
-                System.out.println("Định dạng số lượng sai !");
-            } else {
-                quality = Integer.parseInt(q);
-            }
-        } while (!isQualityFormat(q));
-        String strPrice;
-        do {
-            System.out.print("Nhập giá thức uống : ");
-            strPrice = input.nextLine();
-            if (!isPriceFormat(strPrice)) {
-                System.out.println("Định dạng giá thức uống sai !");
-            } else {
-                price = Long.parseLong(strPrice);
-            }
-        } while (!isPriceFormat(strPrice));
-        System.out.println("Mô tả về thức uống :");
-        other = input.nextLine();
-        Drinks drink = new Drinks(id, name, quality, price, other);
-        System.out.println("Thức uống mới : " + drink);
-        System.out.println("Bạn muốn thêm '" + drink.getNameDrink() + "' vào danh sách thức uống của quán !");
-        char press = ' ';
-        boolean isChoice = true;
-        do {
-            System.out.print("Nhấn 'Y' để đồng ý ! Nhấn 'N' để hủy bỏ thao tác !");
+            System.out.print("Bạn có muốn thêm thức uống mới ? Nhấn 'Y' để đồng ý, nhấn 'N' để quay trờ về menu !");
             try {
-                press = input.nextLine().charAt(0);
+                check = input.nextLine().charAt(0);
             } catch (Exception e) {
-                press = ' ';
+                check = ' ';
             }
-            switch (press) {
+            switch (check) {
+                case 'y':
                 case 'Y':
-                case 'y': {
-                    drinksList.add(drink);
-                    writeToFile(LINK_SAVE_OBJECT_DRINKS, drinksList);
-                    writeDataFromFileFormatToCsv(LINK_SAVE_FORMAT_CSV_DRINKS, drinksList);
-                    isChoice = false;
+                    String id;
+                    String name;
+                    int quality = 0;
+                    long price = 0;
+                    String other;
+                    do {
+                        System.out.print("Nhập id thức uống : ");
+                        id = input.nextLine();
+                        if (!isIdFormat(id)) {
+                            System.out.println("Định dạng id phải có dạng 'AA001' !");
+                        } else {
+                            if (isHaveIdDrinksList(id))
+                                System.out.println("Id đã có trong danh sách thức uống");
+                        }
+                    } while (isHaveIdDrinksList(id) || !isIdFormat(id));
+                    do {
+                        System.out.print("Nhập tên thức uống : ");
+                        name = input.nextLine();
+                        if (!isNameFormat(name)) {
+                            System.out.println("Định dạng tên sai (ví dụ : 'Coffee Đen Đá' !");
+                        } else {
+                            if (isHaveNameDrinksList(name))
+                                System.out.println("Tên thức uống đã có trong danh sách");
+                        }
+                    }
+                    while (isHaveNameDrinksList(name) || !isNameFormat(name));
+                    String q;
+                    do {
+                        System.out.print("Nhập số lượng thức uống : ");
+                        q = input.nextLine();
+                        if (!isQualityFormat(q)) {
+                            System.out.println("Định dạng số lượng sai !");
+                        } else {
+                            quality = Integer.parseInt(q);
+                        }
+                    } while (!isQualityFormat(q));
+                    String strPrice;
+                    do {
+                        System.out.print("Nhập giá thức uống : ");
+                        strPrice = input.nextLine();
+                        if (!isPriceFormat(strPrice)) {
+                            System.out.println("Định dạng giá thức uống sai !");
+                        } else {
+                            price = Long.parseLong(strPrice);
+                        }
+                    } while (!isPriceFormat(strPrice));
+                    System.out.println("Mô tả về thức uống :");
+                    other = input.nextLine();
+                    Drinks drink = new Drinks(id, name, quality, price, other);
+                    System.out.println("Thức uống mới : " + drink);
+                    System.out.println("Bạn muốn thêm '" + drink.getNameDrink() + "' vào danh sách thức uống của quán !");
+                    char press = ' ';
+                    boolean isChoice = true;
+                    do {
+                        System.out.print("Nhấn 'Y' để đồng ý ! Nhấn 'N' để hủy bỏ thao tác !");
+                        try {
+                            press = input.nextLine().charAt(0);
+                        } catch (Exception e) {
+                            press = ' ';
+                        }
+                        switch (press) {
+                            case 'Y':
+                            case 'y': {
+                                drinksList.add(drink);
+                                writeToFile(LINK_SAVE_OBJECT_DRINKS, drinksList);
+                                writeDataFromFileFormatToCsv(LINK_SAVE_FORMAT_CSV_DRINKS, drinksList);
+                                isChoice = false;
+                                break;
+                            }
+                            case 'n':
+                            case 'N':
+                                menuDrinksManager();
+                                isChoice = false;
+                                break;
+                            default:
+                                isChoice = true;
+                        }
+                    } while (isChoice);
                     break;
-                }
                 case 'n':
                 case 'N':
                     menuDrinksManager();
-                    isChoice = false;
                     break;
                 default:
-                    isChoice = true;
+                    isCheck = true;
             }
-        } while (isChoice);
+        } while (isCheck);
     }
 
     public void displayMenuDrinks() {

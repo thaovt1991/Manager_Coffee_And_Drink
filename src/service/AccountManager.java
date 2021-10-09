@@ -148,111 +148,132 @@ public class AccountManager implements Serializable {
 
     //tao tai khoan
     public void createAccount() {
-        displayAllListStaff();
-        String ownerID = "";
-        boolean isChoice = true;
+        char check = ' ';
+        boolean isCheck = false;
         do {
-            System.out.print("Hãy nhập ID của nhân viên để khởi tạo : ");
-            ownerID = input.nextLine();
-            if (!isFormatOwnerId(ownerID)) {
-                System.out.println("Không phải định dạng id nhân viên ");
-                menuAccountManager();
-            } else if (!isOwerIdHaveInListStaff(ownerID)) {
-                System.out.println("Id không có nhân viên nào có id '" + ownerID + "'");
-                menuAccountManager();
-            } else if (isOwnerIdHaveInListAccount(ownerID)) {
-                System.out.println("Id đã được đăng kí tài khoản ");
-                menuAccountManager();
-            } else isChoice = false;
-        } while (isChoice);
-
-        String userName = "";
-        do {
-            System.out.print("Nhập username : ");
-            userName = input.nextLine();
-            if (!isFormatUserName(userName)) {
-                System.out.println("Username gồm số và chữ thường, phải bắt đầu là một chữ và có 6-16 kí tự !");
-            } else if (isUserNameHaveInListAccount(userName)) {
-                System.out.println("username đã được sử dụng !");
-            }
-        } while (isUserNameHaveInListAccount(userName) || !isFormatUserName(userName));
-
-        String pass = "";
-        String pass2 = "";
-        do {
-            System.out.print("Nhập pass lần 1 : ");
-            pass = input.nextLine();
-            if (!isFormatPassword(pass)) {
-                System.out.println("password có ít nhất 8 kí tự gồm chữ và số, bắt đầu bằng chữ và có ít nhất 1 chữ số");
-            } else {
-                System.out.print("Nhập pass lần 2 : ");
-                pass2 = input.nextLine();
-                if (!pass2.equals(pass)) {
-                    System.out.println("Hai lần nhập password phải giống nhau !");
-                }
-            }
-        } while (!isFormatPassword(pass) || !pass2.equals(pass));
-
-        String decentralization = "";
-        char press = ' ';
-        boolean isPress = true;
-        System.out.println("Phân quyền cho account ?");
-        do {
-            System.out.print("Nhấn 'A' nếu người dùng là quản lý , nhấn 'G' nếu người dùng là nhân viên thông thường ?  ");
+            System.out.print("Bạn có muốn thêm thức uống mới ? Nhấn 'Y' để đồng ý, nhấn 'N' để quay trờ về menu !");
             try {
-                press = input.nextLine().charAt(0);
+                check = input.nextLine().charAt(0);
             } catch (Exception e) {
-                press = ' ';
+                check = ' ';
             }
-            switch (press) {
-                case 'a':
-                case 'A':
-                    decentralization = "Admin";
-                    isPress = false;
-                    break;
-                case 'G':
-                case 'g':
-                    decentralization = "Guest";
-                    isPress = false;
-                    break;
-                default:
-            }
-        } while (isPress);
-
-        Account account = new Account(ownerID, userName, pass, decentralization);
-        System.out.println("Tài khoản bạn vừa tạo có :");
-        System.out.println("Là tài khoản của người dùng có  ID = " + ownerID);
-        System.out.println("Tài khoản đăng nhập có username =  " + userName);
-        System.out.println("Tài khoản đăng nhập có password = " + pass);
-        System.out.println("Tài khoản được phân quyền là '" + decentralization + "'");
-        System.out.println("Bạn có muốn lưu tài khoản vào dữ liệu quản lý !");
-        char choose = ' ';
-        boolean isChoose = true;
-        do {
-            System.out.print("Nhấn 'Y' để đồng ý ! Nhấn 'N' để hủy bỏ thao tác !");
-            try {
-                press = input.nextLine().charAt(0);
-            } catch (Exception e) {
-                press = ' ';
-            }
-            switch (press) {
+            switch (check) {
+                case 'y':
                 case 'Y':
-                case 'y': {
-                    accountsList.add(account);
-                    writeDataAccountToFile(LINK_SAVE_OBJECT_ACCOUNT, accountsList);
-                    writeDataAccountToFileCsv(LINK_SAVE_FORMAT_CSV_ACCOUNT, accountsList);
-                    isChoose = false;
+                    displayAllListStaff();
+                    String ownerID = "";
+                    boolean isChoice = true;
+                    do {
+                        System.out.print("Hãy nhập ID của nhân viên để khởi tạo : ");
+                        ownerID = input.nextLine();
+                        if (!isFormatOwnerId(ownerID)) {
+                            System.out.println("Không phải định dạng id nhân viên ");
+                            menuAccountManager();
+                        } else if (!isOwerIdHaveInListStaff(ownerID)) {
+                            System.out.println("Id không có nhân viên nào có id '" + ownerID + "'");
+                            menuAccountManager();
+                        } else if (isOwnerIdHaveInListAccount(ownerID)) {
+                            System.out.println("Id đã được đăng kí tài khoản ");
+                            menuAccountManager();
+                        } else isChoice = false;
+                    } while (isChoice);
+
+                    String userName = "";
+                    do {
+                        System.out.print("Nhập username : ");
+                        userName = input.nextLine();
+                        if (!isFormatUserName(userName)) {
+                            System.out.println("Username gồm số và chữ thường, phải bắt đầu là một chữ và có 6-16 kí tự !");
+                        } else if (isUserNameHaveInListAccount(userName)) {
+                            System.out.println("username đã được sử dụng !");
+                        }
+                    } while (isUserNameHaveInListAccount(userName) || !isFormatUserName(userName));
+
+                    String pass = "";
+                    String pass2 = "";
+                    do {
+                        System.out.print("Nhập pass lần 1 : ");
+                        pass = input.nextLine();
+                        if (!isFormatPassword(pass)) {
+                            System.out.println("password có ít nhất 8 kí tự gồm chữ và số, bắt đầu bằng chữ và có ít nhất 1 chữ số");
+                        } else {
+                            System.out.print("Nhập pass lần 2 : ");
+                            pass2 = input.nextLine();
+                            if (!pass2.equals(pass)) {
+                                System.out.println("Hai lần nhập password phải giống nhau !");
+                            }
+                        }
+                    } while (!isFormatPassword(pass) || !pass2.equals(pass));
+
+                    String decentralization = "";
+                    char press = ' ';
+                    boolean isPress = true;
+                    System.out.println("Phân quyền cho account ?");
+                    do {
+                        System.out.print("Nhấn 'A' nếu người dùng là quản lý , nhấn 'G' nếu người dùng là nhân viên thông thường ?  ");
+                        try {
+                            press = input.nextLine().charAt(0);
+                        } catch (Exception e) {
+                            press = ' ';
+                        }
+                        switch (press) {
+                            case 'a':
+                            case 'A':
+                                decentralization = "Admin";
+                                isPress = false;
+                                break;
+                            case 'G':
+                            case 'g':
+                                decentralization = "Guest";
+                                isPress = false;
+                                break;
+                            default:
+                        }
+                    } while (isPress);
+
+                    Account account = new Account(ownerID, userName, pass, decentralization);
+                    System.out.println("Tài khoản bạn vừa tạo có :");
+                    System.out.println("Là tài khoản của người dùng có  ID = " + ownerID);
+                    System.out.println("Tài khoản đăng nhập có username =  " + userName);
+                    System.out.println("Tài khoản đăng nhập có password = " + pass);
+                    System.out.println("Tài khoản được phân quyền là '" + decentralization + "'");
+                    System.out.println("Bạn có muốn lưu tài khoản vào dữ liệu quản lý !");
+                    char choose = ' ';
+                    boolean isChoose = true;
+                    do {
+                        System.out.print("Nhấn 'Y' để đồng ý ! Nhấn 'N' để hủy bỏ thao tác !");
+                        try {
+                            press = input.nextLine().charAt(0);
+                        } catch (Exception e) {
+                            press = ' ';
+                        }
+                        switch (press) {
+                            case 'Y':
+                            case 'y': {
+                                accountsList.add(account);
+                                writeDataAccountToFile(LINK_SAVE_OBJECT_ACCOUNT, accountsList);
+                                writeDataAccountToFileCsv(LINK_SAVE_FORMAT_CSV_ACCOUNT, accountsList);
+                                isChoose = false;
+                                break;
+                            }
+                            case 'n':
+                            case 'N':
+                                menuAccountManager();
+                                isChoose = false;
+                                break;
+                            default:
+                                isChoose = true;
+                        }
+                    } while (isChoose);
                     break;
-                }
                 case 'n':
                 case 'N':
                     menuAccountManager();
-                    isChoose = false;
                     break;
                 default:
-                    isChoose = true;
+                    isCheck = true;
             }
-        } while (isChoose);
+        } while (isCheck);
     }
 
 
@@ -1144,7 +1165,8 @@ public class AccountManager implements Serializable {
                 break;
             }
         }
-        if (isNotHave) System.out.println("Người dùng không còn được đăng kí trong danh sách nhân viên ! Hãy vào trình quản lý nhân viên để kiểm tra !");
+        if (isNotHave)
+            System.out.println("Người dùng không còn được đăng kí trong danh sách nhân viên ! Hãy vào trình quản lý nhân viên để kiểm tra !");
         System.out.println();
     }
 

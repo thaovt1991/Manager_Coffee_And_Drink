@@ -67,159 +67,179 @@ public class StaffManager implements Serializable {
 
 
     public void addStaff() {
-        String idStaff = "";
+       char check = ' '   ;
+       boolean isCheck = false;
         do {
-            System.out.print("Nhập id nhân viên :");
-            idStaff = input.nextLine();
-            if (!isFormatIdStaff(idStaff)) {
-                System.out.println("Định dạng ID chưa hợp lệ ! ( ví dụ id đúng : NV201294)");
-            } else if (isIdHaveInList(idStaff)) {
-                System.out.println("Id đã được đăng kí , vui lòng nhập lại id mới !");
-            }
-        } while (isIdHaveInList(idStaff) || !isFormatIdStaff(idStaff));
-
-        String fullName = "";
-        do {
-            System.out.print("Nhập họ và tên nhân viên : ");
-            fullName = input.nextLine();
-            if (!isFormatFullName(fullName)) {
-                System.out.println("Định dạng tên chưa hợp lệ ! ( ví dụ tên đúng :Nguyen Van A)");
-            } else if (isFullNameHaveInList(fullName)) {
-                //in doi tuong da co ten ra ;
-                System.out.println("'" + fullName + "' đã có trong dãy , bạn có chắc chắn muốn thêm !");
-                char choice = ' ';
-                boolean isChoice = true;
-                do {
-                    System.out.print("Nhấn 'Y' để tiếp tục , nhấn 'N' để thay đổi ! : ");
-                    try {
-                        choice = input.nextLine().charAt(0);
-                    } catch (Exception e) {
-                        choice = ' ';
-                    }
-                    switch (choice) {
-                        case 'y':
-                        case 'Y':
-                            isChoice = false;
-                            break;
-                        case 'n':
-                        case 'N':
-                            fullName = "";
-                            isChoice = false;
-                            break;
-                        default:
-                    }
-                } while (isChoice);
-            }
-        } while (!isFormatFullName(fullName));
-
-        String gender = "";
-        char press = ' ';
-        boolean isPress = true;
-        System.out.println("Giới tính nhân viên ");
-        do {
-            System.out.print("Nhấn 'M' nếu nhân viên là nam , nhấn 'F' nếu nhân viên là nữ ?  ");
+            System.out.print("Bạn có muốn thêm nhân viên ? Nhấn 'Y' để đồng ý, nhấn 'N' để quay trờ về menu !");
             try {
-                press = input.nextLine().charAt(0);
+                check = input.nextLine().charAt(0);
             } catch (Exception e) {
-                press = ' ';
+                check = ' ';
             }
-            switch (press) {
-                case 'm':
-                case 'M':
-                    gender = "Nam";
-                    isPress = false;
-                    break;
-                case 'f':
-                case 'F':
-                    gender = "Nu";
-                    isPress = false;
-                    break;
-                default:
-            }
-
-        } while (isPress);
-
-
-        String dateOfBirth = "";
-        do {
-            System.out.print("Nhập ngày tháng năm sinh của nhân viên, có dạng day/month/year, ví dụ 2/2/1992 : ");
-            dateOfBirth = input.nextLine();
-            if (!isFormatDateOfBirth(dateOfBirth)) {
-                System.out.println("Không phải định dạng đúng !");
-            } else if (!isDatOfBirth(dateOfBirth)) {
-                System.out.println("Không phải ngày thực tế hoặc đã vượt ra khỏi nằm ngoài độ tuổi cho phép ! ");
-            }
-        } while (!isDatOfBirth(dateOfBirth));
-
-        String idCar = "";
-        do {
-            System.out.print("Nhập số CMND của nhân viên : ");
-            idCar = input.nextLine();
-            if (!isFormatIdentityCard(idCar)) {
-                System.out.println("CMND phải có 9 số và bắt đầu từ  1 hoặc 2 !");
-            } else if (isIdentityCardHaveInList(idCar)) {
-                System.out.println("CMND này đã được đăng kí , hãy kiểm tra lại !");
-            }
-        } while (!isFormatIdentityCard(idCar) || isIdentityCardHaveInList(idCar));
-
-        String numberPhone = "";
-        do {
-            System.out.print("Nhập số điện thoại nhân viên : ");
-            numberPhone = input.nextLine();
-            if (!isFormatNumberPhone(numberPhone)) {
-                System.out.println("Định dạng số điện chưa hợp lệ !  ");
-            }
-        } while (!isFormatNumberPhone(numberPhone));
-
-        String address = "";
-        System.out.print("Nhập địa chỉ nhân viên : ");
-        address = input.nextLine();
-
-        String strPay = "";
-        do {
-            System.out.print("Nhập tiền lương của nhân viên : ");
-            strPay = input.nextLine();
-            if (!isFormatPay(strPay)) {
-                System.out.println("Định dạng tiền lương chưa hợp lý !");
-            }
-        } while (!isFormatPay(strPay));
-
-        String other = "";
-        System.out.print("Nhập các thông tin khác của nhân viên (có thể bỏ trống) !");
-        other = input.nextLine();
-
-        Staff staff = new Staff(idStaff, fullName, gender, dateOfBirth, idCar, numberPhone, address, Long.parseLong(strPay), other);
-        System.out.println();
-        System.out.println("Thông tin nhân viên bạn vừa nhập vào là : ");
-        System.out.println(staff);
-        System.out.println();
-        char choice = ' ';
-        boolean isChoice = true;
-        do {
-            System.out.print("Bạn có muốn lưu vào dữ liệu nhân viên ! Nhấn 'Y' để đồng ý , nhấn 'N' để hủy dữ liệu vừa nhập  ");
-            try {
-                choice = input.nextLine().charAt(0);
-            } catch (Exception e) {
-                choice = ' ';
-            }
-            switch (choice) {
+            switch (check) {
                 case 'y':
                 case 'Y':
-                    staffList.add(staff);
-                    writeToFile(LINK_SAVE_OBJECT_STAFF, staffList);
-                    writeDataFromFileFormatToCsv(LINK_SAVE_FORMAT_CSV_STAFF, staffList);
-                    isChoice = false;
-                    menuStaffManager();
+                    String idStaff = "";
+                    do {
+                        System.out.print("Nhập id nhân viên :");
+                        idStaff = input.nextLine();
+                        if (!isFormatIdStaff(idStaff)) {
+                            System.out.println("Định dạng ID chưa hợp lệ ! ( ví dụ id đúng : NV201294)");
+                        } else if (isIdHaveInList(idStaff)) {
+                            System.out.println("Id đã được đăng kí , vui lòng nhập lại id mới !");
+                        }
+                    } while (isIdHaveInList(idStaff) || !isFormatIdStaff(idStaff));
+
+                    String fullName = "";
+                    do {
+                        System.out.print("Nhập họ và tên nhân viên : ");
+                        fullName = input.nextLine();
+                        if (!isFormatFullName(fullName)) {
+                            System.out.println("Định dạng tên chưa hợp lệ ! ( ví dụ tên đúng :Nguyen Van A)");
+                        } else if (isFullNameHaveInList(fullName)) {
+                            //in doi tuong da co ten ra ;
+                            System.out.println("'" + fullName + "' đã có trong dãy , bạn có chắc chắn muốn thêm !");
+                            char choice = ' ';
+                            boolean isChoice = true;
+                            do {
+                                System.out.print("Nhấn 'Y' để tiếp tục , nhấn 'N' để thay đổi ! : ");
+                                try {
+                                    choice = input.nextLine().charAt(0);
+                                } catch (Exception e) {
+                                    choice = ' ';
+                                }
+                                switch (choice) {
+                                    case 'y':
+                                    case 'Y':
+                                        isChoice = false;
+                                        break;
+                                    case 'n':
+                                    case 'N':
+                                        fullName = "";
+                                        isChoice = false;
+                                        break;
+                                    default:
+                                }
+                            } while (isChoice);
+                        }
+                    } while (!isFormatFullName(fullName));
+
+                    String gender = "";
+                    char press = ' ';
+                    boolean isPress = true;
+                    System.out.println("Giới tính nhân viên ");
+                    do {
+                        System.out.print("Nhấn 'M' nếu nhân viên là nam , nhấn 'F' nếu nhân viên là nữ ?  ");
+                        try {
+                            press = input.nextLine().charAt(0);
+                        } catch (Exception e) {
+                            press = ' ';
+                        }
+                        switch (press) {
+                            case 'm':
+                            case 'M':
+                                gender = "Nam";
+                                isPress = false;
+                                break;
+                            case 'f':
+                            case 'F':
+                                gender = "Nu";
+                                isPress = false;
+                                break;
+                            default:
+                        }
+
+                    } while (isPress);
+
+
+                    String dateOfBirth = "";
+                    do {
+                        System.out.print("Nhập ngày tháng năm sinh của nhân viên, có dạng day/month/year, ví dụ 2/2/1992 : ");
+                        dateOfBirth = input.nextLine();
+                        if (!isFormatDateOfBirth(dateOfBirth)) {
+                            System.out.println("Không phải định dạng đúng !");
+                        } else if (!isDatOfBirth(dateOfBirth)) {
+                            System.out.println("Không phải ngày thực tế hoặc đã vượt ra khỏi nằm ngoài độ tuổi cho phép ! ");
+                        }
+                    } while (!isDatOfBirth(dateOfBirth));
+
+                    String idCar = "";
+                    do {
+                        System.out.print("Nhập số CMND của nhân viên : ");
+                        idCar = input.nextLine();
+                        if (!isFormatIdentityCard(idCar)) {
+                            System.out.println("CMND phải có 9 số và bắt đầu từ  1 hoặc 2 !");
+                        } else if (isIdentityCardHaveInList(idCar)) {
+                            System.out.println("CMND này đã được đăng kí , hãy kiểm tra lại !");
+                        }
+                    } while (!isFormatIdentityCard(idCar) || isIdentityCardHaveInList(idCar));
+
+                    String numberPhone = "";
+                    do {
+                        System.out.print("Nhập số điện thoại nhân viên : ");
+                        numberPhone = input.nextLine();
+                        if (!isFormatNumberPhone(numberPhone)) {
+                            System.out.println("Định dạng số điện chưa hợp lệ !  ");
+                        }
+                    } while (!isFormatNumberPhone(numberPhone));
+
+                    String address = "";
+                    System.out.print("Nhập địa chỉ nhân viên : ");
+                    address = input.nextLine();
+
+                    String strPay = "";
+                    do {
+                        System.out.print("Nhập tiền lương của nhân viên : ");
+                        strPay = input.nextLine();
+                        if (!isFormatPay(strPay)) {
+                            System.out.println("Định dạng tiền lương chưa hợp lý !");
+                        }
+                    } while (!isFormatPay(strPay));
+
+                    String other = "";
+                    System.out.print("Nhập các thông tin khác của nhân viên (có thể bỏ trống) !");
+                    other = input.nextLine();
+
+                    Staff staff = new Staff(idStaff, fullName, gender, dateOfBirth, idCar, numberPhone, address, Long.parseLong(strPay), other);
+                    System.out.println();
+                    System.out.println("Thông tin nhân viên bạn vừa nhập vào là : ");
+                    System.out.println(staff);
+                    System.out.println();
+                    char choice = ' ';
+                    boolean isChoice = true;
+                    do {
+                        System.out.print("Bạn có muốn lưu vào dữ liệu nhân viên ! Nhấn 'Y' để đồng ý , nhấn 'N' để hủy dữ liệu vừa nhập  ");
+                        try {
+                            choice = input.nextLine().charAt(0);
+                        } catch (Exception e) {
+                            choice = ' ';
+                        }
+                        switch (choice) {
+                            case 'y':
+                            case 'Y':
+                                staffList.add(staff);
+                                writeToFile(LINK_SAVE_OBJECT_STAFF, staffList);
+                                writeDataFromFileFormatToCsv(LINK_SAVE_FORMAT_CSV_STAFF, staffList);
+                                isChoice = false;
+                                menuStaffManager();
+                                break;
+                            case 'n':
+                            case 'N':
+                                menuStaffManager();
+                                isChoice = false;
+                                break;
+                            default:
+                        }
+                    } while (isChoice);
                     break;
                 case 'n':
                 case 'N':
-                    //menuStaffManager();
-                    isChoice = false;
+                    menuStaffManager();
                     break;
                 default:
+                    isCheck = true ;
             }
-        } while (isChoice);
-
+        }while (isCheck);
     }
 
 
