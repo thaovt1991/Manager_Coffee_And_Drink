@@ -9,22 +9,27 @@ public class Table implements Serializable {
     private String idStaffServing  ;
     private String timeInput ;
     private String timeOut ;
+    private long totalMoney ;
 
     private Table(){}
 
-    public Table(String idTable, TreeMap<String, Integer> treeOder, String idStaffServing, String timeInput, String timeOut) {
+    public Table(String idTable, TreeMap<String, Integer> treeOder, String idStaffServing, String timeInput, String timeOut,long totalMoney) {
         this.idTable = idTable;
         this.treeOder = treeOder;
         this.idStaffServing = idStaffServing;
         this.timeInput = timeInput;
         this.timeOut = timeOut;
+        this.totalMoney = totalMoney ;
 
     }
-//    private long totalMoney(TreeMap<String ,Integer> treeOder){
-//        for(String idDrinks : treeOder.keySet()){
-//
-//        }
-//    }
+
+    public long getTotalMoney() {
+        return totalMoney;
+    }
+
+    public void setTotalMoney(long totalMoney) {
+        this.totalMoney = totalMoney;
+    }
 
     public String getTimeInput() {
         return timeInput;
