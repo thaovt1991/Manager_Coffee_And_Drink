@@ -18,7 +18,13 @@ public class Table implements Serializable {
         this.idStaffServing = idStaffServing;
         this.timeInput = timeInput;
         this.timeOut = timeOut;
+
     }
+//    private long totalMoney(TreeMap<String ,Integer> treeOder){
+//        for(String idDrinks : treeOder.keySet()){
+//
+//        }
+//    }
 
     public String getTimeInput() {
         return timeInput;
