@@ -1,12 +1,12 @@
 package service;
 
+import model.CarriedAway;
 import model.Drinks;
 import model.Staff;
 import model.Table;
 import precentation.Menu;
 
 import java.io.*;
-import java.sql.Time;
 import java.util.*;
 import java.util.regex.Pattern;
 
@@ -14,28 +14,33 @@ public class SellManager implements Serializable {
 
     public ArrayList<Staff> staffList;
     public ArrayList<Table> tablesListHaveCustomer;
-    public ArrayList<Table> listCarriedAway;
+    public ArrayList<CarriedAway> listCarriedAway;
+    public static long numIdCarryAway = 0;
     public ArrayList<Drinks> drinksList;
     public final Integer NUM_TABLE = 10;
     public final Integer SIZE_CA = 10;
     static Scanner input = new Scanner(System.in);
     public static final String LINK_SAVE_FORMAT_CSV_TABLE = "D:\\Manager_Coffee_And_Drink\\out_data\\list_tables.csv";
     public static final String LINK_SAVE_OBJECT_TABLE = "D:\\Manager_Coffee_And_Drink\\src\\data\\list_tables.txt";
-    //  public static final String LINK_SAVE_OBJECT_TABLE_CA = "D:\\Manager_Coffee_And_Drink\\src\\data\\list_tables_carried_away.txt";
+    public static final String LINK_SAVE_FORMAT_CSV_CA = "D:\\Manager_Coffee_And_Drink\\out_data\\list_carried_away.csv";
+    public static final String LINK_SAVE_OBJECT_CARRIED_AWAY = "D:\\Manager_Coffee_And_Drink\\src\\data\\list_carried_away.txt";
     public static final String LINK_SAVE_OBJECT_STAFF = "D:\\Manager_Coffee_And_Drink\\src\\data\\list_staff.txt";
     public static final String LINK_SAVE_OBJECT_DRINKS = "D:\\Manager_Coffee_And_Drink\\src\\data\\list_drinks.txt";
     public static final String FORMAT_CSV_TABLE = "STT,ID TABLE,DRINKS ODER,ID STAFF SERVING,TIME INPUT,TIME OUT,TOTAL ";
+    public static final String FORMAT_CSV_CA = "STT,ID CA,DRINKS ODER,ID STAFF SERVING,TIME INPUT,TIME OUT,TOTAL ";
     public static final String DOWN_THE_LINE = "\n";
     public static final String COMMA_DELIMITER = ",";
     // public static final String LINK_REGEX = "(^([C|D][:])\\\\(?:[\\w]+\\\\)*\\w+$)|(^[C|D][:][\\\\]$)";
     public static final String ID_DRINKS_REGEX = "^[A-Z]{2}+\\d{3}$";
     public static final String ID_TABLE_REGEX = "^(([T]+[B])+\\d{2})$";
+    public static final String ID_CARRIED_AWAYS = "^([C]+[A])+\\d";
 
 
     public SellManager() {
         staffList = readDataStaffFromFile(LINK_SAVE_OBJECT_STAFF);
         tablesListHaveCustomer = readDataTableToFile(LINK_SAVE_OBJECT_TABLE);
         drinksList = readDataDrinksFromFile(LINK_SAVE_OBJECT_DRINKS);
+        listCarriedAway = readDataCarriedAwayToFile(LINK_SAVE_OBJECT_CARRIED_AWAY);
     }
 
     public boolean isFormatIdTable(String idTableCheck) {
@@ -87,11 +92,38 @@ public class SellManager implements Serializable {
         }
     }
 
-    public void writeDataFromFileFormatToCsv(String path, ArrayList<Table> listTable) {
+    public ArrayList<Table> readDataTableToFile(String path) {
+        ArrayList<Table> tablesList = new ArrayList<>();
+        try {
+            FileInputStream fis = new FileInputStream(path);
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            tablesList = (ArrayList<Table>) ois.readObject();
+            ois.close();
+            fis.close();
+        } catch (Exception e) {
+            System.out.println("File danh sách khách tại quán, hãy nhập dữ liệu và tạo ra nó !");
+        }
+        return tablesList;
+    }
+
+    public void writeDataTableToFile(String path, ArrayList<Table> tablesList) {
+        try {
+            FileOutputStream fos = new FileOutputStream(path);
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(tablesList);
+            oos.close();
+            fos.close();
+            System.out.println("Đã lưu lại mọi thay đổi vào dữ liệu gốc !");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void writeDataOfTableFromFileFormatToCsv(String path, ArrayList<Table> listTable) {
         FileWriter writer = null;
         try {
             writer = new FileWriter(path);
-            writer.append(FORMAT_CSV_TABLE);
+            writer.append(FORMAT_CSV_CA);
             writer.append(DOWN_THE_LINE);
             int count = 0;
             for (Table table : listTable) {
@@ -134,32 +166,59 @@ public class SellManager implements Serializable {
         return strDisplay;
     }
 
-    ;
-
-    public ArrayList<Table> readDataTableToFile(String path) {
-        ArrayList<Table> tablesList = new ArrayList<>();
+    public ArrayList<CarriedAway> readDataCarriedAwayToFile(String path) {
+        ArrayList<CarriedAway> carriedAwaysList = new ArrayList<>();
         try {
             FileInputStream fis = new FileInputStream(path);
             ObjectInputStream ois = new ObjectInputStream(fis);
-            tablesList = (ArrayList<Table>) ois.readObject();
+            carriedAwaysList = (ArrayList<CarriedAway>) ois.readObject();
             ois.close();
             fis.close();
         } catch (Exception e) {
-            System.out.println("File danh sách khách tại quán, hãy nhập dữ liệu và tạo ra nó !");
+            System.out.println("File danh sách khách mang đi, hãy nhập dữ liệu và tạo ra nó !");
         }
-        return tablesList;
+        return carriedAwaysList;
     }
 
-    public void writeDataTableToFile(String path, ArrayList<Table> accountsList) {
+    public void writeDataCarriedAwayToFile(String path, ArrayList<CarriedAway> carriedAwaysList) {
         try {
             FileOutputStream fos = new FileOutputStream(path);
             ObjectOutputStream oos = new ObjectOutputStream(fos);
-            oos.writeObject(accountsList);
+            oos.writeObject(carriedAwaysList);
             oos.close();
             fos.close();
             System.out.println("Đã lưu lại mọi thay đổi vào dữ liệu gốc !");
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void writeDataOfCarriedAwayFromFileFormatToCsv(String path, ArrayList<CarriedAway> carriedAwaysList) {
+        FileWriter writer = null;
+        try {
+            writer = new FileWriter(path);
+            writer.append(FORMAT_CSV_TABLE);
+            writer.append(DOWN_THE_LINE);
+            int count = 0;
+            for (CarriedAway carriedAway : carriedAwaysList) {
+                count++;
+                writer.append(String.valueOf(count));
+                writer.append(COMMA_DELIMITER);
+                writer.append(carriedAway.getIdCa());
+                writer.append(COMMA_DELIMITER);
+                writer.append(toString(carriedAway.getTreeOder()));
+                writer.append(COMMA_DELIMITER);
+                writer.append(carriedAway.getIdStaffServing());
+                writer.append(COMMA_DELIMITER);
+                writer.append(carriedAway.getTimeInput());
+                writer.append(COMMA_DELIMITER);
+                writer.append(carriedAway.getTimeOut());
+                writer.append(COMMA_DELIMITER);
+                writer.append(String.valueOf(carriedAway.getTotalMoney()));
+                writer.append(DOWN_THE_LINE);
+            }
+            writer.close();
+        } catch (Exception e) {
         }
     }
 
@@ -228,7 +287,6 @@ public class SellManager implements Serializable {
         return false;
     }
 
-    // dang loi ham ni
 
     public String listTableEmpty() {
         ArrayList<String> listIdTable = listIdTable();
@@ -450,7 +508,7 @@ public class SellManager implements Serializable {
                                     tablesListHaveCustomer.add(newTable);
                                     writeDataDrinksToFile(LINK_SAVE_OBJECT_DRINKS, drinksList);
                                     writeDataTableToFile(LINK_SAVE_OBJECT_TABLE, tablesListHaveCustomer);
-                                    writeDataFromFileFormatToCsv(LINK_SAVE_FORMAT_CSV_TABLE, tablesListHaveCustomer);
+                                    writeDataOfTableFromFileFormatToCsv(LINK_SAVE_FORMAT_CSV_TABLE, tablesListHaveCustomer);
                                     break;
                                 }
                                 case 'n':
@@ -474,146 +532,138 @@ public class SellManager implements Serializable {
         }
     }
 
-//    public void sellDrinksCarriedAway(){
-//        char check = ' ';
-//        boolean isCheck = false;
-//        do {
-//            System.out.print("Bạn đang oder cho khách mang về ? Nhấn 'Y' để đồng ý, nhấn 'N' để quay trờ về menu !");
-//            try {
-//                check = input.nextLine().charAt(0);
-//            } catch (Exception e) {
-//                check = ' ';
-//            }
-//            switch (check) {
-//                case 'y':
-//                case 'Y':
-//                    String idTable  = "CA";
-//                    System.out.println("");
-//
-////                    do {
-////                        System.out.print("Nhập id mang về : ");
-////                        idTable = input.nextLine();
-////                        if (!isFormatIdTable(idTable)) {
-////                            System.out.println("Không phải format id của bàn ");
-////                        } else if (!isTableEmpty(idTable)) {
-////                            System.out.println("Bàn đã có khách ngồi!");
-////                            System.out.println(listTableEmpty());
-////                        }
-////                    } while (!isTableEmpty(idTable) || !isFormatIdTable(idTable));
-//                    System.out.println("Danh sách thức uống : ");
-//                    displayMenuDrinks();
-//                    TreeMap<String, Integer> treeOder = new TreeMap<>();
-//                    char choice = ' ';
-//                    boolean isChoice = true;
-//                    do {
-//                        System.out.print("Nhấn 'T' để tiếp tục lên danh sách thức uống cho khách mang về " + idTable + ", nhấn 'X để kết thúc nhập : ");
-//                        try {
-//                            choice = input.nextLine().charAt(0);
-//                        } catch (Exception e) {
-//                            choice = ' ';
-//                        }
-//                        switch (choice) {
-//                            case 't':
-//                            case 'T':
-//                                String idDrinks;
-//                                do {
-//                                    System.out.print("Nhập id thức uống : ");
-//                                    idDrinks = input.nextLine();
-//                                    if (!isIdDrinksInMenu(idDrinks)) {
-//                                        System.out.println("Không có thức uống nào có id '" + idDrinks + "' ! Hãy nhập lại");
-//                                        displayMenuDrinks();
-//                                    }
-//                                } while (!isIdDrinksInMenu(idDrinks));
-//
-//                                String srtQualityDrinks = "";
-//                                boolean isQuality = false;
-//                                int qualityDrinks = -1;
-//                                do {
-//                                    System.out.print("Số lượng của thức uống '" + nameDrinks(idDrinks) + "' theo yêu cầu của khách : ");
-//                                    srtQualityDrinks = input.nextLine();
-//                                    try {
-//                                        qualityDrinks = Integer.parseInt(srtQualityDrinks);
-//                                    } catch (Exception e) {
-//                                        qualityDrinks = -1;
-//                                    }
-//                                } while (qualityDrinks < 0);
-//
-//                                if (qualityDrinks > qualityDrinks(idDrinks)) {
-//                                    System.out.println("Số lượng thức uống '" + nameDrinks(idDrinks) + "' trong kho không đủ để cung cấp cho khách hàng! Hãy thông báo khách để oder lại thức uống ! ");
-//                                    //menuSell();
-//                                    return; // lenh thoat khoi vong;
-//                                } else {
-//                                    drinksList = changerQualityDrinks(drinksList, idDrinks, qualityDrinks);
-//                                }
-//                                treeOder = addTreeOder(treeOder, idDrinks, qualityDrinks);//ok
-//                                break;
-//                            case 'x':
-//                            case 'X':
-//                                isChoice = false;
-//                            default:
-//                        }
-//                    } while (isChoice);
-//                    System.out.println("Bàn có id '" + idTable + " ' oder : ");
-//                    displayTreeOder(treeOder);
-//
-//                    String idStaff = "";
-//                    do {
-//                        displayStaff();
-//                        System.out.print("Id nhân viên oder : ");
-//                        idStaff = input.nextLine();
-//                        if (!isIdStaff(idStaff)) {
-//                            System.out.println("Hãy nhập đúng id nhân viên ! Hãy căn cứ vào danh sách nhân viên để nhập !");
-//                        }
-//                    } while (!isIdStaff(idStaff));
-//
-//                    String dateSell = String.valueOf(java.time.LocalDate.now());
-//                    String timeSell = String.valueOf(java.time.LocalTime.now());
-//                    String timeBeginSell = timeSell + " " + dateSell;
-//                    String timeOutSell = "Empty";
-//
-//                    long totalMoney = getTotalMoney(treeOder);
-//
-//                    Table newTable = new Table(idTable, treeOder, idStaff, timeBeginSell, timeOutSell, totalMoney);
-//                    char press = ' ';
-//                    boolean isChoose = true;
-//                    System.out.println("Bạn muốn khởi tạo bàn trên !");
-//                    do {
-//                        System.out.print("Nhấn 'Y' để đồng ý ! Nhấn 'N' để hủy bỏ thao tác !");
-//                        try {
-//                            press = input.nextLine().charAt(0);
-//                        } catch (Exception e) {
-//                            press = ' ';
-//                        }
-//                        switch (press) {
-//                            case 'Y':
-//                            case 'y': {
-//                                tablesListHaveCustomer.add(newTable);
-//                                writeDataDrinksToFile(LINK_SAVE_OBJECT_DRINKS, drinksList);
-//                                writeDataTableToFile(LINK_SAVE_OBJECT_TABLE, tablesListHaveCustomer);
-//                                writeDataFromFileFormatToCsv(LINK_SAVE_FORMAT_CSV_TABLE, tablesListHaveCustomer);
-//                                isChoose = false;
-//                                break;
-//                            }
-//                            case 'n':
-//                            case 'N':
-//                                drinksList = readDataDrinksFromFile(LINK_SAVE_OBJECT_DRINKS);
-//                                menuSell();
-//                                isChoose = false;
-//                                break;
-//                            default:
-//                                isChoose = true;
-//                        }
-//                    } while (isChoose);
-//                    break;
-//                case 'n':
-//                case 'N':
-//                    // menuSellDrinksManager();
-//                    break;
-//                default:
-//                    isCheck = true;
-//            }
-//        } while (isCheck);
-//    }
+    public void sellDrinksCarriedAway(){
+        char check = ' ';
+        boolean isCheck = false;
+        do {
+            System.out.print("Bạn đang oder cho khách mang về ? Nhấn 'Y' để đồng ý, nhấn 'N' để quay trờ về menu !");
+            try {
+                check = input.nextLine().charAt(0);
+            } catch (Exception e) {
+                check = ' ';
+            }
+              switch (check) {
+                case 'y':
+                case 'Y':
+                    numIdCarryAway ++ ;
+                    String idCa  = "CA"+numIdCarryAway ;
+                    System.out.println("Tạo oder mang về cho khách có id '" + idCa+ "' !!!");
+                    System.out.println("Danh sách thức uống : ");
+                    displayMenuDrinks();
+                    TreeMap<String, Integer> treeOder = new TreeMap<>();
+                    char choice = ' ';
+                    boolean isChoice = true;
+                    do {
+                        System.out.print("Nhấn 'T' để tiếp tục lên danh sách thức uống cho khách mang về với id " + idCa + ", nhấn 'X để kết thúc nhập : ");
+                        try {
+                            choice = input.nextLine().charAt(0);
+                        } catch (Exception e) {
+                            choice = ' ';
+                        }
+                        switch (choice) {
+                            case 't':
+                            case 'T':
+                                String idDrinks;
+                                do {
+                                    System.out.print("Nhập id thức uống : ");
+                                    idDrinks = input.nextLine();
+                                    if (!isIdDrinksInMenu(idDrinks)) {
+                                        System.out.println("Không có thức uống nào có id '" + idDrinks + "' ! Hãy nhập lại");
+                                        displayMenuDrinks();
+                                    }
+                                } while (!isIdDrinksInMenu(idDrinks));
+
+                                String srtQualityDrinks = "";
+                                boolean isQuality = false;
+                                int qualityDrinks = -1;
+                                do {
+                                    System.out.print("Số lượng của thức uống '" + nameDrinks(idDrinks) + "' theo yêu cầu của khách : ");
+                                    srtQualityDrinks = input.nextLine();
+                                    try {
+                                        qualityDrinks = Integer.parseInt(srtQualityDrinks);
+                                    } catch (Exception e) {
+                                        qualityDrinks = -1;
+                                    }
+                                } while (qualityDrinks < 0);
+
+                                if (qualityDrinks > qualityDrinks(idDrinks)) {
+                                    System.out.println("Số lượng thức uống '" + nameDrinks(idDrinks) + "' trong kho không đủ để cung cấp cho khách hàng! Hãy thông báo khách để oder lại thức uống ! ");
+                                    menuSell();
+                                    numIdCarryAway--;
+                                     // lenh thoat khoi vong;
+                                } else {
+                                    drinksList = changerQualityDrinks(drinksList, idDrinks, qualityDrinks);
+                                }
+                                treeOder = addTreeOder(treeOder, idDrinks, qualityDrinks);//ok
+                                break;
+                            case 'x':
+                            case 'X':
+                                isChoice = false;
+                            default:
+                        }
+                    } while (isChoice);
+                    System.out.println("Khách mua mang về với id '" + idCa + " ' oder : ");
+                    displayTreeOder(treeOder);
+
+                    String idStaff = "";
+                    do {
+                        displayStaff();
+                        System.out.print("Id nhân viên oder : ");
+                        idStaff = input.nextLine();
+                        if (!isIdStaff(idStaff)) {
+                            System.out.println("Hãy nhập đúng id nhân viên ! Hãy căn cứ vào danh sách nhân viên để nhập !");
+                        }
+                    } while (!isIdStaff(idStaff));
+
+                    String dateSell = String.valueOf(java.time.LocalDate.now());
+                    String timeSell = String.valueOf(java.time.LocalTime.now());
+                    String timeBeginSell = timeSell + " " + dateSell;
+                    String timeOutSell = "Empty";
+
+                    long totalMoney = getTotalMoney(treeOder);
+
+                    CarriedAway carriedAway = new CarriedAway(idCa, treeOder, idStaff, timeBeginSell, timeOutSell, totalMoney);
+                    char press = ' ';
+                    boolean isChoose = true;
+                    System.out.println("Bạn muốn khởi tạo oder cho khách mang về như trên trên !");
+                    do {
+                        System.out.print("Nhấn 'Y' để đồng ý ! Nhấn 'N' để hủy bỏ thao tác !");
+                        try {
+                            press = input.nextLine().charAt(0);
+                        } catch (Exception e) {
+                            press = ' ';
+                        }
+                        switch (press) {
+                            case 'Y':
+                            case 'y': {
+                               listCarriedAway.add(carriedAway);
+                                writeDataDrinksToFile(LINK_SAVE_OBJECT_DRINKS, drinksList);
+                                writeDataCarriedAwayToFile(LINK_SAVE_OBJECT_CARRIED_AWAY, listCarriedAway);
+                                writeDataOfCarriedAwayFromFileFormatToCsv(LINK_SAVE_FORMAT_CSV_CA, listCarriedAway);
+                                isChoose = false;
+                                break;
+                            }
+                            case 'n':
+                            case 'N':
+                                numIdCarryAway--;
+                                drinksList = readDataDrinksFromFile(LINK_SAVE_OBJECT_DRINKS);
+                                menuSell();
+                                isChoose = false;
+                                break;
+                            default:
+                                isChoose = true;
+                        }
+                    } while (isChoose);
+                    break;
+                case 'n':
+                case 'N':
+                     menuSellDrinksManager();
+                    break;
+                default:
+                    isCheck = true;
+            }
+        } while (isCheck);
+    }
 
     public void menuSell() {
         char choice = ' ';
@@ -635,10 +685,10 @@ public class SellManager implements Serializable {
                     sellDrinksInTable();
                     break;
                 case '2':
-                    //sellDrinksCarriedAway();
+                    sellDrinksCarriedAway();
                     break;
                 case '0':
-                    // menuSellDrinksManager();
+                     menuSellDrinksManager();
                     break;
                 default:
                     System.out.println("Chọn lại !");
@@ -700,7 +750,8 @@ public class SellManager implements Serializable {
         } while (getIdTableInListTableHaveCustomer(idTableEdit) == null);
 
         Table table = getIdTableInListTableHaveCustomer(idTableEdit);
-        //dispaly thoong tin banf
+        System.out.println("Bàn có id '"+ idTableEdit+"' đã oder: ");
+        displayTreeOder(table.getTreeOder());
         System.out.println();
         char press = ' ';
         do {
@@ -807,7 +858,7 @@ public class SellManager implements Serializable {
                     table.setTotalMoney(getTotalMoney(treeOder));
                     writeDataDrinksToFile(LINK_SAVE_OBJECT_DRINKS, drinksList);
                     writeDataTableToFile(LINK_SAVE_OBJECT_TABLE, tablesListHaveCustomer);
-                    writeDataFromFileFormatToCsv(LINK_SAVE_FORMAT_CSV_TABLE, tablesListHaveCustomer);
+                    writeDataOfTableFromFileFormatToCsv(LINK_SAVE_FORMAT_CSV_TABLE, tablesListHaveCustomer);
                     break;
                 case 'n':
                 case 'N':
@@ -821,7 +872,6 @@ public class SellManager implements Serializable {
 
         } while (isNotChoose);
     }
-
 
     public void addDrinksToTable(Table table) {
         System.out.println("Danh sách thức uống : ");
@@ -897,7 +947,7 @@ public class SellManager implements Serializable {
                     table.setTotalMoney(getTotalMoney(treeOder));
                     writeDataDrinksToFile(LINK_SAVE_OBJECT_DRINKS, drinksList);
                     writeDataTableToFile(LINK_SAVE_OBJECT_TABLE, tablesListHaveCustomer);
-                    writeDataFromFileFormatToCsv(LINK_SAVE_FORMAT_CSV_TABLE, tablesListHaveCustomer);
+                    writeDataOfTableFromFileFormatToCsv(LINK_SAVE_FORMAT_CSV_TABLE, tablesListHaveCustomer);
                     break;
                 case 'n':
                 case 'N':
@@ -914,7 +964,7 @@ public class SellManager implements Serializable {
 
 
     public void menuPay(){
-        
+
     }
 
 
