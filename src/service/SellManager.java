@@ -18,11 +18,10 @@ public class SellManager implements Serializable {
     public ArrayList<Drinks> drinksList;
     public final Integer NUM_TABLE = 10;
     public final Integer SIZE_CA = 10;
-    //    public final ArrayList<String> LIST_ID_TABLE = listIdTable();
     static Scanner input = new Scanner(System.in);
     public static final String LINK_SAVE_FORMAT_CSV_TABLE = "D:\\Manager_Coffee_And_Drink\\out_data\\list_tables.csv";
     public static final String LINK_SAVE_OBJECT_TABLE = "D:\\Manager_Coffee_And_Drink\\src\\data\\list_tables.txt";
-    public static final String LINK_SAVE_OBJECT_TABLE_CA = "D:\\Manager_Coffee_And_Drink\\src\\data\\list_tables_carried_away.txt";
+    //  public static final String LINK_SAVE_OBJECT_TABLE_CA = "D:\\Manager_Coffee_And_Drink\\src\\data\\list_tables_carried_away.txt";
     public static final String LINK_SAVE_OBJECT_STAFF = "D:\\Manager_Coffee_And_Drink\\src\\data\\list_staff.txt";
     public static final String LINK_SAVE_OBJECT_DRINKS = "D:\\Manager_Coffee_And_Drink\\src\\data\\list_drinks.txt";
     public static final String FORMAT_CSV_TABLE = "STT,ID TABLE,DRINKS ODER,ID STAFF SERVING,TIME INPUT,TIME OUT,TOTAL ";
@@ -52,7 +51,7 @@ public class SellManager implements Serializable {
             fis.close();
             ois.close();
         } catch (Exception ex) {
-            System.out.println("File chưa tồn tại, hãy khởi tạo danh sách nhân viên !");
+            System.out.println("File danh sách nhân viên chưa tồn tại, hãy khởi tạo danh sách nhân viên !");
             StaffManager staffManager = new StaffManager();
             staffManager.addStaff();
         }
@@ -68,7 +67,7 @@ public class SellManager implements Serializable {
             fis.close();
             ois.close();
         } catch (Exception ex) {
-            System.out.println("File chưa tồn tại, hãy khởi tạo danh sách nhân viên !");
+            System.out.println("File danh sách thức uống chưa tồn tại, hãy khởi tạo danh sách để quản lý !");
             DrinksManager drinksManager = new DrinksManager();
             drinksManager.addDrinksList();
         }
@@ -146,7 +145,7 @@ public class SellManager implements Serializable {
             ois.close();
             fis.close();
         } catch (Exception e) {
-            System.out.println("File chưa tồn tại, hãy nhập dữ liệu và tạo ra nó !");
+            System.out.println("File danh sách khách tại quán, hãy nhập dữ liệu và tạo ra nó !");
         }
         return tablesList;
     }
@@ -228,7 +227,9 @@ public class SellManager implements Serializable {
         }
         return false;
     }
-// dang loi ham ni
+
+    // dang loi ham ni
+
     public String listTableEmpty() {
         ArrayList<String> listIdTable = listIdTable();
         if (isFullTable()) return "Hết bàn ! Vui lòng đợi hoặc mua mang về !";
@@ -239,12 +240,12 @@ public class SellManager implements Serializable {
             for (Table table : tablesListHaveCustomer) {
                 for (String idDrinks : listIdTable) {
                     if (table.getIdTable().equals(idDrinks)) {
-                        id= idDrinks;
+                        id = idDrinks;
                         break;
                     }
                 }
             }
-            if(id != null) listIdTable.remove(id);
+            if (id != null) listIdTable.remove(id);
         }
         return listTableEmpty + listIdTable;
     }
@@ -399,7 +400,7 @@ public class SellManager implements Serializable {
 
                                     if (qualityDrinks > qualityDrinks(idDrinks)) {
                                         System.out.println("Số lượng thức uống '" + nameDrinks(idDrinks) + "' trong kho không đủ để cung cấp cho khách hàng! Hãy thông báo khách để oder lại thức uống ! ");
-                                        //menuSell();
+                                        menuSell();
                                         return; // lenh thoat khoi vong;
                                     } else {
                                         drinksList = changerQualityDrinks(drinksList, idDrinks, qualityDrinks);
@@ -434,7 +435,7 @@ public class SellManager implements Serializable {
 
                         Table newTable = new Table(idTable, treeOder, idStaff, timeBeginSell, timeOutSell, totalMoney);
                         char press = ' ';
-                        boolean isChoose = true;
+                        boolean isChoose = false;
                         System.out.println("Bạn muốn khởi tạo bàn trên !");
                         do {
                             System.out.print("Nhấn 'Y' để đồng ý ! Nhấn 'N' để hủy bỏ thao tác !");
@@ -450,14 +451,12 @@ public class SellManager implements Serializable {
                                     writeDataDrinksToFile(LINK_SAVE_OBJECT_DRINKS, drinksList);
                                     writeDataTableToFile(LINK_SAVE_OBJECT_TABLE, tablesListHaveCustomer);
                                     writeDataFromFileFormatToCsv(LINK_SAVE_FORMAT_CSV_TABLE, tablesListHaveCustomer);
-                                    isChoose = false;
                                     break;
                                 }
                                 case 'n':
                                 case 'N':
                                     drinksList = readDataDrinksFromFile(LINK_SAVE_OBJECT_DRINKS);
                                     menuSell();
-                                    isChoose = false;
                                     break;
                                 default:
                                     isChoose = true;
@@ -647,6 +646,278 @@ public class SellManager implements Serializable {
         } while (choice != '0');
     }
 
+    public Table getIdTableInListTableHaveCustomer(String idTableCheck) {
+        Table tableCheck = new Table();
+        for (Table table : tablesListHaveCustomer) {
+            if (table.getIdTable().equals(idTableCheck)) {
+                tableCheck = table;
+                break;
+            }
+        }
+        return tableCheck;
+    }
+
+    public void editListSell() {
+        char choice = ' ';
+        do {
+            System.out.println("----------------SỬA ORDER THỨC UỐNG CHO KHÁCH----------------");
+            System.out.println("| 1. Phục vụ khách hàng tại quán                            |");
+            System.out.println("| 2. Phục vụ khách hàng mang đi                             |");
+            System.out.println("| 0. Quay lại                                               |");
+            System.out.println(" -----------------------------------------------------------");
+            System.out.println();
+            System.out.print("Chọn : ");
+            try {
+                choice = input.nextLine().charAt(0);
+            } catch (Exception e) {
+                choice = ' ';
+            }
+            switch (choice) {
+                case '1':
+                    editListTable();
+                    break;
+                case '2':
+                    //editListCarriedAway();
+                    break;
+                case '0':
+                    // menuSellDrinksManager();
+                    break;
+                default:
+                    System.out.println("Chọn lại !");
+            }
+        } while (choice != '0');
+    }
+
+    public void editListTable() {
+        //display listTable();
+        String idTableEdit;
+        do {
+            System.out.println("Nhập id bàn cần thay đổi : ");
+            idTableEdit = input.nextLine();
+            if (getIdTableInListTableHaveCustomer(idTableEdit) == null) {
+                System.out.println("Bàn có id không có khách hoặc không tồn tại !");
+            }
+        } while (getIdTableInListTableHaveCustomer(idTableEdit) == null);
+
+        Table table = getIdTableInListTableHaveCustomer(idTableEdit);
+        //dispaly thoong tin banf
+        System.out.println();
+        char press = ' ';
+        do {
+            System.out.println("--------------YÊU CẦU SỬA ORDER------------------");
+            System.out.println(" 1. Thêm thức uống                              |");
+            System.out.println(" 2. Trả lại thức uống                           |");
+            System.out.println(" 0. Quay lại                                    |");
+            System.out.println("-------------------------------------------------");
+            System.out.println();
+            System.out.print("Chọn : ");
+            try {
+                press = input.nextLine().charAt(0);
+            } catch (Exception e) {
+                press = ' ';
+            }
+            switch (press) {
+                case '1':
+                    addDrinksToTable(table);
+                    break;
+                case '2':
+                     removeDrinksToTable(table);
+                    break;
+                case '0':
+
+            }
+        }
+        while (press != '0');
+    }
+
+    public void removeDrinksToTable(Table table) {
+        System.out.println("Danh sách thức uống : ");
+        displayMenuDrinks();
+        TreeMap<String, Integer> treeOder = table.getTreeOder();
+        char choice = ' ';
+        boolean isChoice = true;
+        do {
+            System.out.print("Nhấn 'T' để tiếp tục lên danh sách thức uống cho bàn " + table.getIdTable() + ", nhấn 'X để kết thúc nhập : ");
+            try {
+                choice = input.nextLine().charAt(0);
+            } catch (Exception e) {
+                choice = ' ';
+            }
+            switch (choice) {
+                case 't':
+                case 'T':
+                    String idDrinks;
+                    do {
+                        System.out.print("Nhập id thức uống khách muốn trả lại : ");
+                        idDrinks = input.nextLine();
+                        if (!isIdDrinksInMenu(idDrinks)) {
+                            System.out.println("Không có thức uống nào có id '" + idDrinks + "' ! Hãy nhập lại");
+                            displayMenuDrinks();
+                        }
+                        if (!treeOder.containsKey(idDrinks)) {
+                            System.out.println("Khách chưa gọi sản phầm này ! Hãy kiểm tra lại");
+                            displayTreeOder(treeOder);
+                        }
+                    } while (!isIdDrinksInMenu(idDrinks));
+
+                    String srtQualityDrinks = "";
+                    boolean isQuality = false;
+                    int qualityDrinks = -1;
+                    do {
+                        System.out.print("Số lượng của thức uống '" + nameDrinks(idDrinks) + "' khách trả lại : ");
+                        srtQualityDrinks = input.nextLine();
+                        try {
+                            qualityDrinks = Integer.parseInt(srtQualityDrinks);
+                        } catch (Exception e) {
+                            qualityDrinks = -1;
+                        }
+                        if (qualityDrinks > treeOder.get(idDrinks)) {
+                            System.out.println("Số lượng thức uống '" + nameDrinks(idDrinks) + "' trả lại lớn hơn danh sách oder lúc đầu hãy kiểm tra lại ! ");
+                            editListTable();
+                        }
+                    } while (qualityDrinks < 0 || (qualityDrinks > treeOder.get(idDrinks)));
+
+                    if (qualityDrinks == treeOder.get(idDrinks)){
+                        treeOder.remove(idDrinks);
+                    }else{
+                    treeOder = addTreeOder(treeOder, idDrinks, -qualityDrinks);}
+                    drinksList = changerQualityDrinks(drinksList, idDrinks, -qualityDrinks);
+                    break;
+                case 'x':
+                case 'X':
+                    isChoice = false;
+                    break;
+                default:
+            }
+        } while (isChoice);
+
+        char choose = ' ';
+        boolean isNotChoose = false;
+        do {
+            System.out.print("Bạn muốn lưu thay đổi ? nhấn 'Y' để thực hiện lưu thay dổi, nhấn 'X' để hủy");
+            try {
+                choose = input.nextLine().charAt(0);
+            } catch (Exception e) {
+                choose = ' ';
+            }
+            switch (choose) {
+                case 'y':
+                case 'Y':
+                    table.setTreeOder(treeOder);
+                    table.setTotalMoney(getTotalMoney(treeOder));
+                    writeDataDrinksToFile(LINK_SAVE_OBJECT_DRINKS, drinksList);
+                    writeDataTableToFile(LINK_SAVE_OBJECT_TABLE, tablesListHaveCustomer);
+                    writeDataFromFileFormatToCsv(LINK_SAVE_FORMAT_CSV_TABLE, tablesListHaveCustomer);
+                    break;
+                case 'n':
+                case 'N':
+                    drinksList = readDataDrinksFromFile(LINK_SAVE_OBJECT_DRINKS);
+                    menuSell();
+                    break;
+                default:
+                    isNotChoose = true;
+            }
+
+
+        } while (isNotChoose);
+    }
+
+
+    public void addDrinksToTable(Table table) {
+        System.out.println("Danh sách thức uống : ");
+        displayMenuDrinks();
+        TreeMap<String, Integer> treeOder = table.getTreeOder();
+        char choice = ' ';
+        boolean isChoice = true;
+        do {
+            System.out.print("Nhấn 'T' để tiếp tục lên danh sách thức uống cho bàn " + table.getIdTable() + ", nhấn 'X để kết thúc nhập : ");
+            try {
+                choice = input.nextLine().charAt(0);
+            } catch (Exception e) {
+                choice = ' ';
+            }
+            switch (choice) {
+                case 't':
+                case 'T':
+                    String idDrinks;
+                    do {
+                        System.out.print("Nhập id thức uống muốn hủy bỏ : ");
+                        idDrinks = input.nextLine();
+                        if (!isIdDrinksInMenu(idDrinks)) {
+                            System.out.println("Không có thức uống nào có id '" + idDrinks + "' ! Hãy nhập lại");
+                            displayMenuDrinks();
+                        }
+                    } while (!isIdDrinksInMenu(idDrinks));
+
+                    String srtQualityDrinks = "";
+                    boolean isQuality = false;
+                    int qualityDrinks = -1;
+                    do {
+                        System.out.print("Số lượng của thức uống '" + nameDrinks(idDrinks) + "' theo yêu cầu của khách : ");
+                        srtQualityDrinks = input.nextLine();
+                        try {
+                            qualityDrinks = Integer.parseInt(srtQualityDrinks);
+                        } catch (Exception e) {
+                            qualityDrinks = -1;
+                        }
+                    } while (qualityDrinks < 0);
+
+                    if (qualityDrinks > qualityDrinks(idDrinks)) {
+                        System.out.println("Số lượng thức uống '" + nameDrinks(idDrinks) + "' trong kho không đủ để cung cấp cho khách hàng! Hãy thông báo khách để oder lại thức uống ! ");
+                        menuSell();
+                        return;
+                    } else {
+                        drinksList = changerQualityDrinks(drinksList, idDrinks, qualityDrinks);
+                    }
+                    treeOder = addTreeOder(treeOder, idDrinks, qualityDrinks);
+                    System.out.println("Danh sách thức uống oder mới của '" + table.getIdTable() + "' : ");
+                    displayTreeOder(treeOder);
+                    break;
+                case 'x':
+                case 'X':
+                    isChoice = false;
+                    break;
+                default:
+            }
+        } while (isChoice);
+
+        char choose = ' ';
+        boolean isNotChoose = false;
+        do {
+            System.out.print("Bạn muốn lưu thay đổi ? nhấn 'Y' để thực hiện lưu thay dổi, nhấn 'X' để hủy");
+            try {
+                choose = input.nextLine().charAt(0);
+            } catch (Exception e) {
+                choose = ' ';
+            }
+            switch (choose) {
+                case 'y':
+                case 'Y':
+                    table.setTreeOder(treeOder);
+                    table.setTotalMoney(getTotalMoney(treeOder));
+                    writeDataDrinksToFile(LINK_SAVE_OBJECT_DRINKS, drinksList);
+                    writeDataTableToFile(LINK_SAVE_OBJECT_TABLE, tablesListHaveCustomer);
+                    writeDataFromFileFormatToCsv(LINK_SAVE_FORMAT_CSV_TABLE, tablesListHaveCustomer);
+                    break;
+                case 'n':
+                case 'N':
+                    drinksList = readDataDrinksFromFile(LINK_SAVE_OBJECT_DRINKS);
+                    menuSell();
+                    break;
+                default:
+                    isNotChoose = true;
+            }
+
+
+        } while (isNotChoose);
+    }
+
+
+    public void menuPay(){
+        
+    }
+
+
     public void menuSellDrinksManager() {
         char choice = ' ';
         do {
@@ -668,7 +939,7 @@ public class SellManager implements Serializable {
                     menuSell();
                     break;
                 case '2':
-                    //editListSell();
+                    editListSell();
                     break;
                 case '3':
                     //menuPay();

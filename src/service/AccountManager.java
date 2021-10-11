@@ -85,7 +85,7 @@ public class AccountManager implements Serializable {
             ois.close();
             fis.close();
         } catch (Exception e) {
-            System.out.println("File chưa tồn tại, hãy nhập dữ liệu và tạo ra nó !");
+            System.out.println("File tài khoản chưa tồn tại, hãy nhập dữ liệu và tạo ra nó !");
         }
         return listAccounts;
     }

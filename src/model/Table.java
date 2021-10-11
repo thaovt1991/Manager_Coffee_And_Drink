@@ -11,7 +11,7 @@ public class Table implements Serializable {
     private String timeOut ;
     private long totalMoney ;
 
-    private Table(){}
+    public Table(){}
 
     public Table(String idTable, TreeMap<String, Integer> treeOder, String idStaffServing, String timeInput, String timeOut,long totalMoney) {
         this.idTable = idTable;

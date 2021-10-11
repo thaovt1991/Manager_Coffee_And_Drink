@@ -7,6 +7,7 @@ import service.SellManager;
 import service.StaffManager;
 
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -302,6 +303,7 @@ public class Menu {
 
 
     public static void main(String[] args) {
+
         menuLogIn();
     }
 }

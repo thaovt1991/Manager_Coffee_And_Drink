@@ -868,7 +868,7 @@ public class DrinksManager implements Serializable {
             fis.close();
             ois.close();
         } catch (Exception ex) {
-            System.out.println("File chưa tồn tại, hãy nhập dữ liệu và tạo ra nó !");
+            System.out.println("File danh sách thức uống chưa tồn tại, hãy nhập dữ liệu và tạo ra nó !");
         }
         return listDrinks;
     }
