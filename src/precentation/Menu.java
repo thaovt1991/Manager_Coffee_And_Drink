@@ -3,6 +3,7 @@ package precentation;
 import model.Account;
 import service.AccountManager;
 import service.DrinksManager;
+import service.SellManager;
 import service.StaffManager;
 
 
@@ -18,6 +19,7 @@ public class Menu {
     public static AccountManager accountManager = new AccountManager();
     public static StaffManager staffManager = new StaffManager();
     public static DrinksManager drinksManager = new DrinksManager();
+    public static SellManager sellManager = new SellManager();
     public static ArrayList<Account> listAccount;
     public static String username, password, decentralization, timelogin, timeOut;
 
@@ -35,6 +37,7 @@ public class Menu {
         drinksManager = new DrinksManager();
         accountManager = new AccountManager();
         staffManager = new StaffManager();
+        sellManager = new SellManager();
         listAccount = (new AccountManager()).readDataAccountToFile(LINK_SAVE_OBJECT_ACCOUNT);
     }
 
@@ -98,13 +101,14 @@ public class Menu {
                 } catch (Exception e) {
                     choice = ' ';
                 }
+
                 switch (choice) {
                     case '1':
 
                         drinksManager.menuDrinksManager();
                         break;
                     case '2':
-                        //sellManager.menuSellManager();
+                        sellManager.menuSellDrinksManager();
                         break;
                     case '3':
                         staffManager.menuStaffManager();
@@ -158,7 +162,7 @@ public class Menu {
                 }
                 switch (choice) {
                     case '1':
-                        // sellManager.menuSellManager();
+                        sellManager.menuSellDrinksManager();
                         break;
                     case '2':
                         //displayRevenue();
