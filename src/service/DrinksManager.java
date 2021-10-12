@@ -25,8 +25,8 @@ public class DrinksManager implements Serializable {
     public static final String FORMAT_CSV_DRINKS = "ID,NAME,QUALITY,PRICE,OTHER";
     public static final String DOWN_THE_LINE = "\n";
     public static final String COMMA_DELIMITER = ",";
-    public static final String LINK_SAVE_OBJECT_DRINKS = "D:\\Manager_Coffee_And_Drink\\src\\data\\list_drinks.txt";
-    public static final String LINK_SAVE_FORMAT_CSV_DRINKS = "D:\\Manager_Coffee_And_Drink\\out_data\\list_drinks.csv";
+    public static final String LINK_SAVE_OBJECT_DRINKS = "src/data/list_drinks.txt";
+    public static final String LINK_SAVE_FORMAT_CSV_DRINKS = "out_data/list_drinks.csv";
 
     public DrinksManager() {
         drinksList = readDataFromFile(LINK_SAVE_OBJECT_DRINKS);

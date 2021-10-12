@@ -21,9 +21,9 @@ public class AccountManager implements Serializable {
     private ArrayList<Account> accountsList;
     private ArrayList<Staff> staffList;
     static Scanner input = new Scanner(System.in);
-    public static final String LINK_SAVE_OBJECT_STAFF = "D:\\Manager_Coffee_And_Drink\\src\\data\\list_staff.txt";
-    public static final String LINK_SAVE_OBJECT_ACCOUNT = "D:\\Manager_Coffee_And_Drink\\src\\data\\list_account.txt";
-    public static final String LINK_SAVE_FORMAT_CSV_ACCOUNT = "D:\\Manager_Coffee_And_Drink\\out_data\\list_account.csv";
+    public static final String LINK_SAVE_OBJECT_STAFF = "src/data/list_staff.txt";
+    public static final String LINK_SAVE_OBJECT_ACCOUNT = "src/data/list_account.txt";
+    public static final String LINK_SAVE_FORMAT_CSV_ACCOUNT = "out_data/list_account.csv";
     public static final String DOWN_THE_LINE = "\n";
     public static final String COMMA_DELIMITER = ",";
     public static final String FORMAT_CSV_ACCOUNT = "ID,USERNAME,PASSWORD,DECENTRALIZATION";
@@ -228,6 +228,7 @@ public class AccountManager implements Serializable {
                                 isPress = false;
                                 break;
                             default:
+                                System.out.println();
                         }
                     } while (isPress);
 

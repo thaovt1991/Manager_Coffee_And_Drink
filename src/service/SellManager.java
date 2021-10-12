@@ -17,15 +17,15 @@ public class SellManager implements Serializable {
     public ArrayList<Bill> listBills ;
     public ArrayList<Drinks> drinksList;
     public final Integer NUM_TABLE = 10;
-    public final Integer SIZE_CA = 10;
+  //  public final Integer SIZE_CA = 10;
     static Scanner input = new Scanner(System.in);
-    public static final String LINK_SAVE_FORMAT_CSV_TABLE = "D:\\Manager_Coffee_And_Drink\\out_data\\list_tables.csv";
-    public static final String LINK_SAVE_OBJECT_TABLE = "D:\\Manager_Coffee_And_Drink\\src\\data\\list_tables.txt";
-    public static final String LINK_SAVE_FORMAT_CSV_CA = "D:\\Manager_Coffee_And_Drink\\out_data\\list_carried_away.csv";
-    public static final String LINK_SAVE_OBJECT_CARRIED_AWAY = "D:\\Manager_Coffee_And_Drink\\src\\data\\list_carried_away.txt";
-    public static final String LINK_SAVE_OBJECT_STAFF = "D:\\Manager_Coffee_And_Drink\\src\\data\\list_staff.txt";
-    public static final String LINK_SAVE_OBJECT_DRINKS = "D:\\Manager_Coffee_And_Drink\\src\\data\\list_drinks.txt";
-    public static final String LINK_SAVE_OBJECT_BILL = "D:\\Manager_Coffee_And_Drink\\src\\data\\list_bills.txt";
+    public static final String LINK_SAVE_FORMAT_CSV_TABLE = "out_data/list_tables.csv";
+    public static final String LINK_SAVE_OBJECT_TABLE = "src/data/list_tables.txt";
+    public static final String LINK_SAVE_FORMAT_CSV_CA = "out_data/list_carried_away.csv";
+    public static final String LINK_SAVE_OBJECT_CARRIED_AWAY = "src/data/list_carried_away.txt";
+    public static final String LINK_SAVE_OBJECT_STAFF = "src/data/list_staff.txt";
+    public static final String LINK_SAVE_OBJECT_DRINKS = "src/data/list_drinks.txt";
+    public static final String LINK_SAVE_OBJECT_BILL = "src/data/list_bills.txt";
     public static final String FORMAT_CSV_TABLE = "STT,ID TABLE,DRINKS ODER,ID STAFF SERVING,TIME INPUT,TIME OUT,TOTAL ";
     public static final String FORMAT_CSV_CA = "STT,ID CA,DRINKS ODER,ID STAFF SERVING,TIME INPUT,TIME OUT,TOTAL ";
     public static final String DOWN_THE_LINE = "\n";
@@ -41,7 +41,11 @@ public class SellManager implements Serializable {
         tablesListHaveCustomer = readDataTableToFile(LINK_SAVE_OBJECT_TABLE);
         drinksList = readDataDrinksFromFile(LINK_SAVE_OBJECT_DRINKS);
         listCarriedAway = readDataCarriedAwayToFile(LINK_SAVE_OBJECT_CARRIED_AWAY);
-        numIdCarryAway = listCarriedAway.size();
+        try{
+        numIdCarryAway =Integer.parseInt(listCarriedAway.get(listCarriedAway.size()-1).getIdCa().replace("CA","")) ;}
+        catch (Exception e){
+            numIdCarryAway = 0 ;
+        }
         listBills = readDataBillsToFile(LINK_SAVE_OBJECT_BILL);
     }
 
@@ -88,7 +92,7 @@ public class SellManager implements Serializable {
             oos.writeObject(listDrinks);
             oos.close();
             fos.close();
-            System.out.println("Đã lưu lại mọi thay đổi vào dữ liệu gốc !");
+           // System.out.println("Đã lưu lại mọi thay đổi vào dữ liệu gốc !");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -115,7 +119,7 @@ public class SellManager implements Serializable {
             oos.writeObject(tablesList);
             oos.close();
             fos.close();
-            System.out.println("Đã lưu lại mọi thay đổi vào dữ liệu gốc !");
+         //   System.out.println("Đã lưu lại mọi thay đổi vào dữ liệu gốc !");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -170,7 +174,7 @@ public class SellManager implements Serializable {
             oos.writeObject(listBill);
             oos.close();
             fos.close();
-            System.out.println("Đã lưu lại mọi thay đổi vào dữ liệu gốc !");
+        //    System.out.println("Đã lưu lại mọi thay đổi vào dữ liệu gốc !");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -216,7 +220,7 @@ public class SellManager implements Serializable {
             oos.writeObject(carriedAwaysList);
             oos.close();
             fos.close();
-            System.out.println("Đã lưu lại mọi thay đổi vào dữ liệu gốc !");
+        //    System.out.println("Đã lưu lại mọi thay đổi vào dữ liệu gốc !");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -262,15 +266,6 @@ public class SellManager implements Serializable {
         }
         return totalMoney;
     }
-//    public long getTotalMoneyOfOneDrinksInlistOder(String idDrinks ,TreeMap<String,Integer> treeOder){
-//        long totalMoney = 0;
-//        for (Drinks drinks : drinksList) {
-//            if (drinks.getIdDrink().equals(idDrinks)) {
-//                totalMoney = drinks.getPriceDrink() * treeOder.get(idDrinks);
-//            }
-//        }
-//        return totalMoney ;
-//    }
 
     public boolean isHaveDrinksInTreeOder(TreeMap<String, Integer> treeOder, String idDrinksCheck) {
         if (treeOder.containsKey(idDrinksCheck)) return true;
@@ -451,7 +446,7 @@ public class SellManager implements Serializable {
                 switch (check) {
                     case 'y':
                     case 'Y':
-                        //displayTableList();
+                        displaylistTable();
                         System.out.println(listTableEmpty());
 
                         String idTable;
@@ -637,7 +632,6 @@ public class SellManager implements Serializable {
                                     System.out.println("Số lượng thức uống '" + nameDrinks(idDrinks) + "' trong kho không đủ để cung cấp cho khách hàng! Hãy thông báo khách để oder lại thức uống ! ");
                                     menuSell();
                                     numIdCarryAway--;
-                                    // lenh thoat khoi vong;
                                 } else {
                                     drinksList = changerQualityDrinks(drinksList, idDrinks, qualityDrinks);
                                 }
@@ -744,14 +738,12 @@ public class SellManager implements Serializable {
     }
 
     public Table getTableInListTableHaveCustomer(String idTableCheck) {
-        Table tableCheck = new Table();
         for (Table table : tablesListHaveCustomer) {
             if (table.getIdTable().equals(idTableCheck)) {
-                tableCheck = table;
-                break;
+                return table;
             }
         }
-        return tableCheck;
+        return null ;
     }
 
     public CarriedAway getIdTableInListCA(String idCA) {
@@ -761,7 +753,7 @@ public class SellManager implements Serializable {
         return null;
     }
 
-    public void editListSell() {
+    public void menuEditListSell() {
         char choice = ' ';
         do {
             System.out.println("----------------SỬA ORDER THỨC UỐNG CHO KHÁCH----------------");
@@ -800,7 +792,7 @@ public class SellManager implements Serializable {
             idTableEdit = input.nextLine();
             if (getTableInListTableHaveCustomer(idTableEdit) == null) {
                 System.out.println("Bàn có id không có khách hoặc không tồn tại !");
-                editListSell();
+                menuEditListSell();
             }
         } while (getTableInListTableHaveCustomer(idTableEdit) == null);
 
@@ -811,9 +803,9 @@ public class SellManager implements Serializable {
         char press = ' ';
         do {
             System.out.println("--------------YÊU CẦU SỬA ORDER------------------");
-            System.out.println(" 1. Thêm thức uống                              |");
-            System.out.println(" 2. Trả lại thức uống                           |");
-            System.out.println(" 0. Quay lại                                    |");
+            System.out.println("| 1. Thêm thức uống                              |");
+            System.out.println("| 2. Trả lại thức uống                           |");
+            System.out.println("| 0. Quay lại                                    |");
             System.out.println("-------------------------------------------------");
             System.out.println();
             System.out.print("Chọn : ");
@@ -830,7 +822,7 @@ public class SellManager implements Serializable {
                     removeDrinksToTable(table);
                     break;
                 case '0':
-                    editListSell();
+                    menuEditListSell();
                     break;
                 default:
 
@@ -967,7 +959,7 @@ public class SellManager implements Serializable {
         char choose = ' ';
         boolean isNotChoose = false;
         do {
-            System.out.print("Bạn muốn lưu thay đổi ? nhấn 'Y' để thực hiện lưu thay dổi, nhấn 'X' để hủy");
+            System.out.print("Bạn muốn lưu thay đổi ? nhấn 'Y' để thực hiện lưu thay dổi, nhấn 'N' để hủy");
             try {
                 choose = input.nextLine().charAt(0);
             } catch (Exception e) {
@@ -985,7 +977,7 @@ public class SellManager implements Serializable {
                 case 'n':
                 case 'N':
                     drinksList = readDataDrinksFromFile(LINK_SAVE_OBJECT_DRINKS);
-                    menuSell();
+                    editListTable();
                     break;
                 default:
                     isNotChoose = true;
@@ -1001,7 +993,7 @@ public class SellManager implements Serializable {
             idCAEdit = input.nextLine();
             if (getIdTableInListCA(idCAEdit) == null) {
                 System.out.println("Không có khách hàng nào được tìm thấy !");
-                editListSell();
+                menuEditListSell();
             }
         } while (getIdTableInListCA(idCAEdit) == null);
 
@@ -1012,9 +1004,9 @@ public class SellManager implements Serializable {
         char press = ' ';
         do {
             System.out.println("--------------YÊU CẦU SỬA ORDER------------------");
-            System.out.println(" 1. Thêm thức uống                              |");
-            System.out.println(" 2. Trả lại thức uống                           |");
-            System.out.println(" 0. Quay lại                                    |");
+            System.out.println("| 1. Thêm thức uống                              |");
+            System.out.println("| 2. Trả lại thức uống                           |");
+            System.out.println("| 0. Quay lại                                    |");
             System.out.println("-------------------------------------------------");
             System.out.println();
             System.out.print("Chọn : ");
@@ -1031,7 +1023,7 @@ public class SellManager implements Serializable {
                     removeDrinksToCA(carriedAway);
                     break;
                 case '0':
-                    editListSell();
+                    menuEditListSell();
                     break;
                 default:
             }
@@ -1167,7 +1159,7 @@ public class SellManager implements Serializable {
         char choose = ' ';
         boolean isNotChoose = false;
         do {
-            System.out.print("Bạn muốn lưu thay đổi ? nhấn 'Y' để thực hiện lưu thay dổi, nhấn 'X' để hủy");
+            System.out.print("Bạn muốn lưu thay đổi ? nhấn 'Y' để thực hiện lưu thay dổi, nhấn 'N' để hủy");
             try {
                 choose = input.nextLine().charAt(0);
             } catch (Exception e) {
@@ -1185,7 +1177,7 @@ public class SellManager implements Serializable {
                 case 'n':
                 case 'N':
                     drinksList = readDataDrinksFromFile(LINK_SAVE_OBJECT_DRINKS);
-                    menuSell();
+                    menuEditListSell();
                     break;
                 default:
                     isNotChoose = true;
@@ -1276,8 +1268,9 @@ public class SellManager implements Serializable {
       timeOut = bill.getTimeOut();
       long totalMoney = bill.getTotalMoney();
         System.out.println("-------------------------------------- BILL -------------------------------------------");
-        System.out.println("Date : "+ date +" - Username : "+username + " Nhân viên phục vụ : "+ getFullNameOfIdStaff(idStaff)  );
-        System.out.println("ID :" + idOder);
+        System.out.println("Date : "+ date +" - Username manager : "+username);
+        System.out.println("Nhân viên phục vụ bàn : "+ getFullNameOfIdStaff(idStaff));
+        System.out.println("ID : " + idOder);
         System.out.println();
         String idDrinks, nameDrinks, qualityDrinks, stt,priceDrinks, money;
         Object obj = new Object();
@@ -1360,7 +1353,7 @@ public class SellManager implements Serializable {
         do {
             System.out.println("-------------------QUẢN LÝ BÁN HÀNG-------------------");
             System.out.println("| 1. Oder thức uống cho khách                         |");
-            System.out.println("| 2. Thêm thức uống cho danh sách oder                |");
+            System.out.println("| 2. Sửa oder cho khách                               |");
             System.out.println("| 3. Thanh toán tiền                                  |");
             System.out.println("| 0. Quay lại menu chính                              |");
             System.out.println("-------------------------------------------------------");
@@ -1376,7 +1369,7 @@ public class SellManager implements Serializable {
                     menuSell();
                     break;
                 case '2':
-                    editListSell();
+                    menuEditListSell();
                     break;
                 case '3':
                     menuPay();

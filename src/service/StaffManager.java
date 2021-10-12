@@ -15,8 +15,8 @@ import java.util.regex.Pattern;
 public class StaffManager implements Serializable {
     public ArrayList<Staff> staffList;
     static Scanner input = new Scanner(System.in);
-    public static final String LINK_SAVE_OBJECT_STAFF = "D:\\Manager_Coffee_And_Drink\\src\\data\\list_staff.txt";
-    public static final String LINK_SAVE_FORMAT_CSV_STAFF = "D:\\Manager_Coffee_And_Drink\\out_data\\list_staff.csv";
+    public static final String LINK_SAVE_OBJECT_STAFF = "src/data/list_staff.txt";
+    public static final String LINK_SAVE_FORMAT_CSV_STAFF = "out_data/list_staff.csv";
     public static final String FORMAT_CSV_STAFF = "ID,HO VA TEN,GIOI TINH,NGAY SINH,CMND,SO DIEN THOAI,LUONG,THONG TIN KHAC";
     public static final String DOWN_THE_LINE = "\n";
     public static final String COMMA_DELIMITER = ",";
