@@ -14,6 +14,7 @@ public class SellManager implements Serializable {
     public ArrayList<Table> tablesListHaveCustomer;
     public ArrayList<CarriedAway> listCarriedAway;
     public static long numIdCarryAway = 0;
+    public ArrayList<Bill> listBills ;
     public ArrayList<Drinks> drinksList;
     public final Integer NUM_TABLE = 10;
     public final Integer SIZE_CA = 10;
@@ -24,6 +25,7 @@ public class SellManager implements Serializable {
     public static final String LINK_SAVE_OBJECT_CARRIED_AWAY = "D:\\Manager_Coffee_And_Drink\\src\\data\\list_carried_away.txt";
     public static final String LINK_SAVE_OBJECT_STAFF = "D:\\Manager_Coffee_And_Drink\\src\\data\\list_staff.txt";
     public static final String LINK_SAVE_OBJECT_DRINKS = "D:\\Manager_Coffee_And_Drink\\src\\data\\list_drinks.txt";
+    public static final String LINK_SAVE_OBJECT_BILL = "D:\\Manager_Coffee_And_Drink\\src\\data\\list_bills.txt";
     public static final String FORMAT_CSV_TABLE = "STT,ID TABLE,DRINKS ODER,ID STAFF SERVING,TIME INPUT,TIME OUT,TOTAL ";
     public static final String FORMAT_CSV_CA = "STT,ID CA,DRINKS ODER,ID STAFF SERVING,TIME INPUT,TIME OUT,TOTAL ";
     public static final String DOWN_THE_LINE = "\n";
@@ -40,6 +42,7 @@ public class SellManager implements Serializable {
         drinksList = readDataDrinksFromFile(LINK_SAVE_OBJECT_DRINKS);
         listCarriedAway = readDataCarriedAwayToFile(LINK_SAVE_OBJECT_CARRIED_AWAY);
         numIdCarryAway = listCarriedAway.size();
+        listBills = readDataBillsToFile(LINK_SAVE_OBJECT_BILL);
     }
 
     public boolean isFormatIdTable(String idTableCheck) {
@@ -56,8 +59,8 @@ public class SellManager implements Serializable {
             ois.close();
         } catch (Exception ex) {
             System.out.println("File danh sách nhân viên chưa tồn tại, hãy khởi tạo danh sách nhân viên !");
-            StaffManager staffManager = new StaffManager();
-            staffManager.addStaff();
+//            StaffManager staffManager = new StaffManager();
+//            staffManager.addStaff();
         }
         return listStaff;
     }
@@ -72,8 +75,8 @@ public class SellManager implements Serializable {
             ois.close();
         } catch (Exception ex) {
             System.out.println("File danh sách thức uống chưa tồn tại, hãy khởi tạo danh sách để quản lý !");
-            DrinksManager drinksManager = new DrinksManager();
-            drinksManager.addDrinksList();
+//            DrinksManager drinksManager = new DrinksManager();
+//            drinksManager.addDrinksList();
         }
         return drinksList;
     }
@@ -146,6 +149,33 @@ public class SellManager implements Serializable {
         } catch (Exception e) {
         }
     }
+    public ArrayList<Bill> readDataBillsToFile(String path) {
+        ArrayList<Bill> listBill = new ArrayList<>();
+        try {
+            FileInputStream fis = new FileInputStream(path);
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            listBill = (ArrayList<Bill>) ois.readObject();
+            ois.close();
+            fis.close();
+        } catch (Exception e) {
+            System.out.println("File danh sách thanh toan, hãy nhập dữ liệu và tạo ra nó !");
+        }
+        return listBill;
+    }
+
+    public void writeDataBillsToFile(String path, ArrayList<Bill> listBill) {
+        try {
+            FileOutputStream fos = new FileOutputStream(path);
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(listBill);
+            oos.close();
+            fos.close();
+            System.out.println("Đã lưu lại mọi thay đổi vào dữ liệu gốc !");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public String toString(TreeMap<String, Integer> treeOder) {
         String idDrinks, nameDrinks, qualityDrinks, stt;
@@ -226,12 +256,21 @@ public class SellManager implements Serializable {
         for (String idDrinks : treeOder.keySet()) {
             for (Drinks drinks : drinksList) {
                 if (drinks.getIdDrink().equals(idDrinks)) {
-                    totalMoney = drinks.getPriceDrink() * treeOder.get(idDrinks);
+                    totalMoney += drinks.getPriceDrink() * treeOder.get(idDrinks);
                 }
             }
         }
         return totalMoney;
     }
+//    public long getTotalMoneyOfOneDrinksInlistOder(String idDrinks ,TreeMap<String,Integer> treeOder){
+//        long totalMoney = 0;
+//        for (Drinks drinks : drinksList) {
+//            if (drinks.getIdDrink().equals(idDrinks)) {
+//                totalMoney = drinks.getPriceDrink() * treeOder.get(idDrinks);
+//            }
+//        }
+//        return totalMoney ;
+//    }
 
     public boolean isHaveDrinksInTreeOder(TreeMap<String, Integer> treeOder, String idDrinksCheck) {
         if (treeOder.containsKey(idDrinksCheck)) return true;
@@ -327,6 +366,15 @@ public class SellManager implements Serializable {
             }
         }
         return nameDrinks;
+    }
+    public long priceDrinks(String idDrink) {
+        long priceDrinks = 0;
+        for (Drinks drinks : drinksList) {
+            if (drinks.getIdDrink().equals(idDrink)) {
+                priceDrinks = drinks.getPriceDrink();
+            }
+        }
+        return priceDrinks;
     }
 
     public int qualityDrinks(String idDrinks) {
@@ -1196,7 +1244,7 @@ public class SellManager implements Serializable {
             }
             switch (choice) {
                 case '1':
-                    //payForTable();
+                    payForTable();
                     break;
                 case '2':
                     //payForCA();
@@ -1209,19 +1257,48 @@ public class SellManager implements Serializable {
         } while (choice != '0');
     }
 
-//    public void displayBill(Bill bill){
-//      String date, username , idOder , timeIn, timeOut, totalMoney,idStaff;
-//      TreeMap<String,Integer> treeOder = bill.getTreeOder();
-//      date = bill.getDateBill();
-//      username = bill.getUserName();
-//      idOder = bill.getIdOder();
-//      idStaff = bill.getIdStaffServing();
-//      timeIn = bill.getTimeIn();
-//      timeOut = bill.getTimeOut();
-//      totalMoney = String.valueOf(bill.getTotalMoney());
-//
-//        System.out.println("Date : "+ date +" - Username : "+username + " StaffServing: "  );
-//    }
+    public String getFullNameOfIdStaff(String idSfaff){
+        for (Staff staff : staffList){
+            if(staff.getIdStaff().equals(idSfaff))return staff.getFullName();
+        }
+        return null;
+    }
+
+    public void displayBill(Bill bill){
+        DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
+      String date, username , idOder , timeIn, timeOut,idStaff;
+      TreeMap<String,Integer> treeOder = bill.getTreeOder();
+      date = bill.getDateBill();
+      username = bill.getUserName();
+      idOder = bill.getIdOder();
+      idStaff = bill.getIdStaffServing();
+      timeIn = bill.getTimeIn();
+      timeOut = bill.getTimeOut();
+      long totalMoney = bill.getTotalMoney();
+        System.out.println("-------------------------------------- BILL -------------------------------------------");
+        System.out.println("Date : "+ date +" - Username : "+username + " Nhân viên phục vụ : "+ getFullNameOfIdStaff(idStaff)  );
+        System.out.println("ID :" + idOder);
+        System.out.println();
+        String idDrinks, nameDrinks, qualityDrinks, stt,priceDrinks, money;
+        Object obj = new Object();
+        Set set = treeOder.keySet();
+        Iterator i = set.iterator();
+        System.out.printf("%-5s%-20s%-20s%-10s%-15s%s\n", "STT", "ID THỨC UỐNG", "TÊN THỨC UỐNG", "SỐ LƯỢNG","GIÁ","TIỀN");
+        int count = 0;
+        while (i.hasNext()) {
+            count++;
+            stt = String.valueOf(count);
+            idDrinks = (String) i.next();
+            nameDrinks = nameDrinks(idDrinks);
+            qualityDrinks = String.valueOf(treeOder.get(idDrinks));
+            priceDrinks = decimalFormat.format(priceDrinks(idDrinks));
+            money = decimalFormat.format(priceDrinks(idDrinks)*treeOder.get(idDrinks));
+            System.out.printf("%-5s%-20s%-20s%-10s%-15s%s\n", stt, idDrinks, nameDrinks, qualityDrinks,priceDrinks,money);
+        }
+        System.out.println("---------------------------------------------------------------------------------------");
+        System.out.printf("%-60s%-10s%s\n","","TỔNG CỘNG : ",decimalFormat.format(totalMoney)+" VND");
+        System.out.println();
+    }
 
     public void payForTable() {
         DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
@@ -1237,11 +1314,15 @@ public class SellManager implements Serializable {
             Table table = getTableInListTableHaveCustomer(idTable);
             displayTreeOder(table.getTreeOder());
             System.out.println();
-            System.out.println("Tổng tiền là : " + table.getTotalMoney());
+            System.out.println("Tổng tiền là : " + decimalFormat.format(table.getTotalMoney()) + " VND.");
             System.out.println();
             String timeOut = String.valueOf(java.time.LocalTime.now()) + " " + String.valueOf(java.time.LocalDate.now());
             table.setTimeOut(timeOut);
-            //display Hóa Đơn in hóa đơn
+            String dateBill = String.valueOf(java.time.LocalDate.now());
+            String username = Menu.username ;
+            Bill bill = new Bill(dateBill,username,table.getIdTable(),table.getTreeOder(),table.getIdStaffServing(),table.getTimeInput(),table.getTimeOut(),table.getTotalMoney());
+            System.out.println("Hóa đơn thanh toán : ");
+            displayBill(bill);
             char choice = ' ';
             boolean isNotChoice = false;
             do {
@@ -1256,10 +1337,12 @@ public class SellManager implements Serializable {
                     case 'Y':
                         System.out.println("In hóa đơn");
                         //display Hóa Đơn
-                        //tao doi tuong luu (ngay,username,id phục vu, treenot,id nguoi phu vu, thoi gian vao, thoi gian ra, tong tien
-                        //viet vao fiee luu
+                        listBills.add(bill) ;
+                        writeDataBillsToFile(LINK_SAVE_OBJECT_BILL,listBills);
                         //viet vao file xuat execeli
                         tablesListHaveCustomer.remove(table);
+                        writeDataTableToFile(LINK_SAVE_OBJECT_TABLE,tablesListHaveCustomer);
+                        writeDataOfTableFromFileFormatToCsv(LINK_SAVE_FORMAT_CSV_TABLE,tablesListHaveCustomer);
                         break;
                     case 'n':
                     case 'N':
@@ -1270,7 +1353,6 @@ public class SellManager implements Serializable {
                 }
             } while (isNotChoice);
         }
-
     }
 
     public void menuSellDrinksManager() {
