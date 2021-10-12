@@ -18,7 +18,7 @@ public class DrinksManager implements Serializable {
     public ArrayList<Drinks> drinksList;
     static Scanner input = new Scanner(System.in);
     public static final String ID_REGEX = "^[A-Z]{2}+\\d{3}$";
-    public static final String NAME_REGEX = "^([AÀẢÃÁẠĂẰẮẲẴẶÂẤẦẨẪẬBCDĐEÈÉẺẼẸÊỀẾỂỄỆFGHIÍÌỈĨỊJKLMNOÒÓỎÕỌÔỒỐỔỖỘƠỜỚỞỠỢPQRSTUÙÚỦŨỤƯỪỨỬỮỰVWXYÝỲỶỸỴZ]+[aàảãáạăằẳẵắặâầẩẫấậbcdđeèẻẽéẹêềểễếệfghiìỉĩíịjklmnoòỏõóọôồổỗốộơờởỡớợpqrstuùủũúụưừửữứựvwxyỳỷỹýỵz]*+[ ]*)+$";
+    public static final String NAME_REGEX = "^([AÀẢÃÁẠĂẰẮẲẴẶÂẤẦẨẪẬBCDĐEÈÉẺẼẸÊỀẾỂỄỆFGHIÍÌỈĨỊJKLMNOÒÓỎÕỌÔỒỐỔỖỘƠỜỚỞỠỢPQRSTUÙÚỦŨỤƯỪỨỬỮỰVWXYÝỲỶỸỴZ]+[aàảãáạăằẳẵắặâầẩẫấậbcdđeèẻẽéẹêềểễếệfghiìỉĩíịjklmnoòỏõóọôồổỗốộơờởỡớợpqrstuùủũúụưừửữứựvwxyỳỷỹýỵz]*+[ ]?)+$";
     public static final String QUALITY_REGEX = "^[0-9]{1,9}$"; //int
     public static final String PRIME_REGEX = "^[1-9][0-9]{1,14}[0]{3}$";
     public static final String LINK_REGEX = "(^([C|D][:])\\\\(?:[\\w]+\\\\)*\\w+$)|(^[C|D][:][\\\\]$)";
@@ -60,6 +60,56 @@ public class DrinksManager implements Serializable {
             }
         }
         return false;
+    }
+
+    public ArrayList<Drinks> readDataFromFile(String path) {
+        ArrayList<Drinks> listDrinks = new ArrayList<>();
+        try {
+            FileInputStream fis = new FileInputStream(path);
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            listDrinks = (ArrayList<Drinks>) ois.readObject();
+            fis.close();
+            ois.close();
+        } catch (Exception ex) {
+            System.out.println("File danh sách thức uống chưa tồn tại, hãy nhập dữ liệu và tạo ra nó !");
+        }
+        return listDrinks;
+    }
+
+    public void writeToFile(String path, ArrayList<Drinks> listDrinks) {
+        try {
+            FileOutputStream fos = new FileOutputStream(path);
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(listDrinks);
+            oos.close();
+            fos.close();
+            System.out.println("Đã lưu lại mọi thay đổi vào dữ liệu gốc !");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void writeDataFromFileFormatToCsv(String path, ArrayList<Drinks> listDrink) {
+        FileWriter writer = null;
+        try {
+            writer = new FileWriter(path);
+            writer.append(FORMAT_CSV_DRINKS);
+            writer.append(DOWN_THE_LINE);
+            for (Drinks drink : listDrink) {
+                writer.append(drink.getIdDrink());
+                writer.append(COMMA_DELIMITER);
+                writer.append(drink.getNameDrink());
+                writer.append(COMMA_DELIMITER);
+                writer.append(String.valueOf(drink.getQualityDrink()));
+                writer.append(COMMA_DELIMITER);
+                writer.append(String.valueOf(drink.getPriceDrink()));
+                writer.append(COMMA_DELIMITER);
+                writer.append(drink.getOtherDescription().replace(",", ";"));
+                writer.append(DOWN_THE_LINE);
+            }
+            writer.close();
+        } catch (Exception e) {
+        }
     }
 
     public void addDrinksList() {
@@ -859,56 +909,7 @@ public class DrinksManager implements Serializable {
         return matcher.matches();
     }
 
-    public ArrayList<Drinks> readDataFromFile(String path) {
-        ArrayList<Drinks> listDrinks = new ArrayList<>();
-        try {
-            FileInputStream fis = new FileInputStream(path);
-            ObjectInputStream ois = new ObjectInputStream(fis);
-            listDrinks = (ArrayList<Drinks>) ois.readObject();
-            fis.close();
-            ois.close();
-        } catch (Exception ex) {
-            System.out.println("File danh sách thức uống chưa tồn tại, hãy nhập dữ liệu và tạo ra nó !");
-        }
-        return listDrinks;
-    }
 
-    public void writeToFile(String path, ArrayList<Drinks> listDrinks) {
-        try {
-            FileOutputStream fos = new FileOutputStream(path);
-            ObjectOutputStream oos = new ObjectOutputStream(fos);
-            oos.writeObject(listDrinks);
-            oos.close();
-            fos.close();
-            System.out.println("Đã lưu lại mọi thay đổi vào dữ liệu gốc !");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-
-    public void writeDataFromFileFormatToCsv(String path, ArrayList<Drinks> listDrink) {
-        FileWriter writer = null;
-        try {
-            writer = new FileWriter(path);
-            writer.append(FORMAT_CSV_DRINKS);
-            writer.append(DOWN_THE_LINE);
-            for (Drinks drink : listDrink) {
-                writer.append(drink.getIdDrink());
-                writer.append(COMMA_DELIMITER);
-                writer.append(drink.getNameDrink());
-                writer.append(COMMA_DELIMITER);
-                writer.append(String.valueOf(drink.getQualityDrink()));
-                writer.append(COMMA_DELIMITER);
-                writer.append(String.valueOf(drink.getPriceDrink()));
-                writer.append(COMMA_DELIMITER);
-                writer.append(drink.getOtherDescription().replace(",", ";"));
-                writer.append(DOWN_THE_LINE);
-            }
-            writer.close();
-        } catch (Exception e) {
-        }
-    }
 
 
     public void searchDrink() {
