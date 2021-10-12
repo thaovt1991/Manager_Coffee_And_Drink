@@ -8,6 +8,7 @@ import service.StaffManager;
 
 
 import java.io.Serializable;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -23,6 +24,8 @@ public class Menu {
     public static SellManager sellManager = new SellManager();
     public static ArrayList<Account> listAccount;
     public static String username, password, decentralization, timelogin, timeOut;
+//    public static DateTimeFormatter formatTime = DateTimeFormatter.ofPattern("HH:mm:ss");
+//    public static DateTimeFormatter formatDate = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
     public static boolean isUserName(String username) {
         accountManager = new AccountManager();

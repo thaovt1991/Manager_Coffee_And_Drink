@@ -380,7 +380,7 @@ public class DrinksManager implements Serializable {
         char choice = ' ';
         boolean isChoice = true;
         do {
-            System.out.println("----------Thay đổi thông tin thức uống--------------------");
+            System.out.println("----------THAY ĐỔI THÔNG TIN THỨC UỐNG-------------------");
             System.out.println("|   1. Thay đổi id thức uống                             |");
             System.out.println("|   2. Thay đổi tên thức uống                            |");
             System.out.println("|   3. Thay đổi số lượng thức uống                       |");

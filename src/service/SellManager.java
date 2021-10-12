@@ -13,9 +13,9 @@ public class SellManager implements Serializable {
     public ArrayList<Staff> staffList;
     public ArrayList<Table> tablesListHaveCustomer;
     public ArrayList<CarriedAway> listCarriedAway;
-    public static long numIdCarryAway = 0;
     public ArrayList<Bill> listBills ;
     public ArrayList<Drinks> drinksList;
+    public static long numIdCarryAway = 0;
     public final Integer NUM_TABLE = 10;
   //  public final Integer SIZE_CA = 10;
     static Scanner input = new Scanner(System.in);
@@ -26,8 +26,10 @@ public class SellManager implements Serializable {
     public static final String LINK_SAVE_OBJECT_STAFF = "src/data/list_staff.txt";
     public static final String LINK_SAVE_OBJECT_DRINKS = "src/data/list_drinks.txt";
     public static final String LINK_SAVE_OBJECT_BILL = "src/data/list_bills.txt";
+    public static final String LINK_SAVE_FORMAT_CSV_BILLS = "out_data/list_bills.csv";
     public static final String FORMAT_CSV_TABLE = "STT,ID TABLE,DRINKS ODER,ID STAFF SERVING,TIME INPUT,TIME OUT,TOTAL ";
     public static final String FORMAT_CSV_CA = "STT,ID CA,DRINKS ODER,ID STAFF SERVING,TIME INPUT,TIME OUT,TOTAL ";
+    public static final String FORMAT_CSV_BILLS = "STT,DATE PAY,USERNAME MANAGER,ID ODER,DRINKS ODER,ID STAFF SERVING,TIME INPUT,TIME OUT,TOTAL ";
     public static final String DOWN_THE_LINE = "\n";
     public static final String COMMA_DELIMITER = ",";
     // public static final String LINK_REGEX = "(^([C|D][:])\\\\(?:[\\w]+\\\\)*\\w+$)|(^[C|D][:][\\\\]$)";
@@ -63,8 +65,6 @@ public class SellManager implements Serializable {
             ois.close();
         } catch (Exception ex) {
             System.out.println("File danh sách nhân viên chưa tồn tại, hãy khởi tạo danh sách nhân viên !");
-//            StaffManager staffManager = new StaffManager();
-//            staffManager.addStaff();
         }
         return listStaff;
     }
@@ -79,8 +79,6 @@ public class SellManager implements Serializable {
             ois.close();
         } catch (Exception ex) {
             System.out.println("File danh sách thức uống chưa tồn tại, hãy khởi tạo danh sách để quản lý !");
-//            DrinksManager drinksManager = new DrinksManager();
-//            drinksManager.addDrinksList();
         }
         return drinksList;
     }
@@ -153,6 +151,7 @@ public class SellManager implements Serializable {
         } catch (Exception e) {
         }
     }
+
     public ArrayList<Bill> readDataBillsToFile(String path) {
         ArrayList<Bill> listBill = new ArrayList<>();
         try {
@@ -162,7 +161,7 @@ public class SellManager implements Serializable {
             ois.close();
             fis.close();
         } catch (Exception e) {
-            System.out.println("File danh sách thanh toan, hãy nhập dữ liệu và tạo ra nó !");
+            System.out.println("File danh sách thanh toán chưa có dữ liệu, hãy nhập dữ liệu và tạo ra nó !");
         }
         return listBill;
     }
@@ -177,6 +176,39 @@ public class SellManager implements Serializable {
         //    System.out.println("Đã lưu lại mọi thay đổi vào dữ liệu gốc !");
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void writeDataOfBillsFromFileFormatToCsv(String path, ArrayList<Bill> listBills) {
+        FileWriter writer = null;
+        try {
+            writer = new FileWriter(path);
+            writer.append(FORMAT_CSV_BILLS);
+            writer.append(DOWN_THE_LINE);
+            int count = 0;
+            for (Bill bill : listBills) {
+                count++;
+                writer.append(String.valueOf(count));
+                writer.append(COMMA_DELIMITER);
+                writer.append(bill.getDateBill());
+                writer.append(COMMA_DELIMITER);
+                writer.append(bill.getUserName());
+                writer.append(COMMA_DELIMITER);
+                writer.append(bill.getIdOder());
+                writer.append(COMMA_DELIMITER);
+                writer.append(toString(bill.getTreeOder()));
+                writer.append(COMMA_DELIMITER);
+                writer.append(bill.getIdStaffServing());
+                writer.append(COMMA_DELIMITER);
+                writer.append(bill.getTimeIn());
+                writer.append(COMMA_DELIMITER);
+                writer.append(bill.getTimeOut());
+                writer.append(COMMA_DELIMITER);
+                writer.append(String.valueOf(bill.getTotalMoney()));
+                writer.append(DOWN_THE_LINE);
+            }
+            writer.close();
+        } catch (Exception e) {
         }
     }
 
@@ -230,7 +262,7 @@ public class SellManager implements Serializable {
         FileWriter writer = null;
         try {
             writer = new FileWriter(path);
-            writer.append(FORMAT_CSV_TABLE);
+            writer.append(FORMAT_CSV_CA);
             writer.append(DOWN_THE_LINE);
             int count = 0;
             for (CarriedAway carriedAway : carriedAwaysList) {
@@ -709,10 +741,12 @@ public class SellManager implements Serializable {
     public void menuSell() {
         char choice = ' ';
         do {
-            System.out.println("-----------------BÁN HÀNG-------------------");
+            System.out.println("--------------------------------------------");
+            System.out.println("|             ORDER THỨC UỐNG               |");
+            System.out.println("---------------------------------------------");
             System.out.println("| 1. Phục vụ khách hàng tại quán            |");
             System.out.println("| 2. Phục vụ khách hàng mang đi             |");
-            System.out.println("| 0. Quay lại                               |");
+            System.out.println("|                               0. Quay lại |");
             System.out.println(" -------------------------------------------");
             System.out.println();
             System.out.print("Chọn : ");
@@ -756,11 +790,13 @@ public class SellManager implements Serializable {
     public void menuEditListSell() {
         char choice = ' ';
         do {
-            System.out.println("----------------SỬA ORDER THỨC UỐNG CHO KHÁCH----------------");
-            System.out.println("| 1. Phục vụ khách hàng tại quán                            |");
-            System.out.println("| 2. Phục vụ khách hàng mang đi                             |");
-            System.out.println("| 0. Quay lại                                               |");
-            System.out.println(" -----------------------------------------------------------");
+            System.out.println("-------------------------------------------------------");
+            System.out.println("|            SỬA ORDER THỨC UỐNG CHO KHÁCH             |");
+            System.out.println("-------------------------------------------------------");
+            System.out.println("| 1. Phục vụ khách hàng tại quán                       |");
+            System.out.println("| 2. Phục vụ khách hàng mang đi                        |");
+            System.out.println("|                                          0. Quay lại |");
+            System.out.println(" ------------------------------------------------------");
             System.out.println();
             System.out.print("Chọn : ");
             try {
@@ -802,10 +838,12 @@ public class SellManager implements Serializable {
         System.out.println();
         char press = ' ';
         do {
-            System.out.println("--------------YÊU CẦU SỬA ORDER------------------");
+            System.out.println("--------------------------------------------------");
+            System.out.println("|                YÊU CẦU SỬA ORDER               |");
+            System.out.println("--------------------------------------------------");
             System.out.println("| 1. Thêm thức uống                              |");
             System.out.println("| 2. Trả lại thức uống                           |");
-            System.out.println("| 0. Quay lại                                    |");
+            System.out.println("|                                    0. Quay lại |");
             System.out.println("-------------------------------------------------");
             System.out.println();
             System.out.print("Chọn : ");
@@ -1173,6 +1211,7 @@ public class SellManager implements Serializable {
                     writeDataDrinksToFile(LINK_SAVE_OBJECT_DRINKS, drinksList);
                     writeDataCarriedAwayToFile(LINK_SAVE_OBJECT_CARRIED_AWAY, listCarriedAway);
                     writeDataCarriedAwayToFile(LINK_SAVE_FORMAT_CSV_CA, listCarriedAway);
+                    System.out.println("Lưu thành công !");
                     break;
                 case 'n':
                 case 'N':
@@ -1213,11 +1252,10 @@ public class SellManager implements Serializable {
             idCA = cA.getIdCa();
             idStaff = cA.getIdStaffServing();
             timeInput = cA.getTimeInput();
-            System.out.printf("%-5s%-15s%-20s%s\n", Count, cA, idStaff, timeInput);
+            System.out.printf("%-5s%-15s%-20s%s\n", Count, idCA, idStaff, timeInput);
         }
         System.out.println();
     }
-
 
     public void menuPay() {
         char choice = ' ';
@@ -1239,7 +1277,7 @@ public class SellManager implements Serializable {
                     payForTable();
                     break;
                 case '2':
-                    //payForCA();
+                    payForCA();
                     break;
                 case '0':
                     menuSellDrinksManager();
@@ -1248,51 +1286,6 @@ public class SellManager implements Serializable {
             }
         } while (choice != '0');
     }
-
-    public String getFullNameOfIdStaff(String idSfaff){
-        for (Staff staff : staffList){
-            if(staff.getIdStaff().equals(idSfaff))return staff.getFullName();
-        }
-        return null;
-    }
-
-    public void displayBill(Bill bill){
-        DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
-      String date, username , idOder , timeIn, timeOut,idStaff;
-      TreeMap<String,Integer> treeOder = bill.getTreeOder();
-      date = bill.getDateBill();
-      username = bill.getUserName();
-      idOder = bill.getIdOder();
-      idStaff = bill.getIdStaffServing();
-      timeIn = bill.getTimeIn();
-      timeOut = bill.getTimeOut();
-      long totalMoney = bill.getTotalMoney();
-        System.out.println("-------------------------------------- BILL -------------------------------------------");
-        System.out.println("Date : "+ date +" - Username manager : "+username);
-        System.out.println("Nhân viên phục vụ bàn : "+ getFullNameOfIdStaff(idStaff));
-        System.out.println("ID : " + idOder);
-        System.out.println();
-        String idDrinks, nameDrinks, qualityDrinks, stt,priceDrinks, money;
-        Object obj = new Object();
-        Set set = treeOder.keySet();
-        Iterator i = set.iterator();
-        System.out.printf("%-5s%-20s%-20s%-10s%-15s%s\n", "STT", "ID THỨC UỐNG", "TÊN THỨC UỐNG", "SỐ LƯỢNG","GIÁ","TIỀN");
-        int count = 0;
-        while (i.hasNext()) {
-            count++;
-            stt = String.valueOf(count);
-            idDrinks = (String) i.next();
-            nameDrinks = nameDrinks(idDrinks);
-            qualityDrinks = String.valueOf(treeOder.get(idDrinks));
-            priceDrinks = decimalFormat.format(priceDrinks(idDrinks));
-            money = decimalFormat.format(priceDrinks(idDrinks)*treeOder.get(idDrinks));
-            System.out.printf("%-5s%-20s%-20s%-10s%-15s%s\n", stt, idDrinks, nameDrinks, qualityDrinks,priceDrinks,money);
-        }
-        System.out.println("---------------------------------------------------------------------------------------");
-        System.out.printf("%-60s%-10s%s\n","","TỔNG CỘNG : ",decimalFormat.format(totalMoney)+" VND");
-        System.out.println();
-    }
-
     public void payForTable() {
         DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
         String idTable = "";
@@ -1329,10 +1322,10 @@ public class SellManager implements Serializable {
                     case 'y':
                     case 'Y':
                         System.out.println("In hóa đơn");
-                        //display Hóa Đơn
+                        System.out.println();
                         listBills.add(bill) ;
                         writeDataBillsToFile(LINK_SAVE_OBJECT_BILL,listBills);
-                        //viet vao file xuat execeli
+                        writeDataOfBillsFromFileFormatToCsv(LINK_SAVE_FORMAT_CSV_BILLS,listBills);
                         tablesListHaveCustomer.remove(table);
                         writeDataTableToFile(LINK_SAVE_OBJECT_TABLE,tablesListHaveCustomer);
                         writeDataOfTableFromFileFormatToCsv(LINK_SAVE_FORMAT_CSV_TABLE,tablesListHaveCustomer);
@@ -1348,14 +1341,117 @@ public class SellManager implements Serializable {
         }
     }
 
+    public void payForCA(){
+        DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
+        String idCA = "";
+        displaylistCA();
+        System.out.println("Nhập id khách mang về cần thanh toán :");
+        idCA = input.nextLine();
+        if (getIdTableInListCA(idCA) == null) {
+            System.out.println("Không có khách hàng cần nào cần tìm !");
+            menuPay();
+        } else {
+            System.out.println("Bạn muốn thanh toán cho khách hàng '" + idCA + "' mang về !");
+            CarriedAway carriedAway = getIdTableInListCA(idCA);
+            displayTreeOder(carriedAway.getTreeOder());
+            System.out.println();
+            System.out.println("Tổng tiền là : " + decimalFormat.format(carriedAway.getTotalMoney()) + " VND.");
+            System.out.println();
+            String timeOut = String.valueOf(java.time.LocalTime.now()) + " " + String.valueOf(java.time.LocalDate.now());
+            carriedAway.setTimeOut(timeOut);
+            String dateBill = String.valueOf(java.time.LocalDate.now());
+            String username = Menu.username ;
+            Bill bill = new Bill(dateBill,username,idCA,carriedAway.getTreeOder(),carriedAway.getIdStaffServing(),carriedAway.getTimeInput(),carriedAway.getTimeOut(),carriedAway.getTotalMoney());
+            System.out.println("Hóa đơn thanh toán : ");
+            displayBill(bill);
+            char choice = ' ';
+            boolean isNotChoice = false;
+            do {
+                System.out.print("Nhấn 'Y' để thanh toán , nhấn 'N' để quay trở lại menu ");
+                try {
+                    choice = input.nextLine().charAt(0);
+                } catch (Exception e) {
+                    choice = ' ';
+                }
+                switch (choice) {
+                    case 'y':
+                    case 'Y':
+                        System.out.println("In hóa đơn");
+                        System.out.println();
+                        listBills.add(bill) ;
+                        writeDataBillsToFile(LINK_SAVE_OBJECT_BILL,listBills);
+                        writeDataOfBillsFromFileFormatToCsv(LINK_SAVE_FORMAT_CSV_BILLS,listBills);
+                        listCarriedAway.remove(carriedAway);
+                        writeDataCarriedAwayToFile(LINK_SAVE_OBJECT_CARRIED_AWAY,listCarriedAway);
+                        writeDataOfCarriedAwayFromFileFormatToCsv(LINK_SAVE_FORMAT_CSV_CA,listCarriedAway);
+                        break;
+                    case 'n':
+                    case 'N':
+                        carriedAway.setTimeOut("Empty");
+                        menuPay();
+                        break;
+                    default:
+                }
+            } while (isNotChoice);
+        }
+    }
+
+    public String getFullNameOfIdStaff(String idSfaff){
+        for (Staff staff : staffList){
+            if(staff.getIdStaff().equals(idSfaff))return staff.getFullName();
+        }
+        return null;
+    }
+
+    public void displayBill(Bill bill){
+        DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
+      String date, username , idOder , timeIn, timeOut,idStaff;
+      TreeMap<String,Integer> treeOder = bill.getTreeOder();
+      date = bill.getDateBill();
+      username = bill.getUserName();
+      idOder = bill.getIdOder();
+      idStaff = bill.getIdStaffServing();
+      timeIn = bill.getTimeIn();
+      timeOut = bill.getTimeOut();
+      long totalMoney = bill.getTotalMoney();
+        System.out.println("-------------------------------------- BILL -------------------------------------------");
+        System.out.println("Date : "+ date +" - Username manager : "+username);
+        System.out.println("Nhân viên phục vụ bàn : "+ getFullNameOfIdStaff(idStaff));
+        System.out.println("ID : " + idOder + " - Time in : " + timeIn+" - Time Out : "+ timeOut);
+        System.out.println();
+        String idDrinks, nameDrinks, qualityDrinks, stt,priceDrinks, money;
+        Object obj = new Object();
+        Set set = treeOder.keySet();
+        Iterator i = set.iterator();
+        System.out.printf("%-5s%-20s%-20s%-10s%-15s%s\n", "STT", "ID THỨC UỐNG", "TÊN THỨC UỐNG", "SỐ LƯỢNG","GIÁ","TIỀN");
+        int count = 0;
+        while (i.hasNext()) {
+            count++;
+            stt = String.valueOf(count);
+            idDrinks = (String) i.next();
+            nameDrinks = nameDrinks(idDrinks);
+            qualityDrinks = String.valueOf(treeOder.get(idDrinks));
+            priceDrinks = decimalFormat.format(priceDrinks(idDrinks));
+            money = decimalFormat.format(priceDrinks(idDrinks)*treeOder.get(idDrinks));
+            System.out.printf("%-5s%-20s%-20s%-10s%-15s%s\n", stt, idDrinks, nameDrinks, qualityDrinks,priceDrinks,money);
+        }
+        System.out.println("---------------------------------------------------------------------------------------");
+        System.out.printf("%-60s%-10s%s\n","","TỔNG CỘNG : ",decimalFormat.format(totalMoney)+" VND");
+        System.out.println();
+    }
+
+
+
     public void menuSellDrinksManager() {
         char choice = ' ';
         do {
-            System.out.println("-------------------QUẢN LÝ BÁN HÀNG-------------------");
-            System.out.println("| 1. Oder thức uống cho khách                         |");
-            System.out.println("| 2. Sửa oder cho khách                               |");
+            System.out.println("------------------------------------------------------");
+            System.out.println("|                  QUẢN LÝ BÁN HÀNG                   |");
+            System.out.println("-------------------------------------------------------");
+            System.out.println("| 1. Order thức uống cho khách                        |");
+            System.out.println("| 2. Sửa order cho khách                              |");
             System.out.println("| 3. Thanh toán tiền                                  |");
-            System.out.println("| 0. Quay lại menu chính                              |");
+            System.out.println("|                                         0. Quay lại |");
             System.out.println("-------------------------------------------------------");
             System.out.println();
             System.out.print("Chọn : ");
