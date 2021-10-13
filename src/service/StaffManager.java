@@ -510,13 +510,15 @@ public class StaffManager implements Serializable {
         char choice = ' ';
         boolean isChoice = true;
         do {
-            System.out.println("----------------------LỰA CHỌN HIỂN THỊ------------------------");
+            System.out.println("--------------------------------------------------------------");
+            System.out.println("|                 LỰA CHỌN HIỂN THỊ                           |");
+            System.out.println("---------------------------------------------------------------");
             System.out.println("|  1. Hiển thị sắp xếp theo id nhân viên                       |");
             System.out.println("|  2. Hiển thị sắp xếp theo tên nhân viên                      |");
             System.out.println("|  3. Hiển thị sắp xếp theo ngày sinh                          |");
             System.out.println("|  4. Hiển thị sắp xếp theo lương                              |");
             System.out.println("|  5. Hiển thị theo giới tính                                  |");
-            System.out.println("|  0. Quay lại                                                 |");
+            System.out.println("|                                                  0. Quay lại |");
             System.out.println("----------------------------------------------------------------");
             System.out.println();
             System.out.print("Chọn :");
@@ -555,11 +557,13 @@ public class StaffManager implements Serializable {
         boolean isChoice = true;
         char choice = ' ';
         do {
-            System.out.println("---------------SẮP XẾP THEO ID NHÂN VIÊN----------------");
-            System.out.println("| 1. Sắp xếp ID theo thứ tự A-Z                          |");
-            System.out.println("| 2. Sắp xếp ID theo thứ tự Z-A                          |");
-            System.out.println("| 0. Quay lại                                            |");
-            System.out.println("---------------------------------------------------------");
+            System.out.println("---------------------------------------------");
+            System.out.println("|        SẮP XẾP THEO ID NHÂN VIÊN           |");
+            System.out.println("----------------------------------------------");
+            System.out.println("| 1. Sắp xếp ID theo thứ tự A-Z              |");
+            System.out.println("| 2. Sắp xếp ID theo thứ tự Z-A              |");
+            System.out.println("|                                0. Quay lại |");
+            System.out.println("---------------------------------------------|");
             System.out.println();
             System.out.print("Lựa chọn :");
             try {
@@ -595,11 +599,13 @@ public class StaffManager implements Serializable {
         boolean isChoice = true;
         char choice = ' ';
         do {
-            System.out.println("---------------SẮP XẾP THEO TÊN NHÂN VIÊN----------------");
-            System.out.println("| 1. Sắp xếp tên theo thứ tự A-Z                         |");
-            System.out.println("| 2. Sắp xếp tên theo thứ tự Z-A                         |");
-            System.out.println("| 0. Quay lại                                            |");
-            System.out.println("---------------------------------------------------------");
+            System.out.println("----------------------------------------------------");
+            System.out.println("|         SẮP XẾP THEO TÊN NHÂN VIÊN                |");
+            System.out.println("-----------------------------------------------------");
+            System.out.println("| 1. Sắp xếp tên theo thứ tự A-Z                    |");
+            System.out.println("| 2. Sắp xếp tên theo thứ tự Z-A                    |");
+            System.out.println("|                                       0. Quay lại |");
+            System.out.println("-----------------------------------------------------");
             System.out.println();
             System.out.print("Lựa chọn :");
             try {
@@ -635,10 +641,12 @@ public class StaffManager implements Serializable {
         boolean isChoice = true;
         char choice = ' ';
         do {
-            System.out.println("---------------SẮP XẾP THEO LƯƠNG----------------");
+            System.out.println("-------------------------------------------------");
+            System.out.println("|              SẮP XẾP THEO LƯƠNG                |");
+            System.out.println("--------------------------------------------------");
             System.out.println("| 1. Sắp xếp lương tăng dần                      |");
             System.out.println("| 2. Sắp xếp lương giảm dần                      |");
-            System.out.println("| 0. Quay lại                                    |");
+            System.out.println("|                                    0. Quay lại |");
             System.out.println("-------------------------------------------------");
             System.out.println();
             System.out.print("Lựa chọn :");
@@ -675,11 +683,13 @@ public class StaffManager implements Serializable {
         boolean isChoice = true;
         char choice = ' ';
         do {
-            System.out.println("---------------SẮP XẾP THEO GIỚI TÍNH---------------");
-            System.out.println("| 1. Sắp xếp Nu - Nam                                |");
-            System.out.println("| 2. Sắp xếp Nam - Nu                                |");
-            System.out.println("| 0. Quay lại                                        |");
-            System.out.println("-----------------------------------------------------");
+            System.out.println("------------------------------------------");
+            System.out.println("|         SẮP XẾP THEO GIỚI TÍNH         |");
+            System.out.println("------------------------------------------");
+            System.out.println("| 1. Sắp xếp Nu - Nam                    |");
+            System.out.println("| 2. Sắp xếp Nam - Nu                    |");
+            System.out.println("|                            0. Quay lại |");
+            System.out.println("------------------------------------------");
             System.out.println();
             System.out.print("Lựa chọn :");
             try {
@@ -715,11 +725,13 @@ public class StaffManager implements Serializable {
         boolean isChoice = true;
         char choice = ' ';
         do {
-            System.out.println("---------------SẮP XẾP THEO NGÀY SINH---------------");
-            System.out.println("| 1. Sắp xếp giảm dần độ tuổi                       |");
-            System.out.println("| 2. Sắp xếp tăng dần độ tuổi                       |");
-            System.out.println("| 0. Quay lại menu                                  |");
-            System.out.println("-----------------------------------------------------");
+            System.out.println("--------------------------------------------------");
+            System.out.println("|            SẮP XẾP THEO NGÀY SINH               |");
+            System.out.println("--------------------------------------------------");
+            System.out.println("| 1. Sắp xếp giảm dần độ tuổi                     |");
+            System.out.println("| 2. Sắp xếp tăng dần độ tuổi                     |");
+            System.out.println("|                                     0. Quay lại |");
+            System.out.println("--------------------------------------------------");
             System.out.println();
             System.out.print("Lựa chọn :");
             try {
@@ -773,7 +785,9 @@ public class StaffManager implements Serializable {
         boolean isChoice = true;
         char choice = ' ';
         do {
-            System.out.println("----------------------TÌM KIẾM NHÂN VIÊN----------------------------");
+            System.out.println("--------------------------------------------------------------------");
+            System.out.println("|                     TÌM KIẾM NHÂN VIÊN                            |");
+            System.out.println("--------------------------------------------------------------------");
             System.out.println("| 1. Tìm kiếm theo ID nhân viên                                     |");
             System.out.println("| 2. Tìm kiếm theo tên nhân viên                                    |");
             System.out.println("| 3. Tìm kiếm theo giới tính                                        |");
@@ -782,7 +796,7 @@ public class StaffManager implements Serializable {
             System.out.println("| 6. Tìm kiếm theo địa chỉ                                          |");
             System.out.println("| 7 .Tìm kiếm theo lương                                            |");
             System.out.println("| 8. Tìm kiếm thông tin khác của nhân viên                          |");
-            System.out.println("| 0. Quay lại                                                       |");
+            System.out.println("|                                                      0. Quay lại  |");
             System.out.println(" -------------------------------------------------------------------");
             System.out.println();
             System.out.print("Chọn : ");
@@ -1086,11 +1100,13 @@ public class StaffManager implements Serializable {
     public void deleteStaff() {
         char choice = ' ';
         do {
-            System.out.println("-----------------LỰA CHỌN NHÂN VIÊN MUỐN XÓA-------------------");
-            System.out.println("|  1. Xóa theo ID của nhân viên                                |");
-            System.out.println("|  2. Xóa theo tên của nhân viên                               |");
-            System.out.println("|  0. Quay lại                                                 |");
-            System.out.println("----------------------------------------------------------------");
+            System.out.println("------------------------------------------------");
+            System.out.println("|          LỰA CHỌN NHÂN VIÊN MUỐN XÓA           |");
+            System.out.println("--------------------------------------------------");
+            System.out.println("|  1. Xóa theo ID của nhân viên                  |");
+            System.out.println("|  2. Xóa theo tên của nhân viên                 |");
+            System.out.println("|                                    0. Quay lại |");
+            System.out.println("--------------------------------------------------");
             System.out.println();
             System.out.print("Lựa chọn : ");
             try {
@@ -1224,11 +1240,13 @@ public class StaffManager implements Serializable {
     public void editStaff() {
         char choice = ' ';
         do {
-            System.out.println("-----------------LỰA CHỌN THAY ĐỔI THÔNG TIN-------------------");
-            System.out.println("|  1. Sửa thông tin nhân viên theo ID                          |");
-            System.out.println("|  2. Sửa thông tin nhân viên theo tên                         |");
-            System.out.println("|  0. Quay lại                                                 |");
-            System.out.println("----------------------------------------------------------------");
+            System.out.println("----------------------------------------------------------");
+            System.out.println("|             LỰA CHỌN THAY ĐỔI THÔNG TIN                 |");
+            System.out.println("-----------------------------------------------------------");
+            System.out.println("|  1. Sửa thông tin nhân viên theo ID                     |");
+            System.out.println("|  2. Sửa thông tin nhân viên theo tên                    |");
+            System.out.println("|                                             0. Quay lại |");
+            System.out.println("-----------------------------------------------------------");
             System.out.println();
             System.out.print("Lựa chọn : ");
             try {
@@ -1356,7 +1374,9 @@ public class StaffManager implements Serializable {
         char choice = ' ';
         boolean isChoice = true;
         do {
-            System.out.println("-----------------THAY ĐỔI THÔNG TIN NHÂN VIÊN--------------------");
+            System.out.println("----------------------------------------------------------------");
+            System.out.println("|                THAY ĐỔI THÔNG TIN NHÂN VIÊN                   |");
+            System.out.println("------------------------------------------------------------------");
             System.out.println("|   1.  Thay đổi id nhân viên - Nhấn phím 'I'                    |");
             System.out.println("|   2.  Thay đổi tên nhân viên - Nhấn phím 'F'                   |");
             System.out.println("|   3.  Thay đổi giới tính - Nhấn phím 'G'                       |");
@@ -1608,14 +1628,16 @@ public class StaffManager implements Serializable {
     public void menuStaffManager() {
         char choice = ' ';
         do {
-            System.out.println("------------------QUẢN LÝ NHÂN VIÊN------------------");
+            System.out.println("-----------------------------------------------------");
+            System.out.println("|             QUẢN LÝ NHÂN VIÊN                      |");
+            System.out.println("-----------------------------------------------------");
             System.out.println("|  1. Thêm nhân viên                                 |");
             System.out.println("|  2. Thay đổi thông tin nhân viên                   |");
             System.out.println("|  3. Xóa nhân viên                                  |");
             System.out.println("|  4. Tìm kiếm thông tin nhân viên                   |");
             System.out.println("|  5. Hiển thị danh sách nhân viên                   |");
             System.out.println("|  6. Xuất file thông tin nhân viên                  |");
-            System.out.println("|  0. Quay lại                                       |");
+            System.out.println("|                                        0. Quay lại |");
             System.out.println("------------------------------------------------------");
             System.out.println();
             System.out.print("Chọn : ");

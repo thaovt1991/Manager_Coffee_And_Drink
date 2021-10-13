@@ -277,15 +277,16 @@ public class AccountManager implements Serializable {
         } while (isCheck);
     }
 
-
     public void editAccount() {
         char choice = ' ';
         do {
-            System.out.println("-----------------THAY ĐỔI THÔNG TIN TÀI KHOẢN-------------------");
+            System.out.println("-----------------------------------------------------------------");
+            System.out.println("|                 THAY ĐỔI THÔNG TIN TÀI KHOẢN                   |");
+            System.out.println("-----------------------------------------------------------------");
             System.out.println("|  1. Thay đổi theo ID của người sử dụng                         |");
             System.out.println("|  2. Thay đổi theo username của tài khoản                       |");
-            System.out.println("|  0. Quay lại                                                   |");
-            System.out.println("----------------------------------------------------------------");
+            System.out.println("|                                                    0. Quay lại |");
+            System.out.println("-----------------------------------------------------------------");
             System.out.println();
             System.out.print("Lựa chọn : ");
             try {
@@ -418,7 +419,9 @@ public class AccountManager implements Serializable {
         char choice = ' ';
         boolean isChoice = true;
         do {
-            System.out.println("----------THAY ĐỔI THÔNG TIN TÀI KHOẢN--------------------");
+            System.out.println("---------------------------------------------------------");
+            System.out.println("|                THAY ĐỔI THÔNG TIN TÀI KHOẢN            |");
+            System.out.println("----------------------------------------------------------");
             System.out.println("|   1. Thay đổi ID người dùng                            |");
             System.out.println("|   2. Thay đổi username                                 |");
             System.out.println("|   3. Thay đổi password                                 |");
@@ -560,10 +563,12 @@ public class AccountManager implements Serializable {
     public void deleteAccount() {
         char choice = ' ';
         do {
-            System.out.println("-----------------XÓA TÀI KHOẢN-------------------");
+            System.out.println("-------------------------------------------------");
+            System.out.println("|                XÓA TÀI KHOẢN                   |");
+            System.out.println("-------------------------------------------------");
             System.out.println("|  1. Xóa theo ID của người dùng                 |");
             System.out.println("|  2. Xóa theo username của tài khoản            |");
-            System.out.println("|  0. Quay lại                                   |");
+            System.out.println("|                                    0. Quay lại |");
             System.out.println("--------------------------------------------------");
             System.out.println();
             System.out.println("Lựa chọn : ");
@@ -673,7 +678,9 @@ public class AccountManager implements Serializable {
         boolean isChoice = true;
         char choice = ' ';
         do {
-            System.out.println("----------------------TÌM KIẾM NHÂN VIÊN----------------------------");
+            System.out.println("--------------------------------------------------------------------");
+            System.out.println("|                      TÌM KIẾM NHÂN VIÊN                           |");
+            System.out.println("---------------------------------------------------------------------");
             System.out.println("| 1. Tìm kiếm theo tài khoản theo ID người sử dụng                  |");
             System.out.println("| 2. Tìm kiếm theo username                                         |");
             System.out.println("| 3. Tìm kiếm theo phân quyền                                       |");
@@ -806,11 +813,13 @@ public class AccountManager implements Serializable {
         char choice = ' ';
         boolean isChoice = true;
         do {
-            System.out.println("----------------------LỰA CHỌN HIỂN THỊ------------------------");
+            System.out.println("---------------------------------------------------------------");
+            System.out.println("|                      LỰA CHỌN HIỂN THỊ                       |");
+            System.out.println("----------------------------------------------------------------");
             System.out.println("|  1. Hiển thị sắp xếp theo id người sử dụng accont            |");
             System.out.println("|  2. Hiển thị sắp xếp theo username                           |");
             System.out.println("|  3. Hiển thị sắp xếp theo phân quyền                         |");
-            System.out.println("|  0. Quay lại menu chính                                      |");
+            System.out.println("|                                                  0. Quay lại |");
             System.out.println("----------------------------------------------------------------");
             System.out.println();
             System.out.print("Chọn :");
@@ -870,10 +879,12 @@ public class AccountManager implements Serializable {
         boolean isChoice = true;
         char choice = ' ';
         do {
-            System.out.println("--------------SẮP XẾP THEO ID NGƯỜI DÙNG--------------");
+            System.out.println("-------------------------------------------------------");
+            System.out.println("|              SẮP XẾP THEO ID NGƯỜI DÙNG              |");
+            System.out.println("------------------------------------------------------");
             System.out.println("| 1. Theo thứ tự từ A-Z                               |");
             System.out.println("| 2. Theo thứ tự từ Z-A                               |");
-            System.out.println("| 0. Quay lại menu                                    |");
+            System.out.println("|                                        0. Quay lại  |");
             System.out.println("-------------------------------------------------------");
             System.out.println();
             System.out.print("Lựa chọn :");
@@ -910,10 +921,12 @@ public class AccountManager implements Serializable {
         boolean isChoice = true;
         char choice = ' ';
         do {
-            System.out.println("----------------SẮP XẾP THEO USERNAME-----------------");
+            System.out.println("------------------------------------------------------");
+            System.out.println("|               SẮP XẾP THEO USERNAME                 |");
+            System.out.println("------------------------------------------------------");
             System.out.println("| 1. Theo thứ tự từ A-Z                               |");
             System.out.println("| 2. Theo thứ tự từ Z-A                               |");
-            System.out.println("| 0. Quay lại menu                                    |");
+            System.out.println("|                                         0. Quay lại |");
             System.out.println("-------------------------------------------------------");
             System.out.println();
             System.out.print("Lựa chọn :");
@@ -950,10 +963,12 @@ public class AccountManager implements Serializable {
         boolean isChoice = true;
         char choice = ' ';
         do {
-            System.out.println("----------------HIỂN THỊ THEO PHÂN QUYỀN---------------");
+            System.out.println("-------------------------------------------------------");
+            System.out.println("|              HIỂN THỊ THEO PHÂN QUYỀN               |");
+            System.out.println("-------------------------------------------------------");
             System.out.println("| 1. Theo thứ tự từ Admin - Guest                     |");
             System.out.println("| 2. Theo thứ tự từ Guest - Admin                     |");
-            System.out.println("| 0. Quay lại menu                                    |");
+            System.out.println("|                                         0. Quay lại |");
             System.out.println("-------------------------------------------------------");
             System.out.println();
             System.out.print("Lựa chọn :");
@@ -1069,11 +1084,13 @@ public class AccountManager implements Serializable {
     public void displayFullInformationUserAccount() {
         char choice = ' ';
         do {
-            System.out.println("---------------HIỂN THỊ THÔNG TIN NGƯỜI SỬ DỤNG TÀI KHOẢN------------");
-            System.out.println("|  1. Hiển thị theo ID của tài khoản                                 |");
-            System.out.println("|  2. Hiển thị theo username                                         |");
-            System.out.println("|  0. Quay lại                                                       |");
-            System.out.println("----------------------------------------------------------------------");
+            System.out.println("--------------------------------------------------");
+            System.out.println("|     HIỂN THỊ THÔNG TIN NGƯỜI SỬ DỤNG TÀI KHOẢN  |");
+            System.out.println("--------------------------------------------------");
+            System.out.println("|  1. Hiển thị theo ID của tài khoản              |");
+            System.out.println("|  2. Hiển thị theo username                      |");
+            System.out.println("|                                     0. Quay lại |");
+            System.out.println("---------------------------------------------------");
             System.out.println();
             System.out.print("Chọn: ");
             try {
@@ -1175,15 +1192,17 @@ public class AccountManager implements Serializable {
     public void menuAccountManager() {
         char choice = ' ';
         do {
-            System.out.println("------------------QUẢN LÝ TÀI KHOẢN------------------");
+            System.out.println("----------------------------------------------------");
+            System.out.println("|                 QUẢN LÝ TÀI KHOẢN                 |");
+            System.out.println("-----------------------------------------------------");
             System.out.println("|  1. Tạo tài khoản                                  |");
             System.out.println("|  2. Thay đổi thông tin tài khoản                   |");
-            System.out.println("|  3. Xóa tài khoản                                  |");//mai lam
+            System.out.println("|  3. Xóa tài khoản                                  |");
             System.out.println("|  4. Tìm kiếm thông tin tài khoản                   |");
             System.out.println("|  5. Hiển thị danh sách các tài khoản               |");
-            System.out.println("|  6. Xem thông tin người sủ dụng tài khoản          |"); //mai lam
+            System.out.println("|  6. Xem thông tin người sủ dụng tài khoản          |");
             System.out.println("|  7. Xuất file thông tin tài khoản                  |");
-            System.out.println("|  0. Quay lại                                       |");
+            System.out.println("|                                        0. Quay lại |");
             System.out.println("------------------------------------------------------");
             System.out.println();
             System.out.print("Chọn : ");

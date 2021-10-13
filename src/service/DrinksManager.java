@@ -241,11 +241,13 @@ public class DrinksManager implements Serializable {
     public void editDrink() {
         char choice = ' ';
         do {
-            System.out.println("-----------------LỰA CHỌN THAY ĐỔI THÔNG TIN-------------------");
-            System.out.println("|  1. Sửa thông tin thức uống theo ID                          |");
-            System.out.println("|  2. Sửa thông tin thức uống theo tên                         |");
-            System.out.println("|  0. Quay lại                                                 |");
-            System.out.println("----------------------------------------------------------------");
+            System.out.println("-------------------------------------------------");
+            System.out.println("|          LỰA CHỌN THAY ĐỔI THÔNG TIN          |");
+            System.out.println("-------------------------------------------------");
+            System.out.println("|  1. Sửa thông tin thức uống theo ID           |");
+            System.out.println("|  2. Sửa thông tin thức uống theo tên          |");
+            System.out.println("|                                   0. Quay lại |");
+            System.out.println("-------------------------------------------------");
             System.out.println();
             System.out.println("Lựa chọn : ");
             try {
@@ -657,12 +659,14 @@ public class DrinksManager implements Serializable {
         char choice = ' ';
         boolean isChoice = true;
         do {
-            System.out.println("----------------------LỰA CHỌN HIỂN THỊ------------------------");
+            System.out.println("---------------------------------------------------------------");
+            System.out.println("|                     LỰA CHỌN HIỂN THỊ                        |");
+            System.out.println("---------------------------------------------------------------");
             System.out.println("|  1. Hiển thị sắp xếp theo id thức uống                       |");
             System.out.println("|  2. Hiển thị sắp xếp theo tên thức uống                      |");
             System.out.println("|  3. Hiển thị sắp xếp theo số lượng                           |");
             System.out.println("|  4. Hiển thị sắp xếp theo giá                                |");
-            System.out.println("|  0. Quay lại menu chính                                      |");
+            System.out.println("|                                                  0. Quay lại |");
             System.out.println("----------------------------------------------------------------");
             System.out.println();
             System.out.print("Chọn :");
@@ -697,10 +701,12 @@ public class DrinksManager implements Serializable {
         boolean isChoice = true;
         char choice = ' ';
         do {
-            System.out.println("--------------SẮP XẾP THEO ID THỨC UỐNG--------------");
+            System.out.println("-----------------------------------------------------");
+            System.out.println("|           SẮP XẾP THEO ID THỨC UỐNG                |");
+            System.out.println("------------------------------------------------------");
             System.out.println("| 1. Theo thứ tự từ A-Z                               |");
             System.out.println("| 2. Theo thứ tự từ Z-A                               |");
-            System.out.println("| 0. Quay lại menu                                    |");
+            System.out.println("|                                         0. Quay lại |");
             System.out.println("-------------------------------------------------------");
             System.out.println();
             System.out.print("Lựa chọn :");
@@ -737,10 +743,12 @@ public class DrinksManager implements Serializable {
         boolean isChoice = true;
         char choice = ' ';
         do {
-            System.out.println("--------------SẮP XẾP THEO TÊN THỨC UỐNG--------------");
+            System.out.println("------------------------------------------------------");
+            System.out.println("|               SẮP XẾP THEO TÊN THỨC UỐNG            |");
+            System.out.println("-------------------------------------------------------");
             System.out.println("| 1. Theo thứ tự từ A-Z                               |");
             System.out.println("| 2. Theo thứ tự từ Z-A                               |");
-            System.out.println("| 0. Quay lại menu                                    |");
+            System.out.println("|                                         0. Quay lại |");
             System.out.println("-------------------------------------------------------");
             System.out.println();
             System.out.print("Lựa chọn :");
@@ -777,10 +785,12 @@ public class DrinksManager implements Serializable {
         boolean isChoice = true;
         char choice = ' ';
         do {
-            System.out.println("-----------SẮP XẾP THEO SỐ LƯỢNG THỨC UỐNG------------");
+            System.out.println("------------------------------------------------------");
+            System.out.println("|             SẮP XẾP THEO SỐ LƯỢNG THỨC UỐNG         |");
+            System.out.println("-------------------------------------------------------");
             System.out.println("| 1. Theo thứ tự từ tăng dần                          |");
             System.out.println("| 2. Theo thứ tự từ giảm dần                          |");
-            System.out.println("| 0. Quay lại menu                                    |");
+            System.out.println("|                                         0. Quay lại |");
             System.out.println("-------------------------------------------------------");
             System.out.println();
             System.out.print("Lựa chọn :");
@@ -817,11 +827,13 @@ public class DrinksManager implements Serializable {
         boolean isChoice = true;
         char choice = ' ';
         do {
-            System.out.println("-----------SẮP XẾP THEO GIÁ THỨC UỐNG-----------------");
-            System.out.println("| 1. Theo thứ tự từ tăng dần                          |");
-            System.out.println("| 2. Theo thứ tự từ giảm dần                          |");
-            System.out.println("| 0. Quay lại menu                                    |");
-            System.out.println("-------------------------------------------------------");
+            System.out.println("---------------------------------------------------");
+            System.out.println("|           SẮP XẾP THEO GIÁ THỨC UỐNG            |");
+            System.out.println("---------------------------------------------------");
+            System.out.println("| 1. Theo thứ tự từ tăng dần                       |");
+            System.out.println("| 2. Theo thứ tự từ giảm dần                       |");
+            System.out.println("|                                      0. Quay lại |");
+            System.out.println("----------------------------------------------------");
             System.out.println();
             System.out.print("Lựa chọn :");
 
@@ -918,14 +930,16 @@ public class DrinksManager implements Serializable {
         boolean isChoice = true;
         char choice = ' ';
         do {
-            System.out.println("----------------------TÌM KIẾM THỨC UỐNG----------------------------");
-            System.out.println("| 1. Tìm kiếm theo ID thức uống                                     |");
-            System.out.println("| 2. Tìm kiếm theo tên thức uống                                    |");
-            System.out.println("| 3. Tìm kiếm theo số lượng thức uống                               |");
-            System.out.println("| 4. Tìm kiếm theo giá thức uống                                    |");
-            System.out.println("| 5. Tìm kiếm thông tin khác của thức uống                          |");
-            System.out.println("| 0. Quay lại                                                       |");
-            System.out.println(" -------------------------------------------------------------------");
+            System.out.println("-----------------------------------------------------------");
+            System.out.println("|                 TÌM KIẾM THỨC UỐNG                       |");
+            System.out.println("------------------------------------------------------------");
+            System.out.println("| 1. Tìm kiếm theo ID thức uống                            |");
+            System.out.println("| 2. Tìm kiếm theo tên thức uống                           |");
+            System.out.println("| 3. Tìm kiếm theo số lượng thức uống                      |");
+            System.out.println("| 4. Tìm kiếm theo giá thức uống                           |");
+            System.out.println("| 5. Tìm kiếm thông tin khác của thức uống                 |");
+            System.out.println("|                                              0. Quay lại |");
+            System.out.println(" -----------------------------------------------------------");
             System.out.println();
             System.out.print("Chọn : ");
             try {
@@ -1195,7 +1209,9 @@ public class DrinksManager implements Serializable {
     public void menuDrinksManager() {
         boolean isChoice = true;
         do {
-            System.out.println("-------------------QUẢN LÝ THỨC UỐNG------------------------");
+            System.out.println("-----------------------------------------------------------");
+            System.out.println("|                 QUẢN LÝ THỨC UỐNG                        |");
+            System.out.println("-----------------------------------------------------------");
             System.out.println("| 1. Thêm thức uống mới                                    |");
             System.out.println("| 2. Sửa thông tin thức uống                               |");
             System.out.println("| 3. Xóa thức uống khỏi danh sách thức uống                |");
@@ -1203,7 +1219,7 @@ public class DrinksManager implements Serializable {
             System.out.println("| 5. Hiển thị format menu                                  |");
             System.out.println("| 6. Hiển thị thông tin toàn bộ thức uống theo thứ tự      |");
             System.out.println("| 7. Xuất file thông tin thức uống                         |");
-            System.out.println("| 0 . Quay lại menu chính                                  |");
+            System.out.println("|                                             0 . Quay lại |");
             System.out.println("------------------------------------------------------------");
             System.out.println();
             System.out.print("Chọn : ");

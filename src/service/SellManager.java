@@ -1042,10 +1042,12 @@ public class SellManager implements Serializable {
         System.out.println();
         char press = ' ';
         do {
-            System.out.println("--------------YÊU CẦU SỬA ORDER------------------");
+            System.out.println("------------------------------------------------");
+            System.out.println("|            YÊU CẦU SỬA ORDER                  |");
+            System.out.println("------------------------------------------------");
             System.out.println("| 1. Thêm thức uống                              |");
             System.out.println("| 2. Trả lại thức uống                           |");
-            System.out.println("| 0. Quay lại                                    |");
+            System.out.println("|                                    0. Quay lại |");
             System.out.println("-------------------------------------------------");
             System.out.println();
             System.out.print("Chọn : ");
@@ -1261,10 +1263,12 @@ public class SellManager implements Serializable {
     public void menuPay() {
         char choice = ' ';
         do {
-            System.out.println("-------------------THANH TOÁN---------------------");
+            System.out.println("--------------------------------------------------");
+            System.out.println("|                  THANH TOÁN                     |");
+            System.out.println("--------------------------------------------------");
             System.out.println("| 1. Tính tiền cho khách trong quán               |");
             System.out.println("| 2. Tính tiền cho khách mang đi                  |");
-            System.out.println("| 0. Quay lại                                     |");
+            System.out.println("|                                     0. Quay lại |");
             System.out.println("---------------------------------------------------");
             System.out.println();
             System.out.println("Chọn : ");

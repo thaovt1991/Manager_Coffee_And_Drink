@@ -86,7 +86,9 @@ public class Menu {
             System.out.println();
             char choice = ' ';
             do {
-                System.out.println("--------------------------QUẢN LÝ - ADMIN ------------------------------");
+                System.out.println("------------------------------------------------------------------------");
+                System.out.println("|                        QUẢN LÝ - ADMIN                                |");
+                System.out.println("-------------------------------------------------------------------------");
                 System.out.println("| 1. Quản lý thức uống                                                  |");
                 System.out.println("| 2. Quản lý bán hàng                                                   |");
                 System.out.println("| 3. Quản lý nhân viên                                                  |");
@@ -149,12 +151,14 @@ public class Menu {
             System.out.println();
             char choice = ' ';
             do {
-                System.out.println("--------------------------QUẢN LÝ - GUEST ------------------------------");
-                System.out.println("| 1. Quản lý bán hàng                                                   |");
-                System.out.println("| 2. Kiểm tra doanh thu cá nhân                                         |");
-                System.out.println("| 3. Đổi password                                                       |");
-                System.out.println("| 0. Đăng xuất                                                          |");
-                System.out.println("-------------------------------------------------------------------------");
+                System.out.println("-----------------------------------------------------------------");
+                System.out.println("|                       QUẢN LÝ - GUEST                         |");
+                System.out.println("----------------------------------------------------------------");
+                System.out.println("| 1. Quản lý bán hàng                                           |");
+                System.out.println("| 2. Kiểm tra doanh thu cá nhân trong ngày                      |");
+                System.out.println("| 3. Đổi password                                               |");
+                System.out.println("| 0. Đăng xuất                                                  |");
+                System.out.println("-----------------------------------------------------------------");
                 System.out.println();
                 System.out.print("Chọn : ");
                 try {
@@ -167,7 +171,7 @@ public class Menu {
                         sellManager.menuSellDrinksManager();
                         break;
                     case '2':
-                        //displayRevenue();
+                        revenueManager.displayRevenueOfUserNameInToDay(username);
                         break;
                     case '3':
                        changePassword();
@@ -254,7 +258,9 @@ public class Menu {
         do {
             System.out.println("Chào mừng đến với quán Cofffe Demo ! Hãy đăng nhập để thực hiện phiên làm việc của mình !");
             System.out.println();
-            System.out.println("----------------ĐĂNG NHẬP-----------------");
+            System.out.println("-------------------------------------------");
+            System.out.println("|               ĐĂNG NHẬP                 |");
+            System.out.println("-------------------------------------------");
             System.out.println("| 1.  Đăng nhập                           |");
             System.out.println("| 2.  Thoát                               |");
             System.out.println("| 3.  Thông tin nhà hàng                  |");
