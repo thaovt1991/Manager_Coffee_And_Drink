@@ -6,7 +6,7 @@ import java.util.TreeMap;
 public class Bill implements Serializable {
     public String dateBill ;
     public String userName ;
-    public String idOder ;
+    public String idOrder;
     public TreeMap<String,Integer> treeOder ;
     private String idStaffServing  ;
     public String timeIn ;
@@ -15,10 +15,10 @@ public class Bill implements Serializable {
 
     public Bill(){}
 
-    public Bill(String dateBill, String userName, String idOder, TreeMap<String, Integer> treeOder,String idStaffServing, String timeIn, String timeOut, long totalMoney) {
+    public Bill(String dateBill, String userName, String idOrder, TreeMap<String, Integer> treeOder, String idStaffServing, String timeIn, String timeOut, long totalMoney) {
         this.dateBill = dateBill;
         this.userName = userName;
-        this.idOder = idOder;
+        this.idOrder = idOrder;
         this.treeOder = treeOder;
         this.idStaffServing = idStaffServing;
         this.timeIn = timeIn;
@@ -42,12 +42,12 @@ public class Bill implements Serializable {
         this.userName = userName;
     }
 
-    public String getIdOder() {
-        return idOder;
+    public String getIdOrder() {
+        return idOrder;
     }
 
-    public void setIdOder(String idOder) {
-        this.idOder = idOder;
+    public void setIdOrder(String idOrder) {
+        this.idOrder = idOrder;
     }
 
     public TreeMap<String, Integer> getTreeOder() {

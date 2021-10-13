@@ -1,14 +1,9 @@
 package precentation;
 
 import model.Account;
-import service.AccountManager;
-import service.DrinksManager;
-import service.SellManager;
-import service.StaffManager;
+import service.*;
 
 
-import java.io.Serializable;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -17,11 +12,12 @@ public class Menu {
     public static final String USERNAME_DEFAULT = "admin";
     public static final String PASSWORD_DEFAULT = "Admin123";
     public static Scanner input = new Scanner(System.in);
-    public static final String LINK_SAVE_OBJECT_ACCOUNT = "D:\\Manager_Coffee_And_Drink\\src\\data\\list_account.txt";
+    public static final String LINK_SAVE_OBJECT_ACCOUNT = "src/data/list_account.txt";
     public static AccountManager accountManager = new AccountManager();
     public static StaffManager staffManager = new StaffManager();
     public static DrinksManager drinksManager = new DrinksManager();
     public static SellManager sellManager = new SellManager();
+    public static RevenueManager revenueManager = new RevenueManager();
     public static ArrayList<Account> listAccount;
     public static String username, password, decentralization, timelogin, timeOut;
 //    public static DateTimeFormatter formatTime = DateTimeFormatter.ofPattern("HH:mm:ss");
@@ -42,7 +38,9 @@ public class Menu {
         accountManager = new AccountManager();
         staffManager = new StaffManager();
         sellManager = new SellManager();
+        revenueManager = new RevenueManager();
         listAccount = (new AccountManager()).readDataAccountToFile(LINK_SAVE_OBJECT_ACCOUNT);
+
     }
 
     public static boolean isTruePass(String username, String pass) {
@@ -121,7 +119,7 @@ public class Menu {
                         accountManager.menuAccountManager();
                         break;
                     case '5':
-                        //revenueManger.menuRevenueManager()
+                        revenueManager.menuDisplayRevenue();
                         break;
                     case '6':
                         //systemManager.menuManager() ;

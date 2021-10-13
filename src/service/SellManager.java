@@ -29,7 +29,7 @@ public class SellManager implements Serializable {
     public static final String LINK_SAVE_FORMAT_CSV_BILLS = "out_data/list_bills.csv";
     public static final String FORMAT_CSV_TABLE = "STT,ID TABLE,DRINKS ODER,ID STAFF SERVING,TIME INPUT,TIME OUT,TOTAL ";
     public static final String FORMAT_CSV_CA = "STT,ID CA,DRINKS ODER,ID STAFF SERVING,TIME INPUT,TIME OUT,TOTAL ";
-    public static final String FORMAT_CSV_BILLS = "STT,DATE PAY,USERNAME MANAGER,ID ODER,DRINKS ODER,ID STAFF SERVING,TIME INPUT,TIME OUT,TOTAL ";
+    public static final String FORMAT_CSV_BILLS = "STT,DATE PAY,USERNAME MANAGER,ID ORDER,DRINKS ODER,ID STAFF SERVING,TIME INPUT,TIME OUT,TOTAL ";
     public static final String DOWN_THE_LINE = "\n";
     public static final String COMMA_DELIMITER = ",";
     // public static final String LINK_REGEX = "(^([C|D][:])\\\\(?:[\\w]+\\\\)*\\w+$)|(^[C|D][:][\\\\]$)";
@@ -49,6 +49,7 @@ public class SellManager implements Serializable {
             numIdCarryAway = 0 ;
         }
         listBills = readDataBillsToFile(LINK_SAVE_OBJECT_BILL);
+
     }
 
     public boolean isFormatIdTable(String idTableCheck) {
@@ -194,7 +195,7 @@ public class SellManager implements Serializable {
                 writer.append(COMMA_DELIMITER);
                 writer.append(bill.getUserName());
                 writer.append(COMMA_DELIMITER);
-                writer.append(bill.getIdOder());
+                writer.append(bill.getIdOrder());
                 writer.append(COMMA_DELIMITER);
                 writer.append(toString(bill.getTreeOder()));
                 writer.append(COMMA_DELIMITER);
@@ -1409,7 +1410,7 @@ public class SellManager implements Serializable {
       TreeMap<String,Integer> treeOder = bill.getTreeOder();
       date = bill.getDateBill();
       username = bill.getUserName();
-      idOder = bill.getIdOder();
+      idOder = bill.getIdOrder();
       idStaff = bill.getIdStaffServing();
       timeIn = bill.getTimeIn();
       timeOut = bill.getTimeOut();
