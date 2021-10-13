@@ -1133,7 +1133,7 @@ public class DrinksManager implements Serializable {
         do {
             isChoice = false;
             do {
-                System.out.print("Nhập đường dẫn file xuất ra : ");
+                System.out.print("Nhập đường dẫn folder xuất ra : ");
                 link = input.nextLine();
                 if (!isLink(link)) {
                     System.out.println("Định dạng đường dẫn không đúng ! ví dụ đường dẫn file : D:\\nameFoder\\....");

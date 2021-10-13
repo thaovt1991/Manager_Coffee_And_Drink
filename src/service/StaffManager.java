@@ -26,7 +26,7 @@ public class StaffManager implements Serializable {
     public static final String DATE_OF_BIRTH_REGEX = "^[0|1|2|3]?[0-9][/][0-1]?[0-9][/][1|2]\\d{3}$"; //dinh dang 22/01/1991 ;
     public static final String PAY_REGEX = "^[1-9][0-9]{1,14}[0]{3}$";
     public static final String IDENTITY_CARD_REGEX = "^[1|2][0-9]{8}$";
-    public static final String LINK_REGEX = "(^([C|D][:])\\\\(?:[\\w]+\\\\)*\\w+$)|(^[C|D][:][\\\\]$)";
+    public static final String LINK_REGEX = "(^([CDEF][:])\\\\(?:[\\w]+\\\\)*\\w+$)|(^[C|D][:][\\\\]$)";
 
 
     public StaffManager() {
@@ -67,8 +67,8 @@ public class StaffManager implements Serializable {
 
 
     public void addStaff() {
-       char check = ' '   ;
-       boolean isCheck = false;
+        char check = ' ';
+        boolean isCheck = false;
         do {
             System.out.print("Bạn có muốn thêm nhân viên ? Nhấn 'Y' để đồng ý, nhấn 'N' để quay trờ về menu !");
             try {
@@ -158,10 +158,10 @@ public class StaffManager implements Serializable {
                         dateOfBirth = input.nextLine();
                         if (!isFormatDateOfBirth(dateOfBirth)) {
                             System.out.println("Không phải định dạng đúng !");
-                        } else if (!isDatOfBirth(dateOfBirth)) {
+                        } else if (!isDateOfBirth(dateOfBirth)) {
                             System.out.println("Không phải ngày thực tế hoặc đã vượt ra khỏi nằm ngoài độ tuổi cho phép ! ");
                         }
-                    } while (!isDatOfBirth(dateOfBirth));
+                    } while (!isDateOfBirth(dateOfBirth));
 
                     String idCar = "";
                     do {
@@ -237,13 +237,13 @@ public class StaffManager implements Serializable {
                     menuStaffManager();
                     break;
                 default:
-                    isCheck = true ;
+                    isCheck = true;
             }
-        }while (isCheck);
+        } while (isCheck);
     }
 
 
-    public boolean isDatOfBirth(String dateOfBirth) {
+    public boolean isDateOfBirth(String dateOfBirth) {
         if (!isFormatDateOfBirth(dateOfBirth)) return false;
         String[] arr = dateOfBirth.split("/");
         int day = Integer.parseInt(arr[0]);
@@ -367,11 +367,11 @@ public class StaffManager implements Serializable {
                 writer.append(COMMA_DELIMITER);
                 writer.append(staff.getNumberPhone());
                 writer.append(COMMA_DELIMITER);
-                writer.append(staff.getAddress().replace(",",";"));
+                writer.append(staff.getAddress().replace(",", ";"));
                 writer.append(COMMA_DELIMITER);
                 writer.append(String.valueOf(staff.getPayStaff()));
                 writer.append(COMMA_DELIMITER);
-                writer.append(staff.getOther().replace(",",";"));
+                writer.append(staff.getOther().replace(",", ";"));
                 writer.append(DOWN_THE_LINE);
             }
             writer.close();
@@ -764,9 +764,9 @@ public class StaffManager implements Serializable {
 
     }
 
-    public  void displayOneStaff(Staff staff){
+    public void displayOneStaff(Staff staff) {
         DecimalFormat format = new DecimalFormat("###,###,###");
-        String  id, fullname, gender, dateOfBirth, idCar, numberPhone, address, pay, other;
+        String id, fullname, gender, dateOfBirth, idCar, numberPhone, address, pay, other;
         System.out.printf("%-15s%-30s%-15s%-15s%-15s%-20s%-35s%-20s%s\n", "ID", "HỌ VÀ TÊN", "GIỚI TÍNH", "NGÀY SINH", "CMND", "SĐT", "ĐỊA CHỈ", "LƯƠNG- VND", "THÔNG TIN KHÁC");
         id = staff.getIdStaff();
         fullname = staff.getFullName();
@@ -1280,7 +1280,7 @@ public class StaffManager implements Serializable {
             editStaff();
         } else {
             if (!isIdHaveInList(id)) {
-                System.out.println("Không có nhân viên nào có id '"+id+"' !");
+                System.out.println("Không có nhân viên nào có id '" + id + "' !");
                 editStaff();
             } else {
                 for (Staff staff : staffList) {
@@ -1320,7 +1320,7 @@ public class StaffManager implements Serializable {
         }
     }
 
-    public void  editStaffByName(){
+    public void editStaffByName() {
         displayAllStaff();
         String fullname = "";
         System.out.print("Nhập họ và tên nhân viên muốn thay đổi thông tin : ");
@@ -1368,84 +1368,73 @@ public class StaffManager implements Serializable {
                 }
             }
         }
-    };
+    }
+
+    ;
 
     public void editOptionStaff(Staff staff) {
-        char choice = ' ';
+        String choice = "";
         boolean isChoice = true;
         do {
             System.out.println("----------------------------------------------------------------");
             System.out.println("|                THAY ĐỔI THÔNG TIN NHÂN VIÊN                   |");
             System.out.println("------------------------------------------------------------------");
-            System.out.println("|   1.  Thay đổi id nhân viên - Nhấn phím 'I'                    |");
-            System.out.println("|   2.  Thay đổi tên nhân viên - Nhấn phím 'F'                   |");
-            System.out.println("|   3.  Thay đổi giới tính - Nhấn phím 'G'                       |");
-            System.out.println("|   4.  Thay đổi ngày tháng năm sinh- Nhấn phím 'B'              |");
-            System.out.println("|   5.  Thay đổi CMND - Nhấn phím 'C'                            |");
-            System.out.println("|   6.  Thay đổi số điện thoại - Nhấn phím 'N'                   |");
-            System.out.println("|   7.  Thay đổi địa chỉ - Nhấn phím 'A'                         |");
-            System.out.println("|   8.  Thay đổi mức lương nhân viên - Nhấn phím 'P'             |");
-            System.out.println("|   9.  Thay đổi thông tin khác - Nhấn phím 'O'                  |");
-            System.out.println("|   10. Thay đổi toàn bộ thông tin nhân viên - Nhấn phím 'E'     |");
-            System.out.println("|   11.  Thoát và hủy thay đổi - Nhấn phím 'R'                   |");
-            System.out.println("|   12.  Thoát và lưu thay đổi - Nhấn phím 'S'                   |");
+            System.out.println("|   1.  Thay đổi id nhân viên                                    |");
+            System.out.println("|   2.  Thay đổi tên nhân viên                                   |");
+            System.out.println("|   3.  Thay đổi giới tính                                       |");
+            System.out.println("|   4.  Thay đổi ngày tháng năm sinh                             |");
+            System.out.println("|   5.  Thay đổi CMND                                            |");
+            System.out.println("|   6.  Thay đổi số điện thoại                                   |");
+            System.out.println("|   7.  Thay đổi địa chỉ                                         |");
+            System.out.println("|   8.  Thay đổi mức lương nhân viên                             |");
+            System.out.println("|   9.  Thay đổi thông tin khác                                  |");
+            System.out.println("|   10. Thay đổi toàn bộ thông tin nhân viên                     |");
+            System.out.println("|   11.  Thoát và hủy thay đổi                                   |");
+            System.out.println("|   12.  Thoát và lưu thay đổi                                   |");
             System.out.println("------------------------------------------------------------------");
             System.out.println();
             System.out.print("Chọn :");
-            try {
-                choice = input.nextLine().charAt(0);
-            } catch (Exception e) {
-                choice = ' ';
-            }
+            choice = input.nextLine();
 
             switch (choice) {
-                case 'I':
-                case 'i':
+                case "1":
                     System.out.println("----------Thay đổi id nhân viên ----------");
-                      editIdOfStaff(staff);
+                    editIdOfStaff(staff);
                     break;
-                case 'F':
-                case 'f':
+                case "2":
                     System.out.println("---------Thay đổi tên nhân viên ----------");
                     editFullNameOfStaff(staff);
                     break;
-                case 'G':
-                case 'g':
+                case "3":
                     System.out.println("----------Thay đổi giới tính nhân viên----------");
                     editGenderOfStaff(staff);
                     break;
-                case 'B':
-                case 'b':
+                case "4":
                     System.out.println("----------Thay đổi ngày tháng năm sinh nhân viên-----------");
                     editDateOfBirthOfStaff(staff);
                     break;
-                case 'C':
-                case 'c':
+                case "5":
                     System.out.println("----------Thay đổi CMND của nhân viên-----------");
                     editIdentifyCardOfStaff(staff);
                     break;
-                case 'N':
-                case 'n':
+                case "6":
                     System.out.println("----------Thay đổi số điện thoại nhân viên--------");
                     editNumberPhoneOfStaff(staff);
                     break;
-                case 'A':
-                case 'a':
+                case "7":
                     System.out.println("----------Thay đổi địa chỉ nhân viên--------");
                     editAddresssOfStaff(staff);
                     break;
-                case 'P':
-                case 'p':
+                case "8":
                     System.out.println("----------Thay đổi  mức lương nhân viên--------");
                     editPayOfStaff(staff);
                     break;
-                case 'O':
-                case 'o':
+                case "9":
                     System.out.println("----------Thay đổi thông tin khác của nhân viên--------");
                     editOtherOfStaff(staff);
                     break;
-                case 'E':
-                case 'e':
+
+                case "10":
                     System.out.println("----------Thay đổi toàn bộ thông tin nhân viên--------");
                     editIdOfStaff(staff);
                     editFullNameOfStaff(staff);
@@ -1457,14 +1446,12 @@ public class StaffManager implements Serializable {
                     editPayOfStaff(staff);
                     editOtherOfStaff(staff);
                     break;
-                case 'R':
-                case 'r':
+                case "11":
                     staffList = readDataFromFile(LINK_SAVE_OBJECT_STAFF);
                     editStaff();
                     isChoice = false;
                     break;
-                case 'S':
-                case 's':
+                case "12":
                     writeToFile(LINK_SAVE_OBJECT_STAFF, staffList);
                     writeDataFromFileFormatToCsv(LINK_SAVE_FORMAT_CSV_STAFF, staffList);
                     System.out.println("Danh sách nhân viên sau khi sửa là :");
@@ -1478,7 +1465,7 @@ public class StaffManager implements Serializable {
         } while (isChoice);
     }
 
-    public void  editIdOfStaff(Staff staff){
+    public void editIdOfStaff(Staff staff) {
         String idStaff = "";
         do {
             System.out.print("Nhập id mới của nhân viên :");
@@ -1492,7 +1479,7 @@ public class StaffManager implements Serializable {
         staff.setIdStaff(idStaff);
     }
 
-    public void editFullNameOfStaff(Staff staff){
+    public void editFullNameOfStaff(Staff staff) {
         String fullName = "";
         do {
             System.out.print("Nhập họ và tên mới của nhân viên : ");
@@ -1529,7 +1516,7 @@ public class StaffManager implements Serializable {
         staff.setFullName(fullName);
     }
 
-    public void editGenderOfStaff(Staff staff){
+    public void editGenderOfStaff(Staff staff) {
         String gender = "";
         char press = ' ';
         boolean isPress = true;
@@ -1558,21 +1545,21 @@ public class StaffManager implements Serializable {
         staff.setGender(gender);
     }
 
-    public void editDateOfBirthOfStaff(Staff staff){
+    public void editDateOfBirthOfStaff(Staff staff) {
         String dateOfBirth = "";
         do {
             System.out.print("Nhập ngày tháng năm sinh mới cho nhân viên, có dạng day/month/year, ví dụ 2/2/1992 : ");
             dateOfBirth = input.nextLine();
             if (!isFormatDateOfBirth(dateOfBirth)) {
                 System.out.println("Không phải định dạng đúng !");
-            } else if (!isDatOfBirth(dateOfBirth)) {
+            } else if (!isDateOfBirth(dateOfBirth)) {
                 System.out.println("Không phải ngày thực tế hoặc đã vượt ra khỏi nằm ngoài độ tuổi cho phép ! ");
             }
-        } while (!isDatOfBirth(dateOfBirth));
+        } while (!isDateOfBirth(dateOfBirth));
         staff.setDateOfBirth(dateOfBirth);
     }
 
-    public void editIdentifyCardOfStaff(Staff staff){
+    public void editIdentifyCardOfStaff(Staff staff) {
         String idCar = "";
         do {
             System.out.print("Nhập số CMND mới cho nhân viên : ");
@@ -1586,7 +1573,7 @@ public class StaffManager implements Serializable {
         staff.setIdentityCard(idCar);
     }
 
-    public  void editNumberPhoneOfStaff(Staff staff){
+    public void editNumberPhoneOfStaff(Staff staff) {
         String numberPhone = "";
         do {
             System.out.print("Nhập số điện thoại mới nhân viên : ");
@@ -1598,14 +1585,14 @@ public class StaffManager implements Serializable {
         staff.setNumberPhone(numberPhone);
     }
 
-    public void editAddresssOfStaff(Staff staff){
+    public void editAddresssOfStaff(Staff staff) {
         String address = "";
         System.out.print("Nhập địa chỉ mới của nhân viên : ");
         address = input.nextLine();
         staff.setAddress(address);
     }
 
-    public void editPayOfStaff(Staff staff){
+    public void editPayOfStaff(Staff staff) {
         String strPay = "";
         do {
             System.out.print("Nhập mức lương mới của nhân viên : ");
@@ -1617,7 +1604,7 @@ public class StaffManager implements Serializable {
         staff.setPayStaff(Long.parseLong(strPay));
     }
 
-    public void editOtherOfStaff(Staff staff){
+    public void editOtherOfStaff(Staff staff) {
         String other = "";
         System.out.print("Thay đổi thông tin khác cho nhân viên (có thể bỏ trống) !");
         other = input.nextLine();

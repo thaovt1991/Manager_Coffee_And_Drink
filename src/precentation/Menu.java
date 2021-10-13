@@ -18,6 +18,7 @@ public class Menu {
     public static DrinksManager drinksManager = new DrinksManager();
     public static SellManager sellManager = new SellManager();
     public static RevenueManager revenueManager = new RevenueManager();
+    public static SystemManager systemManager = new SystemManager();
     public static ArrayList<Account> listAccount;
     public static String username, password, decentralization, timelogin, timeOut;
 //    public static DateTimeFormatter formatTime = DateTimeFormatter.ofPattern("HH:mm:ss");
@@ -40,7 +41,7 @@ public class Menu {
         sellManager = new SellManager();
         revenueManager = new RevenueManager();
         listAccount = (new AccountManager()).readDataAccountToFile(LINK_SAVE_OBJECT_ACCOUNT);
-
+        systemManager = new SystemManager();
     }
 
     public static boolean isTruePass(String username, String pass) {
@@ -124,7 +125,7 @@ public class Menu {
                         revenueManager.menuDisplayRevenue();
                         break;
                     case '6':
-                        //systemManager.menuManager() ;
+                        systemManager.menuSystemManager();
                         break;
                     case '7':
                         changePassword();

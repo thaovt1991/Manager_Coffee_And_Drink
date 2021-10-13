@@ -54,17 +54,59 @@ public class RevenueManager implements Serializable {
         return Pattern.compile(YEAR_REGEX).matcher(year).matches();
     }
 
-    public void displayListStaff(){
+    public boolean isDate(String dateOfBirth) {
+        String[] arr = dateOfBirth.split("-");
+        int day = Integer.parseInt(arr[2]);
+        int month = Integer.parseInt(arr[1]);
+        int year = Integer.parseInt(arr[0]);
+        if (!isYearLimit(year)) return false;
+        if (!isMonth(month)) return false;
+        boolean isDay = false;
+        switch (month) {
+            case 4:
+            case 6:
+            case 9:
+            case 11:
+                if (day > 0 && day <= 30) isDay = true;
+                break;
+            case 2:
+                if (isLeapYear(year)) {
+                    if (day > 0 && day <= 29) isDay = true;
+                } else if (day > 0 && day <= 28) isDay = true;
+                break;
+            default:
+                if (day > 0 && day <= 31) isDay = true;
+        }
+        return isDay;
+    }
+
+    private boolean isYearLimit(int year) {      //giơi
+        if (year >= 1900 && year < 2022) return true;
+        return false;
+    }
+
+    private boolean isMonth(int month) {
+        if (month >= 1 && month <= 12) return true;
+        return false;
+    }
+
+    private boolean isLeapYear(int year) {
+        if (year % 400 == 0 || (year % 4 == 0 && year % 100 != 0)) return true;
+        return false;
+    }
+
+    public void displayListStaff() {
         SellManager sellManager = new SellManager();
         sellManager.displayStaff();
     }
-    public void displayListUserName(){
-       int count = 0;
-        System.out.printf("%-9s%s\n","STT","USERNAME");
-       for(Account account : accountsList){
-           count++ ;
-           System.out.printf("%-9s%s\n",String.valueOf(count),account.getUserName());
-       }
+
+    public void displayListUserName() {
+        int count = 0;
+        System.out.printf("%-9s%s\n", "STT", "USERNAME");
+        for (Account account : accountsList) {
+            count++;
+            System.out.printf("%-9s%s\n", String.valueOf(count), account.getUserName());
+        }
     }
 
 
@@ -217,21 +259,25 @@ public class RevenueManager implements Serializable {
 
     public void revenueByDay() {
         String date, day, month, year;
-
-        System.out.println("Nhập ngày tháng năm muốn xem ! ");
         do {
-            System.out.print("Ngày : ");
-            day = input.nextLine();
-        } while (!isFormatDay(day));
-        do {
-            System.out.print("Tháng: ");
-            month = input.nextLine();
-        } while (!isFormatMonth(month));
-        do {
-            System.out.print("Năm :");
-            year = input.nextLine();
-        } while (!isFormatYear(year));
-        date = year + "-" + month + "-" + day;
+            System.out.println("Nhập ngày tháng năm muốn xem ! ");
+            do {
+                System.out.print("Ngày : ");
+                day = input.nextLine();
+            } while (!isFormatDay(day));
+            do {
+                System.out.print("Tháng: ");
+                month = input.nextLine();
+            } while (!isFormatMonth(month));
+            do {
+                System.out.print("Năm :");
+                year = input.nextLine();
+            } while (!isFormatYear(year));
+            date = year + "-" + month + "-" + day;
+            if (!isDate(date)) {
+                System.out.println("Không phải ngày trong giới hạn hoặc ngày đó không tồn tại ! Hãy nhập lại");
+            }
+        } while (!isDate(date));
         ArrayList<Bill> listBillSearch = new ArrayList<>();
         for (Bill bill : listBills) {
             if (bill.getDateBill().contains(date)) {
@@ -251,6 +297,11 @@ public class RevenueManager implements Serializable {
         do {
             System.out.print("Tháng: ");
             month = input.nextLine();
+            if(isFormatMonth(month)){
+                System.out.println("Không phải định dạng tháng !");
+            }else if(!isMonth(Integer.parseInt(month))){
+                System.out.println("Không phải là tháng trong năm !");
+            }
         } while (!isFormatMonth(month));
         do {
             System.out.print("Năm :");
@@ -273,135 +324,101 @@ public class RevenueManager implements Serializable {
     public void revenueByDayToDay(ArrayList<Bill> listBills) {
         String dayBegin, monthBegin, yearBegin, dayEnd, monthEnd, yearEnd, dateBegin, dateEnd;
         do {
-            System.out.println("Nhập ngày tháng năm bắt đầu tìm kiếm ! ");
             do {
-                System.out.print("Ngày : ");
-                dayBegin = input.nextLine();
-            } while (!isFormatDay(dayBegin));
-            do {
-                System.out.print("Tháng: ");
-                monthBegin = input.nextLine();
-            } while (!isFormatMonth(monthBegin));
-            do {
-                System.out.print("Năm :");
-                yearBegin = input.nextLine();
-            } while (!isFormatYear(yearBegin));
-            dateBegin = yearBegin + "-" + monthBegin + "-" + dayBegin;
-            System.out.println("Nhập ngày tháng năm kết thúc tìm kiếm ! ");
+                System.out.println("Nhập ngày tháng năm bắt đầu tìm kiếm ! ");
+                do {
+                    System.out.print("Ngày : ");
+                    dayBegin = input.nextLine();
+                } while (!isFormatDay(dayBegin));
+                do {
+                    System.out.print("Tháng: ");
+                    monthBegin = input.nextLine();
+                } while (!isFormatMonth(monthBegin));
+                do {
+                    System.out.print("Năm :");
+                    yearBegin = input.nextLine();
+                } while (!isFormatYear(yearBegin));
+                dateBegin = yearBegin + "-" + monthBegin + "-" + dayBegin;
+                if (!isDate(dateBegin)) {
+                    System.out.println("Không phải ngày trong giới hạn hoặc ngày đó không tồn tại ! Hãy nhập lại");
+                }
+            } while (!isDate(dateBegin));
 
             do {
-                System.out.print("Ngày : ");
-                dayEnd = input.nextLine();
-            } while (!isFormatDay(dayEnd));
-            do {
-                System.out.print("Tháng: ");
-                monthEnd = input.nextLine();
-            } while (!isFormatMonth(monthEnd));
-            do {
-                System.out.print("Năm :");
-                yearEnd = input.nextLine();
-            } while (!isFormatYear(yearEnd));
-            dateEnd = yearEnd + "-" + monthEnd + "-" + dayEnd;
+                System.out.println("Nhập ngày tháng năm kết thúc tìm kiếm ! ");
+
+                do {
+                    System.out.print("Ngày : ");
+                    dayEnd = input.nextLine();
+                } while (!isFormatDay(dayEnd));
+                do {
+                    System.out.print("Tháng: ");
+                    monthEnd = input.nextLine();
+                } while (!isFormatMonth(monthEnd));
+                do {
+                    System.out.print("Năm :");
+                    yearEnd = input.nextLine();
+                } while (!isFormatYear(yearEnd));
+                dateEnd = yearEnd + "-" + monthEnd + "-" + dayEnd;
+                if (!isDate(dateEnd)) {
+                    System.out.println("Không phải ngày trong giới hạn hoặc ngày đó không tồn tại ! Hãy nhập lại");
+                }
+            } while (!isDate(dateEnd));
             if (dateBegin.compareTo(dateEnd) > 0) {
                 System.out.println("Ngày kết thúc phải lớn hơn ngày bắt đầu !");
             }
         } while (dateBegin.compareTo(dateEnd) > 0);
         ArrayList<Bill> listBillSearch = new ArrayList<>();
-        if (dateBegin.compareTo(dateEnd) == 0) {
-            for (Bill bill : listBills) {
-                if (bill.getDateBill().contains(dateBegin)) {
-                    listBillSearch.add(bill);
-                }
-            }
-        } else {
-
-            LocalDate dateBg = LocalDate.parse(dateBegin);
-            LocalDate dateEd = LocalDate.parse(dateEnd);
-            int indexBegin = indexBegin(dateBg, listBills);
-            int indexEnd = indexEnd(dateEd, listBills);
-            while (indexBegin <= indexEnd) {
-                listBillSearch.add(listBills.get(indexBegin));
-                indexBegin++;
+        for(Bill bill : listBills){
+            if(bill.getDateBill().compareTo(dateBegin)>=0 &&bill.getDateBill().compareTo(dateEnd)<=0){
+                listBillSearch.add(bill);
             }
         }
         showListBillsSearch(listBillSearch);
         System.out.println();
-        System.out.println("Tổng tiền thu nhập từ ngày " + dateBegin + " đến ngày " + dateEnd + " là :" + decimalFormat.format(totalByListBills(listBillSearch)) + " VND");
+        System.out.println("Tổng tiền thu nhập từ ngày " + dateBegin + " đến ngày " + dateEnd + " là : " + decimalFormat.format(totalByListBills(listBillSearch)) + " VND");
         exportDataRevenueToCsv(listBillSearch);
     }
 
-    public int indexBegin(LocalDate date, ArrayList<Bill> listBills) {
-        int indexBegin = -1;
-        for (Bill bill : listBills) {
-            if (bill.getDateBill().equals(date.toString())) {
-                indexBegin = listBills.indexOf(bill);
-                return indexBegin;
-            }
-        }
-        return indexBegin(date.plusDays(1), listBills);
-    }
-
-    public int indexEnd(LocalDate date, ArrayList<Bill> listBills) {
-        int indexEnd = -1;
-        for (Bill bill : listBills) {
-            if (bill.getDateBill().equals(date.toString())) {
-                indexEnd = listBills.indexOf(bill);
-                break;
-            }
-        }
-        if (indexEnd != -1) {
-            ArrayList<Bill> listBillSearchTemp = new ArrayList<>();
-            for (Bill bill : listBills) {
-                if (bill.getDateBill().contains(date.toString())) {
-                    listBillSearchTemp.add(bill);
-                }
-            }
-            indexEnd += listBillSearchTemp.size() - 1;
-            return indexEnd;
-        } else
-            return indexEnd(date.minusDays(1), listBills);
-    }
-
-    public void revenueByUserName(){
+    public void revenueByUserName() {
         displayListUserName();
         System.out.print("Nhập tên username cần kiểm tra doanh thu : ");
         String username = input.nextLine();
         ArrayList<Bill> listBillsSearch = new ArrayList<>();
-        for (Bill bill : listBills){
-            if(bill.getUserName().equals(username)){
+        for (Bill bill : listBills) {
+            if (bill.getUserName().equals(username)) {
                 listBillsSearch.add(bill);
             }
         }
-        if(listBillsSearch.size()==0){
-            System.out.println("Không tìm thấy lịch sử buôn bán của username "+ username);
+        if (listBillsSearch.size() == 0) {
+            System.out.println("Không tìm thấy lịch sử buôn bán của username " + username);
             System.out.println();
             menuDisplayRevenue();
-        }else {
+        } else {
             System.out.println("Nhập khoảng thời gian tìm kiếm ?");
             revenueByDayToDay(listBillsSearch);
         }
     }
 
-    public void revenueByStaff(){
+    public void revenueByStaff() {
         displayListStaff();
         System.out.print("Nhập id nhân viên cần kiểm tra doanh thu : ");
         String idStaff = input.nextLine();
         ArrayList<Bill> listBillsSearch = new ArrayList<>();
-        for (Bill bill : listBills){
-            if(bill.getIdStaffServing().equals(idStaff)){
+        for (Bill bill : listBills) {
+            if (bill.getIdStaffServing().equals(idStaff)) {
                 listBillsSearch.add(bill);
             }
         }
-        if(listBillsSearch.size()==0){
-            System.out.println("Không tìm thấy lịch sử phục vụ của nhân viên có id "+ idStaff);
+        if (listBillsSearch.size() == 0) {
+            System.out.println("Không tìm thấy lịch sử phục vụ của nhân viên có id " + idStaff);
             System.out.println();
             menuDisplayRevenue();
-        }else {
+        } else {
             System.out.println("Nhập khoảng thời gian tìm kiếm ?");
             revenueByDayToDay(listBillsSearch);
         }
     }
-
 
     public void showListBillsSearch(ArrayList<Bill> listBills) {
         System.out.printf("%-5s%-20s%-20s%-20s%-20s%-30s%-30s%s\n", "STT", "DATE", "USERNAME", "ID ORDER", "ID NV PHỤC VỤ", "TIME IN", "TIME OUT", "TIỀN");
@@ -527,23 +544,23 @@ public class RevenueManager implements Serializable {
         return totalMoneyListBills;
     }
 
-    public void displayRevenueOfUserNameInToDay(String username){
-        String toDay = LocalDate.now().toString() ;
+    public void displayRevenueOfUserNameInToDay(String username) {
+        String toDay = LocalDate.now().toString();
         ArrayList<Bill> listBillsInToDay = new ArrayList<>();
-        for(Bill bill : listBills){
-            if(bill.getDateBill().equals(toDay)){
+        for (Bill bill : listBills) {
+            if (bill.getDateBill().equals(toDay)) {
                 listBillsInToDay.add(bill);
             }
         }
         ArrayList<Bill> listBillsOfUser = new ArrayList<>();
-        for(Bill bill : listBillsInToDay){
-            if(bill.getUserName().equals(username)){
+        for (Bill bill : listBillsInToDay) {
+            if (bill.getUserName().equals(username)) {
                 listBillsOfUser.add(bill);
             }
         }
         showListBillsSearch(listBillsOfUser);
         System.out.println();
-        System.out.println("Doanh thu của username "+username + " trong ngày hôm nay "+ toDay + " là :" +decimalFormat.format(totalByListBills(listBillsOfUser)) + " VND" );
+        System.out.println("Doanh thu của username " + username + " trong ngày hôm nay " + toDay + " là :" + decimalFormat.format(totalByListBills(listBillsOfUser)) + " VND");
         System.out.println();
         Menu.menuWorkWithGuest();
     }
