@@ -1455,7 +1455,7 @@ public class SellManager implements IManagerSell {
       long totalMoney = bill.getTotalMoney();
         System.out.println("-------------------------------------- BILL -------------------------------------------");
         System.out.println("Date : "+ date +" - Username manager : "+username);
-        System.out.println("Nhân viên phục vụ bàn : "+ getFullNameOfIdStaff(idStaff));
+        System.out.println("Nhân viên phục vụ : "+ getFullNameOfIdStaff(idStaff));
         System.out.println("ID : " + idOder + " - Time in : " + timeIn+" - Time Out : "+ timeOut);
         System.out.println();
         String idDrinks, nameDrinks, qualityDrinks, stt,priceDrinks, money;
