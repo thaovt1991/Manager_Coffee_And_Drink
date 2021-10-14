@@ -579,7 +579,7 @@ public class SellManager implements Serializable {
                             System.out.println("------------------------------------------");
                             System.out.println("|  Bạn muốn khởi tạo bàn vừa order ?     |");
                             System.out.println("|     1. Yes                             |");
-                            System.out.println("|     2. No                              |");
+                            System.out.println("|     0. No                              |");
                             System.out.println("------------------------------------------");
                             System.out.println();
                             System.out.print("Chọn : ");
@@ -716,7 +716,7 @@ public class SellManager implements Serializable {
                         System.out.println("----------------------------------------------------");
                         System.out.println("|  Bạn muốn khởi tạo order cho khách mang về  ?     |");
                         System.out.println("|     1. Yes                                        |");
-                        System.out.println("|     2. No                                         |");
+                        System.out.println("|     0. No                                         |");
                         System.out.println("-----------------------------------------------------");
                         System.out.println();
                         System.out.print("Chọn : ");
