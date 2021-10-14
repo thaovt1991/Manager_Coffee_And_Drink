@@ -3,6 +3,7 @@ package service;
 import model.Drinks;
 import precentation.Menu;
 import sort.sortDrinks.*;
+import utils.FacadeEdit;
 
 import java.io.*;
 import java.text.DecimalFormat;
@@ -29,7 +30,7 @@ public class DrinksManager implements IManagerObj {
     public static final String LINK_SAVE_FORMAT_CSV_DRINKS = "out_data/list_drinks.csv";
 
     public DrinksManager() {
-        drinksList = readDataFromFile(LINK_SAVE_OBJECT_DRINKS);
+        drinksList = readDataDrinksFromFile(LINK_SAVE_OBJECT_DRINKS);
     }
 
     public DrinksManager(ArrayList<Drinks> drinksList) {
@@ -62,7 +63,7 @@ public class DrinksManager implements IManagerObj {
         return false;
     }
 
-    public ArrayList<Drinks> readDataFromFile(String path) {
+    public ArrayList<Drinks> readDataDrinksFromFile(String path) {
         ArrayList<Drinks> listDrinks = new ArrayList<>();
         try {
             FileInputStream fis = new FileInputStream(path);
@@ -116,6 +117,7 @@ public class DrinksManager implements IManagerObj {
         char check = ' ';
         boolean isCheck = false;
         do {
+            isCheck = false;
             System.out.println("-------------------------------------");
             System.out.println("| Bạn có muốn thêm thức uống mới ?   |");
             System.out.println("|   1. Đồng ý                        |");
@@ -392,6 +394,7 @@ public class DrinksManager implements IManagerObj {
     }
 
     public void editDrinkOption(Drinks drinks) {
+        String idDrinksOld = drinks.getIdDrink();
         char choice = ' ';
         boolean isChoice = true;
         do {
@@ -445,13 +448,16 @@ public class DrinksManager implements IManagerObj {
                     editOtherDescription(drinks);
                     break;
                 case '7':
-                    drinksList = readDataFromFile(LINK_SAVE_OBJECT_DRINKS);
+                    drinksList = readDataDrinksFromFile(LINK_SAVE_OBJECT_DRINKS);
                     editDrink();
                     isChoice = false;
                     break;
                 case '8':
                     writeToFile(LINK_SAVE_OBJECT_DRINKS, drinksList);
                     writeDataFromFileFormatToCsv(LINK_SAVE_FORMAT_CSV_DRINKS, drinksList);
+                    if(!drinks.getIdDrink().equals(idDrinksOld)){
+                        FacadeEdit.editAllObjOfIdDrinks(idDrinksOld,drinks.getIdDrink());
+                    }
                     System.out.println("Menu sau khi sửa là :");
                     displayDrinkFornmat();
                     editDrink();
@@ -482,7 +488,7 @@ public class DrinksManager implements IManagerObj {
             System.out.printf("%-3s%-12s%-12s%-40s%-20s%-23s%s\n", "|", stt, id, name, ql, pr, "|");
         }
         System.out.println("------------------------------------------######################-----------------------------------------------");
-        drinksList = readDataFromFile(LINK_SAVE_OBJECT_DRINKS);
+        drinksList = readDataDrinksFromFile(LINK_SAVE_OBJECT_DRINKS);
     }
 
     public void editIdDrink(Drinks drinks) {
@@ -660,7 +666,7 @@ public class DrinksManager implements IManagerObj {
                     deleteDrink();
                     break;
                 case '0':
-                    drinksList = readDataFromFile(LINK_SAVE_OBJECT_DRINKS);
+                    drinksList = readDataDrinksFromFile(LINK_SAVE_OBJECT_DRINKS);
                     isChoice = false;
                     deleteDrink();
                     break;
@@ -737,14 +743,14 @@ public class DrinksManager implements IManagerObj {
                     SortIdDrinksAZ sortIdAZ = new SortIdDrinksAZ();
                     Collections.sort(drinksList, sortIdAZ);
                     displayFullDrinks();
-                    drinksList = readDataFromFile(LINK_SAVE_OBJECT_DRINKS);
+                    drinksList = readDataDrinksFromFile(LINK_SAVE_OBJECT_DRINKS);
                     break;
                 case '2':
                     System.out.println("Sắp xếp theo ID từ Z-A");
                     SortIdDrinksZA sortIdZA = new SortIdDrinksZA();
                     Collections.sort(drinksList, sortIdZA);
                     displayFullDrinks();
-                    drinksList = readDataFromFile(LINK_SAVE_OBJECT_DRINKS);
+                    drinksList = readDataDrinksFromFile(LINK_SAVE_OBJECT_DRINKS);
                     break;
                 case '0':
                     optionDisplay();
@@ -779,14 +785,14 @@ public class DrinksManager implements IManagerObj {
                     SortToNameDrinksAZ sortNameAZ = new SortToNameDrinksAZ();
                     Collections.sort(drinksList, sortNameAZ);
                     displayFullDrinks();
-                    drinksList = readDataFromFile(LINK_SAVE_OBJECT_DRINKS);
+                    drinksList = readDataDrinksFromFile(LINK_SAVE_OBJECT_DRINKS);
                     break;
                 case '2':
                     System.out.println("Sắp xếp theo tên từ Z-A");
                     SortToNameDrinksZA sortNameZA = new SortToNameDrinksZA();
                     Collections.sort(drinksList, sortNameZA);
                     displayFullDrinks();
-                    drinksList = readDataFromFile(LINK_SAVE_OBJECT_DRINKS);
+                    drinksList = readDataDrinksFromFile(LINK_SAVE_OBJECT_DRINKS);
                     break;
                 case '0':
                     optionDisplay();
@@ -821,14 +827,14 @@ public class DrinksManager implements IManagerObj {
                     SortQualityDrinksAscending sortQualityDrinksAscending = new SortQualityDrinksAscending();
                     Collections.sort(drinksList, sortQualityDrinksAscending);
                     displayFullDrinks();
-                    drinksList = readDataFromFile(LINK_SAVE_OBJECT_DRINKS);
+                    drinksList = readDataDrinksFromFile(LINK_SAVE_OBJECT_DRINKS);
                     break;
                 case '2':
                     System.out.println("Sắp xếp theo số lượng giảm dần");
                     SortQualityDrinksDecrease sortQualityDrinksDecrease = new SortQualityDrinksDecrease();
                     Collections.sort(drinksList, sortQualityDrinksDecrease);
                     displayFullDrinks();
-                    drinksList = readDataFromFile(LINK_SAVE_OBJECT_DRINKS);
+                    drinksList = readDataDrinksFromFile(LINK_SAVE_OBJECT_DRINKS);
                     break;
                 case '0':
                     optionDisplay();
@@ -864,14 +870,14 @@ public class DrinksManager implements IManagerObj {
                     SortPriceDrinksAscending sortPriceDrinksAscending = new SortPriceDrinksAscending();
                     Collections.sort(drinksList, sortPriceDrinksAscending);
                     displayFullDrinks();
-                    drinksList = readDataFromFile(LINK_SAVE_OBJECT_DRINKS);
+                    drinksList = readDataDrinksFromFile(LINK_SAVE_OBJECT_DRINKS);
                     break;
                 case '2':
                     System.out.println("Sắp xếp theo giá thức uống giảm dần");
                     SortPriceDrinksDecrease sortPriceDrinksDecrease = new SortPriceDrinksDecrease();
                     Collections.sort(drinksList, sortPriceDrinksDecrease);
                     displayFullDrinks();
-                    drinksList = readDataFromFile(LINK_SAVE_OBJECT_DRINKS);
+                    drinksList = readDataDrinksFromFile(LINK_SAVE_OBJECT_DRINKS);
                     break;
                 case '0':
                     optionDisplay();

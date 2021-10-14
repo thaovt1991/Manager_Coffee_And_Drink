@@ -13,11 +13,11 @@ public class SellManager implements IManagerSell {
     public ArrayList<Staff> staffList;
     public ArrayList<Table> tablesListHaveCustomer;
     public ArrayList<CarriedAway> listCarriedAway;
-    public ArrayList<Bill> listBills ;
+    public ArrayList<Bill> listBills;
     public ArrayList<Drinks> drinksList;
     public static long numIdCarryAway = 0;
     public final Integer NUM_TABLE = 10;
-  //  public final Integer SIZE_CA = 10;
+    //  public final Integer SIZE_CA = 10;
     static Scanner input = new Scanner(System.in);
     public static final String LINK_SAVE_FORMAT_CSV_TABLE = "out_data/list_tables.csv";
     public static final String LINK_SAVE_OBJECT_TABLE = "src/data/list_tables.txt";
@@ -43,10 +43,10 @@ public class SellManager implements IManagerSell {
         tablesListHaveCustomer = readDataTableToFile(LINK_SAVE_OBJECT_TABLE);
         drinksList = readDataDrinksFromFile(LINK_SAVE_OBJECT_DRINKS);
         listCarriedAway = readDataCarriedAwayToFile(LINK_SAVE_OBJECT_CARRIED_AWAY);
-        try{
-        numIdCarryAway =Integer.parseInt(listCarriedAway.get(listCarriedAway.size()-1).getIdCa().replace("CA","")) ;}
-        catch (Exception e){
-            numIdCarryAway = 0 ;
+        try {
+            numIdCarryAway = Integer.parseInt(listCarriedAway.get(listCarriedAway.size() - 1).getIdCa().replace("CA", ""));
+        } catch (Exception e) {
+            numIdCarryAway = 0;
         }
         listBills = readDataBillsToFile(LINK_SAVE_OBJECT_BILL);
 
@@ -91,7 +91,7 @@ public class SellManager implements IManagerSell {
             oos.writeObject(listDrinks);
             oos.close();
             fos.close();
-           // System.out.println("Đã lưu lại mọi thay đổi vào dữ liệu gốc !");
+            // System.out.println("Đã lưu lại mọi thay đổi vào dữ liệu gốc !");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -118,7 +118,7 @@ public class SellManager implements IManagerSell {
             oos.writeObject(tablesList);
             oos.close();
             fos.close();
-         //   System.out.println("Đã lưu lại mọi thay đổi vào dữ liệu gốc !");
+            //   System.out.println("Đã lưu lại mọi thay đổi vào dữ liệu gốc !");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -174,7 +174,7 @@ public class SellManager implements IManagerSell {
             oos.writeObject(listBill);
             oos.close();
             fos.close();
-        //    System.out.println("Đã lưu lại mọi thay đổi vào dữ liệu gốc !");
+            //    System.out.println("Đã lưu lại mọi thay đổi vào dữ liệu gốc !");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -253,7 +253,7 @@ public class SellManager implements IManagerSell {
             oos.writeObject(carriedAwaysList);
             oos.close();
             fos.close();
-        //    System.out.println("Đã lưu lại mọi thay đổi vào dữ liệu gốc !");
+            //    System.out.println("Đã lưu lại mọi thay đổi vào dữ liệu gốc !");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -395,6 +395,7 @@ public class SellManager implements IManagerSell {
         }
         return nameDrinks;
     }
+
     public long priceDrinks(String idDrink) {
         long priceDrinks = 0;
         for (Drinks drinks : drinksList) {
@@ -470,6 +471,7 @@ public class SellManager implements IManagerSell {
             char check = ' ';
             boolean isCheck = false;
             do {
+                isCheck = false;
                 System.out.println("-------------------------------");
                 System.out.println("| Bạn đang order bàn mới ?     |");
                 System.out.println("|   1. Đồng ý                  |");
@@ -619,6 +621,7 @@ public class SellManager implements IManagerSell {
         char check = ' ';
         boolean isCheck = false;
         do {
+            isCheck = false;
             System.out.println("------------------------------------");
             System.out.println("| Bạn đang order khách mang về ?     |");
             System.out.println("|   1. Đồng ý                        |");
@@ -794,7 +797,7 @@ public class SellManager implements IManagerSell {
                 return table;
             }
         }
-        return null ;
+        return null;
     }
 
     public CarriedAway getIdTableInListCA(String idCA) {
@@ -840,6 +843,7 @@ public class SellManager implements IManagerSell {
     public void editListTable() {
         displaylistTable();
         String idTableEdit;
+        if(!tablesListHaveCustomer.isEmpty()){
         do {
             System.out.println("Nhập id bàn cần thay đổi : ");
             idTableEdit = input.nextLine();
@@ -883,7 +887,7 @@ public class SellManager implements IManagerSell {
 
             }
         }
-        while (press != '0');
+        while (press != '0');}else System.out.println("Các bàn đểu trống !");
     }
 
     public void addDrinksToTable(Table table) {
@@ -943,7 +947,7 @@ public class SellManager implements IManagerSell {
                 default:
             }
         } while (isChoice);
-        saveChangeTable(drinksList, table, treeOder);
+        saveChangeTable(table, treeOder);
     }
 
     public void removeDrinksToTable(Table table) {
@@ -1007,13 +1011,14 @@ public class SellManager implements IManagerSell {
                 default:
             }
         } while (isChoice);
-        saveChangeTable(drinksList, table, treeOder);
+        saveChangeTable(table, treeOder);
     }
 
-    public void saveChangeTable(ArrayList<Drinks> drinksList, Table table, TreeMap<String, Integer> treeOder) {
+    public void saveChangeTable(Table table, TreeMap<String, Integer> treeOder) {
         char choose = ' ';
         boolean isNotChoose = false;
         do {
+            isNotChoose = false;
             System.out.println("------------------------------");
             System.out.println("| Bạn muốn lưu thay đổi ?     |");
             System.out.println("|   1. Yes                    |");
@@ -1036,6 +1041,7 @@ public class SellManager implements IManagerSell {
                     break;
                 case '0':
                     drinksList = readDataDrinksFromFile(LINK_SAVE_OBJECT_DRINKS);
+                    tablesListHaveCustomer = readDataTableToFile(LINK_SAVE_OBJECT_TABLE);
                     editListTable();
                     break;
                 default:
@@ -1047,49 +1053,51 @@ public class SellManager implements IManagerSell {
     public void editListCarriedAway() {
         displaylistCA();
         String idCAEdit;
-        do {
-            System.out.println("Nhập id của khách mang đi cần thay đổi : ");
-            idCAEdit = input.nextLine();
-            if (getIdTableInListCA(idCAEdit) == null) {
-                System.out.println("Không có khách hàng nào được tìm thấy !");
-                menuEditListSell();
-            }
-        } while (getIdTableInListCA(idCAEdit) == null);
-
-        CarriedAway carriedAway = getIdTableInListCA(idCAEdit);
-        System.out.println("Bàn có id '" + idCAEdit + "' đã oder: ");
-        displayTreeOder(carriedAway.getTreeOder());
-        System.out.println();
-        char press = ' ';
-        do {
-            System.out.println("------------------------------------------------");
-            System.out.println("|            YÊU CẦU SỬA ORDER                  |");
-            System.out.println("------------------------------------------------");
-            System.out.println("| 1. Thêm thức uống                              |");
-            System.out.println("| 2. Trả lại thức uống                           |");
-            System.out.println("|                                    0. Quay lại |");
-            System.out.println("-------------------------------------------------");
-            System.out.println();
-            System.out.print("Chọn : ");
-            try {
-                press = input.nextLine().charAt(0);
-            } catch (Exception e) {
-                press = ' ';
-            }
-            switch (press) {
-                case '1':
-                    addDrinksToCA(carriedAway);
-                    break;
-                case '2':
-                    removeDrinksToCA(carriedAway);
-                    break;
-                case '0':
+        if (!listCarriedAway.isEmpty()) {
+            do {
+                System.out.println("Nhập id của khách mang đi cần thay đổi : ");
+                idCAEdit = input.nextLine();
+                if (getIdTableInListCA(idCAEdit) == null) {
+                    System.out.println("Không có khách hàng nào được tìm thấy !");
                     menuEditListSell();
-                    break;
-                default:
+                }
+            } while (getIdTableInListCA(idCAEdit) == null);
+
+            CarriedAway carriedAway = getIdTableInListCA(idCAEdit);
+            System.out.println("Bàn có id '" + idCAEdit + "' đã oder: ");
+            displayTreeOder(carriedAway.getTreeOder());
+            System.out.println();
+            char press = ' ';
+            do {
+                System.out.println("------------------------------------------------");
+                System.out.println("|            YÊU CẦU SỬA ORDER                  |");
+                System.out.println("------------------------------------------------");
+                System.out.println("| 1. Thêm thức uống                              |");
+                System.out.println("| 2. Trả lại thức uống                           |");
+                System.out.println("|                                    0. Quay lại |");
+                System.out.println("-------------------------------------------------");
+                System.out.println();
+                System.out.print("Chọn : ");
+                try {
+                    press = input.nextLine().charAt(0);
+                } catch (Exception e) {
+                    press = ' ';
+                }
+                switch (press) {
+                    case '1':
+                        addDrinksToCA(carriedAway);
+                        break;
+                    case '2':
+                        removeDrinksToCA(carriedAway);
+                        break;
+                    case '0':
+                        menuEditListSell();
+                        break;
+                    default:
+                }
             }
-        }
-        while (press != '0');
+            while (press != '0');
+        }else System.out.println("Không có khách nào đợi mang về !");
     }
 
     public void addDrinksToCA(CarriedAway carriedAway) {
@@ -1149,7 +1157,7 @@ public class SellManager implements IManagerSell {
                 default:
             }
         } while (isChoice);
-        saveChangeCA(drinksList, carriedAway, treeOder);
+        saveChangeCA(carriedAway, treeOder);
     }
 
     public void removeDrinksToCA(CarriedAway carriedAway) {
@@ -1213,13 +1221,14 @@ public class SellManager implements IManagerSell {
                 default:
             }
         } while (isChoice);
-        saveChangeCA(drinksList, carriedAway, treeOder);
+        saveChangeCA(carriedAway, treeOder);
     }
 
-    public void saveChangeCA(ArrayList<Drinks> drinksList, CarriedAway carriedAway, TreeMap<String, Integer> treeOder) {
+    public void saveChangeCA( CarriedAway carriedAway, TreeMap<String, Integer> treeOder) {
         char choose = ' ';
         boolean isNotChoose = false;
         do {
+            isNotChoose = false;
             System.out.println("-------------------------------");
             System.out.println("| Bạn muốn lưu thay dổi ?      |");
             System.out.println("|   1. Đồng ý                  |");
@@ -1243,6 +1252,7 @@ public class SellManager implements IManagerSell {
                     break;
                 case '0':
                     drinksList = readDataDrinksFromFile(LINK_SAVE_OBJECT_DRINKS);
+                    listCarriedAway = readDataCarriedAwayToFile(LINK_SAVE_OBJECT_CARRIED_AWAY);
                     menuEditListSell();
                     break;
                 default:
@@ -1315,6 +1325,7 @@ public class SellManager implements IManagerSell {
             }
         } while (choice != '0');
     }
+
     public void payForTable() {
         DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
         String idTable = "";
@@ -1334,13 +1345,14 @@ public class SellManager implements IManagerSell {
             String timeOut = String.valueOf(java.time.LocalTime.now()) + " " + String.valueOf(java.time.LocalDate.now());
             table.setTimeOut(timeOut);
             String dateBill = String.valueOf(java.time.LocalDate.now());
-            String username = Menu.username ;
-            Bill bill = new Bill(dateBill,username,table.getIdTable(),table.getTreeOder(),table.getIdStaffServing(),table.getTimeInput(),table.getTimeOut(),table.getTotalMoney());
+            String username = Menu.username;
+            Bill bill = new Bill(dateBill, username, table.getIdTable(), table.getTreeOder(), table.getIdStaffServing(), table.getTimeInput(), table.getTimeOut(), table.getTotalMoney());
             System.out.println("Hóa đơn thanh toán : ");
             displayBill(bill);
             char choice = ' ';
             boolean isNotChoice = false;
             do {
+                isNotChoice = false;
                 System.out.println("---------------------------");
                 System.out.println("|  Bạn muốn thanh toán ?   |");
                 System.out.println("|    1. Yes                |");
@@ -1358,12 +1370,12 @@ public class SellManager implements IManagerSell {
                         System.out.println("In hóa đơn");
                         displayBill(bill);
                         System.out.println();
-                        listBills.add(bill) ;
-                        writeDataBillsToFile(LINK_SAVE_OBJECT_BILL,listBills);
-                        writeDataOfBillsFromFileFormatToCsv(LINK_SAVE_FORMAT_CSV_BILLS,listBills);
+                        listBills.add(bill);
+                        writeDataBillsToFile(LINK_SAVE_OBJECT_BILL, listBills);
+                        writeDataOfBillsFromFileFormatToCsv(LINK_SAVE_FORMAT_CSV_BILLS, listBills);
                         tablesListHaveCustomer.remove(table);
-                        writeDataTableToFile(LINK_SAVE_OBJECT_TABLE,tablesListHaveCustomer);
-                        writeDataOfTableFromFileFormatToCsv(LINK_SAVE_FORMAT_CSV_TABLE,tablesListHaveCustomer);
+                        writeDataTableToFile(LINK_SAVE_OBJECT_TABLE, tablesListHaveCustomer);
+                        writeDataOfTableFromFileFormatToCsv(LINK_SAVE_FORMAT_CSV_TABLE, tablesListHaveCustomer);
                         break;
                     case '0':
                         table.setTimeOut("Empty");
@@ -1375,7 +1387,7 @@ public class SellManager implements IManagerSell {
         }
     }
 
-    public void payForCA(){
+    public void payForCA() {
         DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
         String idCA = "";
         displaylistCA();
@@ -1394,13 +1406,14 @@ public class SellManager implements IManagerSell {
             String timeOut = String.valueOf(java.time.LocalTime.now()) + " " + String.valueOf(java.time.LocalDate.now());
             carriedAway.setTimeOut(timeOut);
             String dateBill = String.valueOf(java.time.LocalDate.now());
-            String username = Menu.username ;
-            Bill bill = new Bill(dateBill,username,idCA,carriedAway.getTreeOder(),carriedAway.getIdStaffServing(),carriedAway.getTimeInput(),carriedAway.getTimeOut(),carriedAway.getTotalMoney());
+            String username = Menu.username;
+            Bill bill = new Bill(dateBill, username, idCA, carriedAway.getTreeOder(), carriedAway.getIdStaffServing(), carriedAway.getTimeInput(), carriedAway.getTimeOut(), carriedAway.getTotalMoney());
             System.out.println("Hóa đơn thanh toán : ");
             displayBill(bill);
             char choice = ' ';
             boolean isNotChoice = false;
             do {
+                isNotChoice = false;
                 System.out.println("---------------------------");
                 System.out.println("|  Bạn muốn thanh toán ?   |");
                 System.out.println("|    1. Yes                |");
@@ -1418,12 +1431,12 @@ public class SellManager implements IManagerSell {
                         System.out.println("In hóa đơn");
                         displayBill(bill);
                         System.out.println();
-                        listBills.add(bill) ;
-                        writeDataBillsToFile(LINK_SAVE_OBJECT_BILL,listBills);
-                        writeDataOfBillsFromFileFormatToCsv(LINK_SAVE_FORMAT_CSV_BILLS,listBills);
+                        listBills.add(bill);
+                        writeDataBillsToFile(LINK_SAVE_OBJECT_BILL, listBills);
+                        writeDataOfBillsFromFileFormatToCsv(LINK_SAVE_FORMAT_CSV_BILLS, listBills);
                         listCarriedAway.remove(carriedAway);
-                        writeDataCarriedAwayToFile(LINK_SAVE_OBJECT_CARRIED_AWAY,listCarriedAway);
-                        writeDataOfCarriedAwayFromFileFormatToCsv(LINK_SAVE_FORMAT_CSV_CA,listCarriedAway);
+                        writeDataCarriedAwayToFile(LINK_SAVE_OBJECT_CARRIED_AWAY, listCarriedAway);
+                        writeDataOfCarriedAwayFromFileFormatToCsv(LINK_SAVE_FORMAT_CSV_CA, listCarriedAway);
                         break;
                     case '0':
                         carriedAway.setTimeOut("Empty");
@@ -1435,34 +1448,34 @@ public class SellManager implements IManagerSell {
         }
     }
 
-    public String getFullNameOfIdStaff(String idSfaff){
-        for (Staff staff : staffList){
-            if(staff.getIdStaff().equals(idSfaff))return staff.getFullName();
+    public String getFullNameOfIdStaff(String idSfaff) {
+        for (Staff staff : staffList) {
+            if (staff.getIdStaff().equals(idSfaff)) return staff.getFullName();
         }
         return null;
     }
 
-    public void displayBill(Bill bill){
+    public void displayBill(Bill bill) {
         DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
-      String date, username , idOder , timeIn, timeOut,idStaff;
-      TreeMap<String,Integer> treeOder = bill.getTreeOder();
-      date = bill.getDateBill();
-      username = bill.getUserName();
-      idOder = bill.getIdOrder();
-      idStaff = bill.getIdStaffServing();
-      timeIn = bill.getTimeIn();
-      timeOut = bill.getTimeOut();
-      long totalMoney = bill.getTotalMoney();
+        String date, username, idOder, timeIn, timeOut, idStaff;
+        TreeMap<String, Integer> treeOder = bill.getTreeOder();
+        date = bill.getDateBill();
+        username = bill.getUserName();
+        idOder = bill.getIdOrder();
+        idStaff = bill.getIdStaffServing();
+        timeIn = bill.getTimeIn();
+        timeOut = bill.getTimeOut();
+        long totalMoney = bill.getTotalMoney();
         System.out.println("-------------------------------------- BILL -------------------------------------------");
-        System.out.println("Date : "+ date +" - Username manager : "+username);
-        System.out.println("Nhân viên phục vụ : "+ getFullNameOfIdStaff(idStaff));
-        System.out.println("ID : " + idOder + " - Time in : " + timeIn+" - Time Out : "+ timeOut);
+        System.out.println("Date : " + date + " - Username manager : " + username);
+        System.out.println("Nhân viên phục vụ : " + getFullNameOfIdStaff(idStaff));
+        System.out.println("ID : " + idOder + " - Time in : " + timeIn + " - Time Out : " + timeOut);
         System.out.println();
-        String idDrinks, nameDrinks, qualityDrinks, stt,priceDrinks, money;
+        String idDrinks, nameDrinks, qualityDrinks, stt, priceDrinks, money;
         Object obj = new Object();
         Set set = treeOder.keySet();
         Iterator i = set.iterator();
-        System.out.printf("%-5s%-20s%-20s%-10s%-15s%s\n", "STT", "ID THỨC UỐNG", "TÊN THỨC UỐNG", "SỐ LƯỢNG","GIÁ","TIỀN");
+        System.out.printf("%-5s%-20s%-20s%-10s%-15s%s\n", "STT", "ID THỨC UỐNG", "TÊN THỨC UỐNG", "SỐ LƯỢNG", "GIÁ", "TIỀN");
         int count = 0;
         while (i.hasNext()) {
             count++;
@@ -1471,14 +1484,13 @@ public class SellManager implements IManagerSell {
             nameDrinks = nameDrinks(idDrinks);
             qualityDrinks = String.valueOf(treeOder.get(idDrinks));
             priceDrinks = decimalFormat.format(priceDrinks(idDrinks));
-            money = decimalFormat.format(priceDrinks(idDrinks)*treeOder.get(idDrinks));
-            System.out.printf("%-5s%-20s%-20s%-10s%-15s%s\n", stt, idDrinks, nameDrinks, qualityDrinks,priceDrinks,money);
+            money = decimalFormat.format(priceDrinks(idDrinks) * treeOder.get(idDrinks));
+            System.out.printf("%-5s%-20s%-20s%-10s%-15s%s\n", stt, idDrinks, nameDrinks, qualityDrinks, priceDrinks, money);
         }
         System.out.println("---------------------------------------------------------------------------------------");
-        System.out.printf("%-60s%-10s%s\n","","TỔNG CỘNG : ",decimalFormat.format(totalMoney)+" VND");
+        System.out.printf("%-60s%-10s%s\n", "", "TỔNG CỘNG : ", decimalFormat.format(totalMoney) + " VND");
         System.out.println();
     }
-
 
 
     public void menuSellDrinksManager() {
@@ -1531,11 +1543,11 @@ public class SellManager implements IManagerSell {
 
     @Override
     public void editOder() {
-       menuEditListSell();
+        menuEditListSell();
     }
 
     @Override
     public void pay() {
-       menuPay();
+        menuPay();
     }
 }

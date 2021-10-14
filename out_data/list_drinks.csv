@@ -1,12 +1,12 @@
 ID,NAME,QUALITY,PRICE,OTHER
-CF010,Ca Phe Den,87,10000,Ca phe nhap tu Lam Dong
-CF002,Ca Phe Sua,71,12000,Cafe pha sua
+CF010,Ca Phe Den,85,10000,Ca phe nhap tu Lam Dong
+CF001,Ca Phe Sua,64,12000,Cafe pha sua
 CF003,Caphe Den Sai Gon,12,15000,Ca phe den nhieu da
 CF004,Ca Phe Sua Sai Gon,82,18000,Ca phe nhieu; ket hop sua; 1kgca phe pha duoc 100 ly
 ST001,Sting Yellow,72,12000,dai ly cung cap : cty phan phoi nuoc ngot Hue
 ST002,Sting Red,88,12000,sting red
-CF008,Ca Phe Phin,22,14000,tu che
+CF008,Ca Phe Phin,18,14000,tu che
 TX001,Tra Xanh O Do,87,11000,Nha xung cap tai Hue
 YM001,Yomost,25,15000,nhap log
 BN001,Bird Nest ,23,12000,500ml ;cong ty DATAFA
-SC001,Sua Chua,16,15000,sua chua
+SC001,Sua Chua,6,15000,sua chua

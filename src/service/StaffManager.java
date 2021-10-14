@@ -3,6 +3,7 @@ package service;
 import model.Staff;
 import precentation.Menu;
 import sort.sortStaff.*;
+import utils.FacadeEdit;
 
 import java.io.*;
 import java.text.DecimalFormat;
@@ -30,7 +31,7 @@ public class StaffManager implements IManagerObj {
 
 
     public StaffManager() {
-        staffList = readDataFromFile(LINK_SAVE_OBJECT_STAFF);
+        staffList = readDataStaffFromFile(LINK_SAVE_OBJECT_STAFF);
     }
 
     public boolean isEmpty() {
@@ -234,8 +235,8 @@ public class StaffManager implements IManagerObj {
                         switch (choice) {
                             case '1':
                                 staffList.add(staff);
-                                writeToFile(LINK_SAVE_OBJECT_STAFF, staffList);
-                                writeDataFromFileFormatToCsv(LINK_SAVE_FORMAT_CSV_STAFF, staffList);
+                                writeDataStaffToFile(LINK_SAVE_OBJECT_STAFF, staffList);
+                                writeDataStaffFromFileFormatToCsv(LINK_SAVE_FORMAT_CSV_STAFF, staffList);
                                 isChoice = false;
                                 menuStaffManager();
                                 break;
@@ -335,7 +336,7 @@ public class StaffManager implements IManagerObj {
         return matcher.matches();
     }
 
-    public ArrayList<Staff> readDataFromFile(String path) {
+    public ArrayList<Staff> readDataStaffFromFile(String path) {
         ArrayList<Staff> listStaff = new ArrayList<>();
         try {
             FileInputStream fis = new FileInputStream(path);
@@ -349,7 +350,7 @@ public class StaffManager implements IManagerObj {
         return listStaff;
     }
 
-    public void writeToFile(String path, ArrayList<Staff> listStaff) {
+    public void writeDataStaffToFile(String path, ArrayList<Staff> listStaff) {
         try {
             FileOutputStream fos = new FileOutputStream(path);
             ObjectOutputStream oos = new ObjectOutputStream(fos);
@@ -362,7 +363,7 @@ public class StaffManager implements IManagerObj {
         }
     }
 
-    public void writeDataFromFileFormatToCsv(String path, ArrayList<Staff> listStaff) {
+    public void writeDataStaffFromFileFormatToCsv(String path, ArrayList<Staff> listStaff) {
         FileWriter writer = null;
         try {
             writer = new FileWriter(path);
@@ -427,7 +428,7 @@ public class StaffManager implements IManagerObj {
 
             File file = new File(linkFull);
             if (!file.exists()) {
-                writeDataFromFileFormatToCsv(linkFull, staffList);
+                writeDataStaffFromFileFormatToCsv(linkFull, staffList);
                 System.out.println("Đã xuất file thành công đến đường dẫn : " + linkFull);
                 System.out.println();
                 menuStaffManager();
@@ -450,7 +451,7 @@ public class StaffManager implements IManagerObj {
                     }
                     switch (press) {
                         case '1':
-                            writeDataFromFileFormatToCsv(linkFull, staffList);
+                            writeDataStaffFromFileFormatToCsv(linkFull, staffList);
                             System.out.println("Đã xuất file thành công đến đường dẫn : " + linkFull);
                             isChoice = false;
                             isPress = false;
@@ -594,14 +595,14 @@ public class StaffManager implements IManagerObj {
                     SortByIdStaffAZ sortISAZ = new SortByIdStaffAZ();
                     Collections.sort(staffList, sortISAZ);
                     displayAllStaff();
-                    staffList = readDataFromFile(LINK_SAVE_OBJECT_STAFF);
+                    staffList = readDataStaffFromFile(LINK_SAVE_OBJECT_STAFF);
                     break;
                 case '2':
                     System.out.println("Sắp xếp theo thứ tự Z-A    ");
                     SortByIdStaffZA sortISZA = new SortByIdStaffZA();
                     Collections.sort(staffList, sortISZA);
                     displayAllStaff();
-                    staffList = readDataFromFile(LINK_SAVE_OBJECT_STAFF);
+                    staffList = readDataStaffFromFile(LINK_SAVE_OBJECT_STAFF);
                     break;
                 case '0':
                     optionDisplayStaff();
@@ -636,14 +637,14 @@ public class StaffManager implements IManagerObj {
                     SortByNameStaffAZ sortNSAZ = new SortByNameStaffAZ();
                     Collections.sort(staffList, sortNSAZ);
                     displayAllStaff();
-                    staffList = readDataFromFile(LINK_SAVE_OBJECT_STAFF);
+                    staffList = readDataStaffFromFile(LINK_SAVE_OBJECT_STAFF);
                     break;
                 case '2':
                     System.out.println("Sắp xếp theo thứ tự Z-A    ");
                     SortByNameStaffZA sortNSZA = new SortByNameStaffZA();
                     Collections.sort(staffList, sortNSZA);
                     displayAllStaff();
-                    staffList = readDataFromFile(LINK_SAVE_OBJECT_STAFF);
+                    staffList = readDataStaffFromFile(LINK_SAVE_OBJECT_STAFF);
                     break;
                 case '0':
                     optionDisplayStaff();
@@ -678,14 +679,14 @@ public class StaffManager implements IManagerObj {
                     SortByPayStaffAscending sortPSA = new SortByPayStaffAscending();
                     Collections.sort(staffList, sortPSA);
                     displayAllStaff();
-                    staffList = readDataFromFile(LINK_SAVE_OBJECT_STAFF);
+                    staffList = readDataStaffFromFile(LINK_SAVE_OBJECT_STAFF);
                     break;
                 case '2':
                     System.out.println("Sắp xếp lương giảm dần    ");
                     SortByPayStaffDecrease sortPSD = new SortByPayStaffDecrease();
                     Collections.sort(staffList, sortPSD);
                     displayAllStaff();
-                    staffList = readDataFromFile(LINK_SAVE_OBJECT_STAFF);
+                    staffList = readDataStaffFromFile(LINK_SAVE_OBJECT_STAFF);
                     break;
                 case '0':
                     optionDisplayStaff();
@@ -720,14 +721,14 @@ public class StaffManager implements IManagerObj {
                     SortGenderFM sortGender = new SortGenderFM();
                     Collections.sort(staffList, sortGender);
                     displayAllStaff();
-                    staffList = readDataFromFile(LINK_SAVE_OBJECT_STAFF);
+                    staffList = readDataStaffFromFile(LINK_SAVE_OBJECT_STAFF);
                     break;
                 case '2':
                     System.out.println("Sắp xếp Nam - Nu ");
                     SortGenderMF sortGenderMF = new SortGenderMF();
                     Collections.sort(staffList, sortGenderMF);
                     displayAllStaff();
-                    staffList = readDataFromFile(LINK_SAVE_OBJECT_STAFF);
+                    staffList = readDataStaffFromFile(LINK_SAVE_OBJECT_STAFF);
                     break;
                 case '0':
                     optionDisplayStaff();
@@ -762,14 +763,14 @@ public class StaffManager implements IManagerObj {
                     SortByDateOfBirthAscending sortByDoBAsc = new SortByDateOfBirthAscending();
                     Collections.sort(staffList, sortByDoBAsc);
                     displayAllStaff();
-                    staffList = readDataFromFile(LINK_SAVE_OBJECT_STAFF);
+                    staffList = readDataStaffFromFile(LINK_SAVE_OBJECT_STAFF);
                     break;
                 case '2':
                     System.out.println("Sắp xếp tăng dần độ tuổi "); //ngay sinh giam dần
                     SortByDateOfBirthDecrease sortByDoBDec = new SortByDateOfBirthDecrease();
                     Collections.sort(staffList, sortByDoBDec);
                     displayAllStaff();
-                    staffList = readDataFromFile(LINK_SAVE_OBJECT_STAFF);
+                    staffList = readDataStaffFromFile(LINK_SAVE_OBJECT_STAFF);
                     break;
                 case '0':
                     optionDisplayStaff();
@@ -1241,13 +1242,13 @@ public class StaffManager implements IManagerObj {
             }
             switch (choice) {
                 case '1':
-                    writeToFile(LINK_SAVE_OBJECT_STAFF, staffList);
-                    writeDataFromFileFormatToCsv(LINK_SAVE_FORMAT_CSV_STAFF, staffList);
+                    writeDataStaffToFile(LINK_SAVE_OBJECT_STAFF, staffList);
+                    writeDataStaffFromFileFormatToCsv(LINK_SAVE_FORMAT_CSV_STAFF, staffList);
                     isChoice = false;
                     deleteStaff();
                     break;
                 case '0':
-                    staffList = readDataFromFile(LINK_SAVE_OBJECT_STAFF);
+                    staffList = readDataStaffFromFile(LINK_SAVE_OBJECT_STAFF);
                     isChoice = false;
                     deleteStaff();
                     break;
@@ -1395,6 +1396,7 @@ public class StaffManager implements IManagerObj {
     ;
 
     public void editOptionStaff(Staff staff) {
+        String idStaffOld = staff.getIdStaff();
         String choice = "";
         boolean isChoice = true;
         do {
@@ -1469,13 +1471,16 @@ public class StaffManager implements IManagerObj {
                     editOtherOfStaff(staff);
                     break;
                 case "11":
-                    staffList = readDataFromFile(LINK_SAVE_OBJECT_STAFF);
+                    staffList = readDataStaffFromFile(LINK_SAVE_OBJECT_STAFF);
                     editStaff();
                     isChoice = false;
                     break;
                 case "12":
-                    writeToFile(LINK_SAVE_OBJECT_STAFF, staffList);
-                    writeDataFromFileFormatToCsv(LINK_SAVE_FORMAT_CSV_STAFF, staffList);
+                    writeDataStaffToFile(LINK_SAVE_OBJECT_STAFF, staffList);
+                    writeDataStaffFromFileFormatToCsv(LINK_SAVE_FORMAT_CSV_STAFF, staffList);
+                    if(!staff.getIdStaff().equals(idStaffOld)){
+                        FacadeEdit.editAllObjOfIdStaff(idStaffOld,staff.getIdStaff());
+                    }
                     System.out.println("Danh sách nhân viên sau khi sửa là :");
                     displayAllStaff();
                     editStaff();

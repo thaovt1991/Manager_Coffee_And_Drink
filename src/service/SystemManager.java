@@ -1,11 +1,14 @@
 package service;
 
+import model.LoginHistory;
 import precentation.Menu;
+import utils.ReadAndWrite;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
@@ -82,6 +85,7 @@ public class SystemManager {
         char choice = ' ';
         boolean isChoice = false;
         do {
+            isChoice = false;
             System.out.print("Bạn thực sự muốn khôi phục dữ liệu từ folder " + linkFolder + "cho hệ thống");
             System.out.println("Mọi thông số dữ liệu có sẵn sẽ thay đổi, bạn có muốn thực hiện điều đó !");
             System.out.println("------------------");
@@ -119,6 +123,20 @@ public class SystemManager {
 
     }
 
+    public void displayHistoryLog(){
+        ArrayList<LoginHistory> listHistoryLog = ReadAndWrite.readDataHistoryLogToFile(ReadAndWrite.LINK_HISTORY_LOG);
+        System.out.println("Lịch sử đăng nhập làm việc : ");
+        System.out.println();
+        System.out.printf("%-7s%-15s%-15s%-30s%s\n","STT","USERNAME","DECENTRALIZATION","TIME LOGIN", "TIME LOGOUT");
+        int count = 0;
+        for(LoginHistory loginHistory : listHistoryLog){
+            count ++ ;
+            System.out.printf("%-7s%-15s%-15s%-30s%s\n",String.valueOf(count),loginHistory.getUsernameLog(),loginHistory.getDecentralization(),loginHistory.getTimeLogIn(), loginHistory.getTimeLogOut());
+        };
+        System.out.println();
+
+    }
+
     public void menuSystemManager() {
         if (Menu.username.equals(Menu.USERNAME_DEFAULT)) {
             char choice = ' ';
@@ -128,6 +146,7 @@ public class SystemManager {
                 System.out.println("---------------------------------------");
                 System.out.println("|  1. Lưu data System                  |");
                 System.out.println("|  2. Khôi phục data                   |");
+                System.out.println("|  3. Xem lịch sử đăng nhập            |");
                 System.out.println("|                           0.Quay lại |");
                 System.out.println("---------------------------------------");
                 System.out.println();
@@ -143,6 +162,9 @@ public class SystemManager {
                         break;
                     case '2':
                         importDataOld();
+                        break;
+                    case '3':
+                        displayHistoryLog();
                         break;
                     case '0':
                         Menu.menuWorkWithAdmin();

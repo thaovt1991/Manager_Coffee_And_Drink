@@ -151,6 +151,7 @@ public class AccountManager implements IManagerObj {
         char check = ' ';
         boolean isCheck = false;
         do {
+            isCheck = false;
             System.out.println("----------------------------------------");
             System.out.println("|  Bạn có muốn thêm tài khoản mới ?     |");
             System.out.println("|    1. Đồng ý                          |");

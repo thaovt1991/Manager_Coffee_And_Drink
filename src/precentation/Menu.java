@@ -1,13 +1,16 @@
 package precentation;
 
 import model.Account;
+import model.LoginHistory;
 import service.*;
+import utils.ReadAndWrite;
 
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Menu {
+public class Menu implements Serializable {
 
     public static final String USERNAME_DEFAULT = "admin";
     public static final String PASSWORD_DEFAULT = "Admin123";
@@ -20,9 +23,9 @@ public class Menu {
     public static RevenueManager revenueManager = new RevenueManager();
     public static SystemManager systemManager = new SystemManager();
     public static ArrayList<Account> listAccount;
+    public static ArrayList<LoginHistory> listHistoryLog ;
     public static String username, password, decentralization, timelogin, timeOut;
-//    public static DateTimeFormatter formatTime = DateTimeFormatter.ofPattern("HH:mm:ss");
-//    public static DateTimeFormatter formatDate = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
 
     public static boolean isUserName(String username) {
         accountManager = new AccountManager();
@@ -42,6 +45,7 @@ public class Menu {
         revenueManager = new RevenueManager();
         listAccount = (new AccountManager()).readDataAccountToFile(LINK_SAVE_OBJECT_ACCOUNT);
         systemManager = new SystemManager();
+        listHistoryLog = ReadAndWrite.readDataHistoryLogToFile(ReadAndWrite.LINK_HISTORY_LOG);
     }
 
     public static boolean isTruePass(String username, String pass) {
@@ -83,6 +87,10 @@ public class Menu {
         }
 
         if (isTrue) {
+            LoginHistory loginHistory = new LoginHistory();
+            loginHistory.setUsernameLog(username);
+            loginHistory.setTimeLogIn(timelogin);
+            loginHistory.setDecentralization(decentralization);
             System.out.println("User name : " + username + "- Time login : " + timelogin);
             System.out.println();
             char choice = ' ';
@@ -131,6 +139,9 @@ public class Menu {
                         changePassword();
                     case '0':
                         timeOut = String.valueOf(java.time.LocalTime.now()) + " " + String.valueOf(java.time.LocalDate.now());
+                        loginHistory.setTimeLogOut(timeOut);
+                        listHistoryLog.add(loginHistory);
+                        ReadAndWrite.writeHistoryLogInFile(ReadAndWrite.LINK_HISTORY_LOG,listHistoryLog);
                         menuLogIn();
                 }
 
@@ -148,6 +159,10 @@ public class Menu {
             }
         }
         if (staffManager.isIdHaveInList(ownerId)) {
+            LoginHistory loginHistory = new LoginHistory();
+            loginHistory.setUsernameLog(username);
+            loginHistory.setTimeLogIn(timelogin);
+            loginHistory.setDecentralization(decentralization);
             System.out.println("User name : " + username + "- Time login : " + timelogin);
             System.out.println();
             char choice = ' ';
@@ -178,6 +193,10 @@ public class Menu {
                        changePassword();
                         break;
                     case '0':
+                        timeOut = String.valueOf(java.time.LocalTime.now()) + " " + String.valueOf(java.time.LocalDate.now());
+                        loginHistory.setTimeLogOut(timeOut);
+                        listHistoryLog.add(loginHistory);
+                        ReadAndWrite.writeHistoryLogInFile(ReadAndWrite.LINK_HISTORY_LOG,listHistoryLog);
                         menuLogIn();
                 }
             } while (choice != '0');
@@ -200,6 +219,7 @@ public class Menu {
             char choice = ' ';
             boolean isChoice = false;
             do {
+                isChoice = false;
                 System.out.println("--------------------------------");
                 System.out.println("| Bạn có muốn đổi password ?    |");
                 System.out.println("|  1. Đồng ý                    |");

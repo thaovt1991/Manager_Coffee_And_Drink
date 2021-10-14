@@ -145,7 +145,6 @@ public class RevenueManager implements IManager {
             oos.writeObject(listBill);
             oos.close();
             fos.close();
-            //    System.out.println("Đã lưu lại mọi thay đổi vào dữ liệu gốc !");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -297,12 +296,12 @@ public class RevenueManager implements IManager {
         do {
             System.out.print("Tháng: ");
             month = input.nextLine();
-            if(isFormatMonth(month)){
+            if(!isFormatMonth(month)){
                 System.out.println("Không phải định dạng tháng !");
             }else if(!isMonth(Integer.parseInt(month))){
                 System.out.println("Không phải là tháng trong năm !");
             }
-        } while (!isFormatMonth(month));
+        } while (!isFormatMonth(month)||!isMonth(Integer.parseInt(month)));
         do {
             System.out.print("Năm :");
             year = input.nextLine();
