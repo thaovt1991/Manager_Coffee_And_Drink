@@ -12,7 +12,7 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class DrinksManager implements Serializable {
+public class DrinksManager implements IManagerObj {
 
 
     public ArrayList<Drinks> drinksList;
@@ -940,8 +940,6 @@ public class DrinksManager implements Serializable {
     }
 
 
-
-
     public void searchDrink() {
         boolean isChoice = true;
         char choice = ' ';
@@ -1278,6 +1276,42 @@ public class DrinksManager implements Serializable {
                     System.out.println("Chọn lại !");
             }
         } while (isChoice);
+    }
+
+
+    @Override
+    public void menuManager() {
+        menuDrinksManager();
+    }
+
+    @Override
+    public void add() {
+        addDrinksList();
+    }
+
+    @Override
+    public void edit() {
+        editDrink();
+    }
+
+    @Override
+    public void delete() {
+        deleteDrink();
+    }
+
+    @Override
+    public void search() {
+     searchDrink();
+    }
+
+    @Override
+    public void display() {
+       optionDisplay();
+    }
+
+    @Override
+    public void exportObjToCsv() {
+      exportDataDrinksToCsv();
     }
 }
 

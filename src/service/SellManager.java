@@ -8,7 +8,7 @@ import java.text.DecimalFormat;
 import java.util.*;
 import java.util.regex.Pattern;
 
-public class SellManager implements Serializable {
+public class SellManager implements IManagerSell {
 
     public ArrayList<Staff> staffList;
     public ArrayList<Table> tablesListHaveCustomer;
@@ -1517,5 +1517,25 @@ public class SellManager implements Serializable {
                     System.out.println("Chọn lại !");
             }
         } while (choice != '0');
+    }
+
+    @Override
+    public void menuManager() {
+        menuSellDrinksManager();
+    }
+
+    @Override
+    public void order() {
+        menuSell();
+    }
+
+    @Override
+    public void editOder() {
+       menuEditListSell();
+    }
+
+    @Override
+    public void pay() {
+       menuPay();
     }
 }

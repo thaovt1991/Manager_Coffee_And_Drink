@@ -12,7 +12,7 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class StaffManager implements Serializable {
+public class StaffManager implements IManagerObj {
     public ArrayList<Staff> staffList;
     static Scanner input = new Scanner(System.in);
     public static final String LINK_SAVE_OBJECT_STAFF = "src/data/list_staff.txt";
@@ -1688,5 +1688,40 @@ public class StaffManager implements Serializable {
                     System.out.println("Chọn theo menu !");
             }
         } while (choice != '0');
+    }
+
+    @Override
+    public void menuManager() {
+        menuStaffManager();
+    }
+
+    @Override
+    public void add() {
+        addStaff();
+    }
+
+    @Override
+    public void edit() {
+        editStaff();
+    }
+
+    @Override
+    public void delete() {
+        deleteStaff();
+    }
+
+    @Override
+    public void search() {
+
+    }
+
+    @Override
+    public void display() {
+        optionDisplayStaff();
+    }
+
+    @Override
+    public void exportObjToCsv() {
+        exportFileStaffToCsv();
     }
 }

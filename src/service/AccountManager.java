@@ -16,7 +16,7 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class AccountManager implements Serializable {
+public class AccountManager implements IManagerObj {
 
     private ArrayList<Account> accountsList;
     private ArrayList<Staff> staffList;
@@ -221,7 +221,8 @@ public class AccountManager implements Serializable {
                         System.out.println("|   2. Guest           |");
                         System.out.println("-----------------------");
                         System.out.println();
-                        System.out.print("Chọn : ");;
+                        System.out.print("Chọn : ");
+                        ;
                         try {
                             press = input.nextLine().charAt(0);
                         } catch (Exception e) {
@@ -1271,5 +1272,40 @@ public class AccountManager implements Serializable {
             }
         } while (choice != '0');
 
+    }
+
+    @Override
+    public void menuManager() {
+        menuAccountManager();
+    }
+
+    @Override
+    public void add() {
+        createAccount();
+    }
+
+    @Override
+    public void edit() {
+        editAccount();
+    }
+
+    @Override
+    public void delete() {
+        deleteAccount();
+    }
+
+    @Override
+    public void search() {
+        searchAccount();
+    }
+
+    @Override
+    public void display() {
+        optionDisplayAccount();
+    }
+
+    @Override
+    public void exportObjToCsv() {
+        exportFileAccountToCsv();
     }
 }

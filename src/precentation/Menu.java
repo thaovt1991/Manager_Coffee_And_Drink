@@ -200,15 +200,20 @@ public class Menu {
             char choice = ' ';
             boolean isChoice = false;
             do {
-                System.out.print("Bạn có muốn đổi password ? Nhấn 'Y' để đồng ý, nhấn 'N' để quay trờ về menu !");
+                System.out.println("--------------------------------");
+                System.out.println("| Bạn có muốn đổi password ?    |");
+                System.out.println("|  1. Đồng ý                    |");
+                System.out.println("|  0. Hủy bỏ                    |");
+                System.out.println("---------------------------------");
+                System.out.println();
+                System.out.print("Chọn : ");
                 try {
                     choice = input.nextLine().charAt(0);
                 } catch (Exception e) {
                     choice = ' ';
                 }
                 switch (choice) {
-                    case 'y':
-                    case 'Y':
+                    case '1':
                         do {
                             System.out.print("Nhập password cũ : ");
                             passOld = input.nextLine();
@@ -240,8 +245,7 @@ public class Menu {
                              menuWorkWithGuest();
                         } else menuWorkWithAdmin();
                         break;
-                    case 'n':
-                    case 'N':
+                    case '0':
                         if (decentralization.equals("Guest")) {
                              menuWorkWithGuest();
                         } else menuWorkWithAdmin();
@@ -267,7 +271,7 @@ public class Menu {
             System.out.println("| 3.  Thông tin nhà hàng                  |");
             System.out.println(" ------------------------------------------");
             System.out.println();
-            System.out.print("Chọn :");
+            System.out.print("Chọn : ");
             try {
                 choice = input.nextLine().charAt(0);
             } catch (Exception e) {

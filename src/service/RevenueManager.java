@@ -12,7 +12,7 @@ import java.time.Month;
 import java.util.*;
 import java.util.regex.Pattern;
 
-public class RevenueManager implements Serializable {
+public class RevenueManager implements IManager {
 
     public static Scanner input = new Scanner(System.in);
     public static DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
@@ -568,4 +568,8 @@ public class RevenueManager implements Serializable {
         Menu.menuWorkWithGuest();
     }
 
+    @Override
+    public void menuManager() {
+        menuDisplayRevenue();
+    }
 }
