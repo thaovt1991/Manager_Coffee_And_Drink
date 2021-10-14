@@ -33,7 +33,7 @@ public class SystemManager {
         } else {
             Files.copy(sourceFolder.toPath(), targetFolder.toPath(),
                     StandardCopyOption.REPLACE_EXISTING);
-            System.out.println("File da duoc copy " + targetFolder);
+            System.out.println("File da duoc save " + targetFolder);
         }
     }
 
@@ -61,9 +61,9 @@ public class SystemManager {
         File targetFolder = new File(linkFolder);
         try {
             copyFolder(sourceFolder, targetFolder);
-            System.out.println("Copy file data thành công đến " + linkFolder);
+            System.out.println("Lưu database thành công đến " + linkFolder);
         } catch (IOException e) {
-            System.out.println("Copy folder lỗi");
+            System.out.println("Quá trình lưu lỗi ! Hãy thực hiện lại để đảm bảo dữ liệu sau này !");
         }
 
     }
@@ -75,6 +75,7 @@ public class SystemManager {
             linkFolder = input.nextLine();
             if (!isFormatLink(linkFolder)) {
                 System.out.println("Định dạng đường dẫn không đúng ! ví dụ đường dẫn file : D:\\nameFoder\\....");
+                menuSystemManager();
             }
         }
         while (!isFormatLink(linkFolder));
@@ -125,7 +126,7 @@ public class SystemManager {
                 System.out.println("---------------------------------------");
                 System.out.println("|           QUẢN LÝ HỆ THỐNG           |");
                 System.out.println("---------------------------------------");
-                System.out.println("|  1. Save data System                 |");
+                System.out.println("|  1. Lưu data System                  |");
                 System.out.println("|  2. Khôi phục data                   |");
                 System.out.println("|                           0.Quay lại |");
                 System.out.println("---------------------------------------");
@@ -150,7 +151,7 @@ public class SystemManager {
                         System.out.println();
                 }
             } while (choice != '0');
-        } else System.out.println("Phải đăng nhập tài khoản admin hệ thống để thực hiện chức năng này ! ");
+        } else System.out.println("Phải đăng nhập tài khoản 'admin' hệ thống để thực hiện chức năng này ! ");
     }
 }
 

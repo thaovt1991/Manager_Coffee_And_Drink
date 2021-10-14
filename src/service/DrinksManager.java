@@ -396,7 +396,7 @@ public class DrinksManager implements Serializable {
         boolean isChoice = true;
         do {
             System.out.println("---------------------------------------------------------");
-            System.out.println("             THAY ĐỔI THÔNG TIN THỨC UỐNG                ");
+            System.out.println("|             THAY ĐỔI THÔNG TIN THỨC UỐNG               |");
             System.out.println("----------------------------------------------------------");
             System.out.println("|   1. Thay đổi id thức uống                             |");
             System.out.println("|   2. Thay đổi tên thức uống                            |");
@@ -405,7 +405,7 @@ public class DrinksManager implements Serializable {
             System.out.println("|   5. Thay đổi thông tin khác liên quan đến thức uống   |");
             System.out.println("|   6. Thay đổi toàn bộ thông tin thức uống              |");
             System.out.println("|                                                        |");
-            System.out.println("|   7.Thoát                             8. Thasot và lưu |");
+            System.out.println("|   7.Thoát                             8. Thoát và lưu |");
             System.out.println("----------------------------------------------------------");
             System.out.println();
             System.out.println("Chọn :");
