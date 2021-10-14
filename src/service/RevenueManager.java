@@ -447,7 +447,7 @@ public class RevenueManager implements Serializable {
             System.out.println("|   1. Xuất file    |");
             System.out.println("|   0.Quay lại      |");
             System.out.println("----------------------");
-            System.out.println("Chọn : ");
+            System.out.print("Chọn : ");
             try {
                 choice = input.nextLine().charAt(0);
             } catch (Exception e) {
@@ -492,32 +492,35 @@ public class RevenueManager implements Serializable {
                             System.out.println();
                             menuDisplayRevenue();
                         } else {
-                            System.out.println("File đã tồn tại ! bạn có muốn ghi đè !");
                             char press = ' ';
                             boolean isPress = true;
                             do {
-                                System.out.print("Nhấn 'Y' để thực hiện,  'N' để thay đổi đường dẫn, 'R' để quay lại menu  ");
+                                System.out.println("---------------------------------------------");
+                                System.out.println("|  File đã tồn tại ! Bạn có muốn ghi đè !    |");
+                                System.out.println("|    1. Thực hiện ghi đè                     |");
+                                System.out.println("|    2. Thay đổi đường dẫn                   |");
+                                System.out.println("|    0. Quay lại                             |");
+                                System.out.println("---------------------------------------------");
+                                System.out.println();
+                                System.out.print("Chọn : ");
                                 try {
                                     press = input.nextLine().charAt(0);
                                 } catch (Exception e) {
                                     press = ' ';
                                 }
                                 switch (press) {
-                                    case 'y':
-                                    case 'Y':
+                                    case '1':
                                         writeDataOfBillsFromFileFormatToCsv(linkFull, listBills);
                                         System.out.println("Đã xuất file thành công đến đường dẫn : " + linkFull);
                                         isChoice = false;
                                         isPress = false;
                                         menuDisplayRevenue();
                                         break;
-                                    case 'n':
-                                    case 'N':
+                                    case '2':
                                         exportDataRevenueToCsv(listBills);
                                         isPress = false;
                                         break;
-                                    case 'R':
-                                    case 'r':
+                                    case '0':
                                         isChoice = false;
                                         isPress = false;
                                         menuDisplayRevenue();

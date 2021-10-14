@@ -470,15 +470,20 @@ public class SellManager implements Serializable {
             char check = ' ';
             boolean isCheck = false;
             do {
-                System.out.print("Bạn đang oder bàn mới ? Nhấn 'Y' để đồng ý, nhấn 'N' để quay trờ về menu !");
+                System.out.println("-------------------------------");
+                System.out.println("| Bạn đang order bàn mới ?     |");
+                System.out.println("|   1. Đồng ý                  |");
+                System.out.println("|   0. Hủy bỏ                  |");
+                System.out.println("--------------------------------");
+                System.out.println();
+                System.out.print("Chọn : ");
                 try {
                     check = input.nextLine().charAt(0);
                 } catch (Exception e) {
                     check = ' ';
                 }
                 switch (check) {
-                    case 'y':
-                    case 'Y':
+                    case '1':
                         displaylistTable();
                         System.out.println(listTableEmpty());
 
@@ -569,25 +574,29 @@ public class SellManager implements Serializable {
                         Table newTable = new Table(idTable, treeOder, idStaff, timeBeginSell, timeOutSell, totalMoney);
                         char press = ' ';
                         boolean isChoose = false;
-                        System.out.println("Bạn muốn khởi tạo bàn trên !");
+
                         do {
-                            System.out.print("Nhấn 'Y' để đồng ý ! Nhấn 'N' để hủy bỏ thao tác !");
+                            System.out.println("------------------------------------------");
+                            System.out.println("|  Bạn muốn khởi tạo bàn vừa order ?     |");
+                            System.out.println("|     1. Yes                             |");
+                            System.out.println("|     2. No                              |");
+                            System.out.println("------------------------------------------");
+                            System.out.println();
+                            System.out.print("Chọn : ");
                             try {
                                 press = input.nextLine().charAt(0);
                             } catch (Exception e) {
                                 press = ' ';
                             }
                             switch (press) {
-                                case 'Y':
-                                case 'y': {
+                                case '1': {
                                     tablesListHaveCustomer.add(newTable);
                                     writeDataDrinksToFile(LINK_SAVE_OBJECT_DRINKS, drinksList);
                                     writeDataTableToFile(LINK_SAVE_OBJECT_TABLE, tablesListHaveCustomer);
                                     writeDataOfTableFromFileFormatToCsv(LINK_SAVE_FORMAT_CSV_TABLE, tablesListHaveCustomer);
                                     break;
                                 }
-                                case 'n':
-                                case 'N':
+                                case '0':
                                     drinksList = readDataDrinksFromFile(LINK_SAVE_OBJECT_DRINKS);
                                     menuSell();
                                     break;
@@ -596,8 +605,7 @@ public class SellManager implements Serializable {
                             }
                         } while (isChoose);
                         break;
-                    case 'n':
-                    case 'N':
+                    case '0':
                         menuSellDrinksManager();
                         break;
                     default:
@@ -611,15 +619,20 @@ public class SellManager implements Serializable {
         char check = ' ';
         boolean isCheck = false;
         do {
-            System.out.print("Bạn đang oder cho khách mang về ? Nhấn 'Y' để đồng ý, nhấn 'N' để quay trờ về menu !");
+            System.out.println("------------------------------------");
+            System.out.println("| Bạn đang order khách mang về ?     |");
+            System.out.println("|   1. Đồng ý                        |");
+            System.out.println("|   0. Hủy bỏ                        |");
+            System.out.println("--------------------------------------");
+            System.out.println();
+            System.out.print("Chọn : ");
             try {
                 check = input.nextLine().charAt(0);
             } catch (Exception e) {
                 check = ' ';
             }
             switch (check) {
-                case 'y':
-                case 'Y':
+                case '1':
                     numIdCarryAway++;
                     String idCa = "CA" + numIdCarryAway;
                     System.out.println("Tạo oder mang về cho khách có id '" + idCa + "' !!!");
@@ -699,17 +712,21 @@ public class SellManager implements Serializable {
                     CarriedAway carriedAway = new CarriedAway(idCa, treeOder, idStaff, timeBeginSell, timeOutSell, totalMoney);
                     char press = ' ';
                     boolean isChoose = true;
-                    System.out.println("Bạn muốn khởi tạo oder cho khách mang về như trên trên !");
                     do {
-                        System.out.print("Nhấn 'Y' để đồng ý ! Nhấn 'N' để hủy bỏ thao tác !");
+                        System.out.println("----------------------------------------------------");
+                        System.out.println("|  Bạn muốn khởi tạo order cho khách mang về  ?     |");
+                        System.out.println("|     1. Yes                                        |");
+                        System.out.println("|     2. No                                         |");
+                        System.out.println("-----------------------------------------------------");
+                        System.out.println();
+                        System.out.print("Chọn : ");
                         try {
                             press = input.nextLine().charAt(0);
                         } catch (Exception e) {
                             press = ' ';
                         }
                         switch (press) {
-                            case 'Y':
-                            case 'y': {
+                            case '1': {
                                 listCarriedAway.add(carriedAway);
                                 writeDataDrinksToFile(LINK_SAVE_OBJECT_DRINKS, drinksList);
                                 writeDataCarriedAwayToFile(LINK_SAVE_OBJECT_CARRIED_AWAY, listCarriedAway);
@@ -717,8 +734,7 @@ public class SellManager implements Serializable {
                                 isChoose = false;
                                 break;
                             }
-                            case 'n':
-                            case 'N':
+                            case '0':
                                 numIdCarryAway--;
                                 drinksList = readDataDrinksFromFile(LINK_SAVE_OBJECT_DRINKS);
                                 menuSell();
@@ -729,8 +745,8 @@ public class SellManager implements Serializable {
                         }
                     } while (isChoose);
                     break;
-                case 'n':
-                case 'N':
+
+                case '0':
                     menuSellDrinksManager();
                     break;
                 default:
@@ -998,23 +1014,27 @@ public class SellManager implements Serializable {
         char choose = ' ';
         boolean isNotChoose = false;
         do {
-            System.out.print("Bạn muốn lưu thay đổi ? nhấn 'Y' để thực hiện lưu thay dổi, nhấn 'N' để hủy");
+            System.out.println("------------------------------");
+            System.out.println("| Bạn muốn lưu thay đổi ?     |");
+            System.out.println("|   1. Yes                    |");
+            System.out.println("|   0. No                     |");
+            System.out.println("-------------------------------");
+            System.out.println();
+            System.out.print("Chọn : ");
             try {
                 choose = input.nextLine().charAt(0);
             } catch (Exception e) {
                 choose = ' ';
             }
             switch (choose) {
-                case 'y':
-                case 'Y':
+                case '1':
                     table.setTreeOder(treeOder);
                     table.setTotalMoney(getTotalMoney(treeOder));
                     writeDataDrinksToFile(LINK_SAVE_OBJECT_DRINKS, drinksList);
                     writeDataTableToFile(LINK_SAVE_OBJECT_TABLE, tablesListHaveCustomer);
                     writeDataOfTableFromFileFormatToCsv(LINK_SAVE_FORMAT_CSV_TABLE, tablesListHaveCustomer);
                     break;
-                case 'n':
-                case 'N':
+                case '0':
                     drinksList = readDataDrinksFromFile(LINK_SAVE_OBJECT_DRINKS);
                     editListTable();
                     break;
@@ -1200,15 +1220,20 @@ public class SellManager implements Serializable {
         char choose = ' ';
         boolean isNotChoose = false;
         do {
-            System.out.print("Bạn muốn lưu thay đổi ? nhấn 'Y' để thực hiện lưu thay dổi, nhấn 'N' để hủy");
+            System.out.println("-------------------------------");
+            System.out.println("| Bạn muốn lưu thay dổi ?      |");
+            System.out.println("|   1. Đồng ý                  |");
+            System.out.println("|   0. Hủy bỏ                  |");
+            System.out.println("--------------------------------");
+            System.out.println();
+            System.out.print("Chọn : ");
             try {
                 choose = input.nextLine().charAt(0);
             } catch (Exception e) {
                 choose = ' ';
             }
             switch (choose) {
-                case 'y':
-                case 'Y':
+                case '1':
                     carriedAway.setTreeOder(treeOder);
                     carriedAway.setTotalMoney(getTotalMoney(treeOder));
                     writeDataDrinksToFile(LINK_SAVE_OBJECT_DRINKS, drinksList);
@@ -1216,8 +1241,7 @@ public class SellManager implements Serializable {
                     writeDataCarriedAwayToFile(LINK_SAVE_FORMAT_CSV_CA, listCarriedAway);
                     System.out.println("Lưu thành công !");
                     break;
-                case 'n':
-                case 'N':
+                case '0':
                     drinksList = readDataDrinksFromFile(LINK_SAVE_OBJECT_DRINKS);
                     menuEditListSell();
                     break;
@@ -1317,16 +1341,22 @@ public class SellManager implements Serializable {
             char choice = ' ';
             boolean isNotChoice = false;
             do {
-                System.out.print("Nhấn 'Y' để thanh toán , nhấn 'N' để quay trở lại menu");
+                System.out.println("---------------------------");
+                System.out.println("|  Bạn muốn thanh toán ?   |");
+                System.out.println("|    1. Yes                |");
+                System.out.println("|    0. No                 |");
+                System.out.println("----------------------------");
+                System.out.println();
+                System.out.print("Chọn : ");
                 try {
                     choice = input.nextLine().charAt(0);
                 } catch (Exception e) {
                     choice = ' ';
                 }
                 switch (choice) {
-                    case 'y':
-                    case 'Y':
+                    case '1':
                         System.out.println("In hóa đơn");
+                        displayBill(bill);
                         System.out.println();
                         listBills.add(bill) ;
                         writeDataBillsToFile(LINK_SAVE_OBJECT_BILL,listBills);
@@ -1335,8 +1365,7 @@ public class SellManager implements Serializable {
                         writeDataTableToFile(LINK_SAVE_OBJECT_TABLE,tablesListHaveCustomer);
                         writeDataOfTableFromFileFormatToCsv(LINK_SAVE_FORMAT_CSV_TABLE,tablesListHaveCustomer);
                         break;
-                    case 'n':
-                    case 'N':
+                    case '0':
                         table.setTimeOut("Empty");
                         menuPay();
                         break;
@@ -1372,16 +1401,22 @@ public class SellManager implements Serializable {
             char choice = ' ';
             boolean isNotChoice = false;
             do {
-                System.out.print("Nhấn 'Y' để thanh toán , nhấn 'N' để quay trở lại menu ");
+                System.out.println("---------------------------");
+                System.out.println("|  Bạn muốn thanh toán ?   |");
+                System.out.println("|    1. Yes                |");
+                System.out.println("|    0. No                 |");
+                System.out.println("----------------------------");
+                System.out.println();
+                System.out.print("Chọn : ");
                 try {
                     choice = input.nextLine().charAt(0);
                 } catch (Exception e) {
                     choice = ' ';
                 }
                 switch (choice) {
-                    case 'y':
-                    case 'Y':
+                    case '1':
                         System.out.println("In hóa đơn");
+                        displayBill(bill);
                         System.out.println();
                         listBills.add(bill) ;
                         writeDataBillsToFile(LINK_SAVE_OBJECT_BILL,listBills);
@@ -1390,8 +1425,7 @@ public class SellManager implements Serializable {
                         writeDataCarriedAwayToFile(LINK_SAVE_OBJECT_CARRIED_AWAY,listCarriedAway);
                         writeDataOfCarriedAwayFromFileFormatToCsv(LINK_SAVE_FORMAT_CSV_CA,listCarriedAway);
                         break;
-                    case 'n':
-                    case 'N':
+                    case '0':
                         carriedAway.setTimeOut("Empty");
                         menuPay();
                         break;

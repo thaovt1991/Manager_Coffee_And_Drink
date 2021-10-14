@@ -116,15 +116,20 @@ public class DrinksManager implements Serializable {
         char check = ' ';
         boolean isCheck = false;
         do {
-            System.out.print("Bạn có muốn thêm thức uống mới ? Nhấn 'Y' để đồng ý, nhấn 'N' để quay trờ về menu !");
+            System.out.println("-------------------------------------");
+            System.out.println("| Bạn có muốn thêm thức uống mới ?   |");
+            System.out.println("|   1. Đồng ý                        |");
+            System.out.println("|   0. Hủy bỏ                        |");
+            System.out.println("--------------------------------------");
+            System.out.println();
+            System.out.println("Chọn : ");
             try {
                 check = input.nextLine().charAt(0);
             } catch (Exception e) {
                 check = ' ';
             }
             switch (check) {
-                case 'y':
-                case 'Y':
+                case '1':
                     String id;
                     String name;
                     int quality = 0;
@@ -179,23 +184,27 @@ public class DrinksManager implements Serializable {
                     char press = ' ';
                     boolean isChoice = true;
                     do {
-                        System.out.print("Nhấn 'Y' để đồng ý ! Nhấn 'N' để hủy bỏ thao tác !");
+                        System.out.println("-----------------------");
+                        System.out.println("|  1. Đồng ý           |");
+                        System.out.println("|  0. Hủy bỏ thao tác  |");
+                        System.out.println("-----------------------");
+                        System.out.println();
+                        System.out.print("Chọn : ");
                         try {
                             press = input.nextLine().charAt(0);
                         } catch (Exception e) {
                             press = ' ';
                         }
                         switch (press) {
-                            case 'Y':
-                            case 'y': {
+                            case '1': {
                                 drinksList.add(drink);
                                 writeToFile(LINK_SAVE_OBJECT_DRINKS, drinksList);
                                 writeDataFromFileFormatToCsv(LINK_SAVE_FORMAT_CSV_DRINKS, drinksList);
                                 isChoice = false;
+                                menuDrinksManager();
                                 break;
                             }
-                            case 'n':
-                            case 'N':
+                            case '0':
                                 menuDrinksManager();
                                 isChoice = false;
                                 break;
@@ -204,8 +213,7 @@ public class DrinksManager implements Serializable {
                         }
                     } while (isChoice);
                     break;
-                case 'n':
-                case 'N':
+                case '0':
                     menuDrinksManager();
                     break;
                 default:
@@ -249,7 +257,7 @@ public class DrinksManager implements Serializable {
             System.out.println("|                                   0. Quay lại |");
             System.out.println("-------------------------------------------------");
             System.out.println();
-            System.out.println("Lựa chọn : ");
+            System.out.println("Chọn : ");
             try {
                 choice = input.nextLine().charAt(0);
             } catch (Exception e) {
@@ -289,25 +297,27 @@ public class DrinksManager implements Serializable {
                     if (dr.getIdDrink().equals(id)) {
                         System.out.println("Thức uống cần tìm là : ");
                         displayOneDrinks(dr);
-                        System.out.println("Có phải bạn muốn sửa sản phẩm này !");
-
                         char press = ' ';
                         boolean isChoice = true;
                         do {
-                            System.out.println("Nhấn 'Y' để tiếp tục, nhấn 'N' để tìm kiếm lại ");
+                            System.out.println("-----------------------------------------");
+                            System.out.println("|  Có phải bạn muốn sửa sản phẩm này ?  |");
+                            System.out.println("|   1. Yes                              |");
+                            System.out.println("|   0. No                               |");
+                            System.out.println("-----------------------------------------");
+                            System.out.println();
+                            System.out.print("Chọn: ");
                             try {
                                 press = input.nextLine().charAt(0);
                             } catch (Exception e) {
                                 press = ' ';
                             }
                             switch (press) {
-                                case 'Y':
-                                case 'y':
+                                case '1':
                                     editDrinkOption(dr);
                                     isChoice = false;
                                     break;
-                                case 'n':
-                                case 'N':
+                                case '0':
                                     editDrink();
                                     isChoice = false;
                                     break;
@@ -341,26 +351,29 @@ public class DrinksManager implements Serializable {
                         if (dr.getNameDrink().equals(name)) {
                             System.out.println("Thức uống cần tìm là : ");
                             displayOneDrinks(dr);
-                            System.out.println("Có phải bạn muốn sửa sản phẩm này !");
 
                             char press = ' ';
                             boolean isChoice = true;
                             do {
-                                System.out.println("Nhấn 'Y' để tiếp tục, nhấn 'N' để tìm kiếm lại ");
+                                System.out.println("-----------------------------------------");
+                                System.out.println("|  Có phải bạn muốn sửa sản phẩm này ?  |");
+                                System.out.println("|   1. Yes                              | ");
+                                System.out.println("|   0. No                               |");
+                                System.out.println("-----------------------------------------");
+                                System.out.println();
+                                System.out.println("Chọn : ");
                                 try {
                                     press = input.nextLine().charAt(0);
                                 } catch (Exception e) {
                                     press = ' ';
                                 }
                                 switch (press) {
-                                    case 'Y':
-                                    case 'y':
+                                    case '1':
                                         editDrinkOption(dr);
                                         isChoice = false;
                                         break;
 
-                                    case 'n':
-                                    case 'N':
+                                    case '0':
                                         editDrink();
                                         isChoice = false;
                                         break;
@@ -627,7 +640,12 @@ public class DrinksManager implements Serializable {
         char choice;
         boolean isChoice = true;
         do {
-            System.out.println("Bạn muốn lưu thay đổi ? 'Y' = Yes / 'N' = No");
+            System.out.println("----------------------------------");
+            System.out.println("|   Bạn muốn lưu thay đổi ?       |");
+            System.out.println("|     1. Yes                      |");
+            System.out.println("|     0. No                       |");
+            System.out.println("-----------------------------------");
+            System.out.println();
             System.out.println("Chọn : ");
             try {
                 choice = input.nextLine().charAt(0);
@@ -635,15 +653,13 @@ public class DrinksManager implements Serializable {
                 choice = ' ';
             }
             switch (choice) {
-                case 'y':
-                case 'Y':
+                case '1':
                     writeToFile(LINK_SAVE_OBJECT_DRINKS, drinksList);
                     writeDataFromFileFormatToCsv(LINK_SAVE_FORMAT_CSV_DRINKS, drinksList);
                     isChoice = false;
                     deleteDrink();
                     break;
-                case 'n':
-                case 'N':
+                case '0':
                     drinksList = readDataFromFile(LINK_SAVE_OBJECT_DRINKS);
                     isChoice = false;
                     deleteDrink();
@@ -1163,32 +1179,34 @@ public class DrinksManager implements Serializable {
                 System.out.println();
                 menuDrinksManager();
             } else {
-                System.out.println("File đã tồn tại ! bạn có muốn ghi đè !");
+
                 char press = ' ';
                 boolean isPress = true;
                 do {
-                    System.out.print("Nhấn 'Y' để thực hiện,  'N' để thay đổi đường dẫn, 'R' để quay lại menu  ");
+                    System.out.println("----------------------------------------------");
+                    System.out.println("|   File đã tồn tại ! Bạn có muốn ghi đè !     |");
+                    System.out.println("|      1. Thực hiện ghi đè                     |");
+                    System.out.println("|      2. Thay đổi đường dẫn                   |");
+                    System.out.println("|      0. Quay lại                             |");
+                    System.out.println("-----------------------------------------------");
                     try {
                         press = input.nextLine().charAt(0);
                     } catch (Exception e) {
                         press = ' ';
                     }
                     switch (press) {
-                        case 'y':
-                        case 'Y':
+                        case '1':
                             writeDataFromFileFormatToCsv(linkFull, drinksList);
                             System.out.println("Đã xuất file thành công đến đường dẫn : " + linkFull);
                             isChoice = false;
                             isPress = false;
                             menuDrinksManager();
                             break;
-                        case 'n':
-                        case 'N':
+                        case '2':
                             exportDataDrinksToCsv();
                             isPress = false;
                             break;
-                        case 'R':
-                        case 'r':
+                        case '0':
                             isChoice = false;
                             isPress = false;
                             menuDrinksManager();

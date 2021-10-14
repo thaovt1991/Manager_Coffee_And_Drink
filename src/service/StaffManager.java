@@ -70,15 +70,20 @@ public class StaffManager implements Serializable {
         char check = ' ';
         boolean isCheck = false;
         do {
-            System.out.print("Bạn có muốn thêm nhân viên ? Nhấn 'Y' để đồng ý, nhấn 'N' để quay trờ về menu !");
+            System.out.println("----------------------------------");
+            System.out.println("|  Bạn có muốn thêm nhân viên ?  |");
+            System.out.println("|    1. Đồng ý                   |");
+            System.out.println("|    0. Quay lại                 |");
+            System.out.println("----------------------------------");
+            System.out.println();
+            System.out.print("Chọn : ");
             try {
                 check = input.nextLine().charAt(0);
             } catch (Exception e) {
                 check = ' ';
             }
             switch (check) {
-                case 'y':
-                case 'Y':
+                case '1':
                     String idStaff = "";
                     do {
                         System.out.print("Nhập id nhân viên :");
@@ -102,19 +107,22 @@ public class StaffManager implements Serializable {
                             char choice = ' ';
                             boolean isChoice = true;
                             do {
-                                System.out.print("Nhấn 'Y' để tiếp tục , nhấn 'N' để thay đổi ! : ");
+                                System.out.println("-------------------");
+                                System.out.println("|  1. Tiếp tục     |");
+                                System.out.println("|  0. Quay lại     |");
+                                System.out.println("-------------------");
+                                System.out.println();
+                                System.out.print("Chọn : ");
                                 try {
                                     choice = input.nextLine().charAt(0);
                                 } catch (Exception e) {
                                     choice = ' ';
                                 }
                                 switch (choice) {
-                                    case 'y':
-                                    case 'Y':
+                                    case '1':
                                         isChoice = false;
                                         break;
-                                    case 'n':
-                                    case 'N':
+                                    case '0':
                                         fullName = "";
                                         isChoice = false;
                                         break;
@@ -127,22 +135,25 @@ public class StaffManager implements Serializable {
                     String gender = "";
                     char press = ' ';
                     boolean isPress = true;
-                    System.out.println("Giới tính nhân viên ");
                     do {
-                        System.out.print("Nhấn 'M' nếu nhân viên là nam , nhấn 'F' nếu nhân viên là nữ ?  ");
+                        System.out.println("------------------------------");
+                        System.out.println("| Giới tính của nhân viên ?   |");
+                        System.out.println("|  1. Nam                     |");
+                        System.out.println("|  2. Nữ                      |");
+                        System.out.println("-------------------------------");
+                        System.out.println();
+                        System.out.println("Chọn : ");
                         try {
                             press = input.nextLine().charAt(0);
                         } catch (Exception e) {
                             press = ' ';
                         }
                         switch (press) {
-                            case 'm':
-                            case 'M':
+                            case '1':
                                 gender = "Nam";
                                 isPress = false;
                                 break;
-                            case 'f':
-                            case 'F':
+                            case '2':
                                 gender = "Nu";
                                 isPress = false;
                                 break;
@@ -208,23 +219,27 @@ public class StaffManager implements Serializable {
                     char choice = ' ';
                     boolean isChoice = true;
                     do {
-                        System.out.print("Bạn có muốn lưu vào dữ liệu nhân viên ! Nhấn 'Y' để đồng ý , nhấn 'N' để hủy dữ liệu vừa nhập  ");
+                        System.out.println("-------------------------------------------");
+                        System.out.println("|  Bạn có muốn lưu vào dữ liệu nhân viên ? |");
+                        System.out.println("|     1. Yes                               |");
+                        System.out.println("|     0. No                                |");
+                        System.out.println("-------------------------------------------");
+                        System.out.println();
+                        System.out.print("Chọn : ");
                         try {
                             choice = input.nextLine().charAt(0);
                         } catch (Exception e) {
                             choice = ' ';
                         }
                         switch (choice) {
-                            case 'y':
-                            case 'Y':
+                            case '1':
                                 staffList.add(staff);
                                 writeToFile(LINK_SAVE_OBJECT_STAFF, staffList);
                                 writeDataFromFileFormatToCsv(LINK_SAVE_FORMAT_CSV_STAFF, staffList);
                                 isChoice = false;
                                 menuStaffManager();
                                 break;
-                            case 'n':
-                            case 'N':
+                            case '0':
                                 menuStaffManager();
                                 isChoice = false;
                                 break;
@@ -232,8 +247,7 @@ public class StaffManager implements Serializable {
                         }
                     } while (isChoice);
                     break;
-                case 'n':
-                case 'N':
+                case '0':
                     menuStaffManager();
                     break;
                 default:
@@ -418,32 +432,35 @@ public class StaffManager implements Serializable {
                 System.out.println();
                 menuStaffManager();
             } else {
-                System.out.println("File đã tồn tại ! bạn có muốn ghi đè !");
                 char press = ' ';
                 boolean isPress = true;
                 do {
-                    System.out.print("Nhấn 'Y' để thực hiện,  'N' để thay đổi đường dẫn, 'R' để quay lại menu  ");
+                    System.out.println("----------------------------------------------");
+                    System.out.println("|   File đã tồn tại ! Bạn có muốn ghi đè !     |");
+                    System.out.println("|      1. Thực hiện ghi đè                     |");
+                    System.out.println("|      2. Thay đổi đường dẫn                   |");
+                    System.out.println("|      0. Quay lại                             |");
+                    System.out.println("-----------------------------------------------");
+                    System.out.println();
+                    System.out.print("Chọn : ");
                     try {
                         press = input.nextLine().charAt(0);
                     } catch (Exception e) {
                         press = ' ';
                     }
                     switch (press) {
-                        case 'y':
-                        case 'Y':
+                        case '1':
                             writeDataFromFileFormatToCsv(linkFull, staffList);
                             System.out.println("Đã xuất file thành công đến đường dẫn : " + linkFull);
                             isChoice = false;
                             isPress = false;
                             menuStaffManager();
                             break;
-                        case 'n':
-                        case 'N':
+                        case '2':
                             exportFileStaffToCsv();
                             isPress = false;
                             break;
-                        case 'R':
-                        case 'r':
+                        case '0':
                             isChoice = false;
                             isPress = false;
                             menuStaffManager();
@@ -565,7 +582,7 @@ public class StaffManager implements Serializable {
             System.out.println("|                                0. Quay lại |");
             System.out.println("---------------------------------------------|");
             System.out.println();
-            System.out.print("Lựa chọn :");
+            System.out.print("Chọn : ");
             try {
                 choice = input.nextLine().charAt(0);
             } catch (Exception e) {
@@ -607,7 +624,7 @@ public class StaffManager implements Serializable {
             System.out.println("|                                       0. Quay lại |");
             System.out.println("-----------------------------------------------------");
             System.out.println();
-            System.out.print("Lựa chọn :");
+            System.out.print("Chọn : ");
             try {
                 choice = input.nextLine().charAt(0);
             } catch (Exception e) {
@@ -649,7 +666,7 @@ public class StaffManager implements Serializable {
             System.out.println("|                                    0. Quay lại |");
             System.out.println("-------------------------------------------------");
             System.out.println();
-            System.out.print("Lựa chọn :");
+            System.out.print("Chọn : ");
             try {
                 choice = input.nextLine().charAt(0);
             } catch (Exception e) {
@@ -691,7 +708,7 @@ public class StaffManager implements Serializable {
             System.out.println("|                            0. Quay lại |");
             System.out.println("------------------------------------------");
             System.out.println();
-            System.out.print("Lựa chọn :");
+            System.out.print("Chọn : ");
             try {
                 choice = input.nextLine().charAt(0);
             } catch (Exception e) {
@@ -733,7 +750,7 @@ public class StaffManager implements Serializable {
             System.out.println("|                                     0. Quay lại |");
             System.out.println("--------------------------------------------------");
             System.out.println();
-            System.out.print("Lựa chọn :");
+            System.out.print("Chọn : ");
             try {
                 choice = input.nextLine().charAt(0);
             } catch (Exception e) {
@@ -1108,7 +1125,7 @@ public class StaffManager implements Serializable {
             System.out.println("|                                    0. Quay lại |");
             System.out.println("--------------------------------------------------");
             System.out.println();
-            System.out.print("Lựa chọn : ");
+            System.out.print("Chọn : ");
             try {
                 choice = input.nextLine().charAt(0);
             } catch (Exception e) {
@@ -1210,23 +1227,26 @@ public class StaffManager implements Serializable {
         char choice;
         boolean isChoice = true;
         do {
-            System.out.println("Bạn muốn lưu thay đổi ? 'Y' = Yes / 'N' = No");
-            System.out.println("Chọn : ");
+            System.out.println("------------------------------");
+            System.out.println("|  Bạn muốn lưu thay đổi ?    |");
+            System.out.println("|     1. Yes                  |");
+            System.out.println("|     0. No                   |");
+            System.out.println("------------------------------");
+            System.out.println();
+            System.out.print("Chọn : ");
             try {
                 choice = input.nextLine().charAt(0);
             } catch (Exception e) {
                 choice = ' ';
             }
             switch (choice) {
-                case 'y':
-                case 'Y':
+                case '1':
                     writeToFile(LINK_SAVE_OBJECT_STAFF, staffList);
                     writeDataFromFileFormatToCsv(LINK_SAVE_FORMAT_CSV_STAFF, staffList);
                     isChoice = false;
                     deleteStaff();
                     break;
-                case 'n':
-                case 'N':
+                case '0':
                     staffList = readDataFromFile(LINK_SAVE_OBJECT_STAFF);
                     isChoice = false;
                     deleteStaff();
@@ -1248,7 +1268,7 @@ public class StaffManager implements Serializable {
             System.out.println("|                                             0. Quay lại |");
             System.out.println("-----------------------------------------------------------");
             System.out.println();
-            System.out.print("Lựa chọn : ");
+            System.out.print("Chọn : ");
             try {
                 choice = input.nextLine().charAt(0);
             } catch (Exception e) {
@@ -1287,25 +1307,27 @@ public class StaffManager implements Serializable {
                     if (staff.getIdStaff().equals(id)) {
                         System.out.println("Nhân viên tìm được là : ");
                         displayOneStaff(staff);
-                        System.out.println("Có phải bạn muốn thay đổi thông tin nhân viên này !");
-
                         char press = ' ';
                         boolean isChoice = true;
                         do {
-                            System.out.println("Nhấn 'Y' để tiếp tục, nhấn 'N' để tìm kiếm lại ");
+                            System.out.println("Có phải bạn muốn thay đổi thông tin nhân viên này !");
+                            System.out.println("---------------");
+                            System.out.println("|  1. Yes      |");
+                            System.out.println("|  0. No       |");
+                            System.out.println("---------------");
+                            System.out.println();
+                            System.out.println("Chọn : ");
                             try {
                                 press = input.nextLine().charAt(0);
                             } catch (Exception e) {
                                 press = ' ';
                             }
                             switch (press) {
-                                case 'Y':
-                                case 'y':
+                                case '1':
                                     editOptionStaff(staff);
                                     isChoice = false;
                                     break;
-                                case 'n':
-                                case 'N':
+                                case '0':
                                     editStaff();
                                     isChoice = false;
                                     break;
@@ -1378,20 +1400,20 @@ public class StaffManager implements Serializable {
         do {
             System.out.println("----------------------------------------------------------------");
             System.out.println("|                THAY ĐỔI THÔNG TIN NHÂN VIÊN                   |");
-            System.out.println("------------------------------------------------------------------");
-            System.out.println("|   1.  Thay đổi id nhân viên                                    |");
-            System.out.println("|   2.  Thay đổi tên nhân viên                                   |");
-            System.out.println("|   3.  Thay đổi giới tính                                       |");
-            System.out.println("|   4.  Thay đổi ngày tháng năm sinh                             |");
-            System.out.println("|   5.  Thay đổi CMND                                            |");
-            System.out.println("|   6.  Thay đổi số điện thoại                                   |");
-            System.out.println("|   7.  Thay đổi địa chỉ                                         |");
-            System.out.println("|   8.  Thay đổi mức lương nhân viên                             |");
-            System.out.println("|   9.  Thay đổi thông tin khác                                  |");
-            System.out.println("|   10. Thay đổi toàn bộ thông tin nhân viên                     |");
-            System.out.println("|   11.  Thoát và hủy thay đổi                                   |");
-            System.out.println("|   12.  Thoát và lưu thay đổi                                   |");
-            System.out.println("------------------------------------------------------------------");
+            System.out.println("----------------------------------------------------------------");
+            System.out.println("|   1.  Thay đổi id nhân viên                                   |");
+            System.out.println("|   2.  Thay đổi tên nhân viên                                  |");
+            System.out.println("|   3.  Thay đổi giới tính                                      |");
+            System.out.println("|   4.  Thay đổi ngày tháng năm sinh                            |");
+            System.out.println("|   5.  Thay đổi CMND                                           |");
+            System.out.println("|   6.  Thay đổi số điện thoại                                  |");
+            System.out.println("|   7.  Thay đổi địa chỉ                                        |");
+            System.out.println("|   8.  Thay đổi mức lương nhân viên                            |");
+            System.out.println("|   9.  Thay đổi thông tin khác                                 |");
+            System.out.println("|  10.  Thay đổi toàn bộ thông tin nhân viên                    |");
+            System.out.println("|  11.  Thoát và hủy thay đổi                                   |");
+            System.out.println("|  12.  Thoát và lưu thay đổi                                   |");
+            System.out.println("-----------------------------------------------------------------");
             System.out.println();
             System.out.print("Chọn :");
             choice = input.nextLine();
@@ -1487,24 +1509,26 @@ public class StaffManager implements Serializable {
             if (!isFormatFullName(fullName)) {
                 System.out.println("Định dạng tên chưa hợp lệ ! ( ví dụ tên đúng :Nguyen Van A)");
             } else if (isFullNameHaveInList(fullName)) {
-                //in doi tuong da co ten ra ;
-                System.out.println("'" + fullName + "' đã có trong dãy , bạn có chắc chắn muốn thêm !");
                 char choice = ' ';
                 boolean isChoice = true;
                 do {
-                    System.out.print("Nhấn 'Y' để tiếp tục , nhấn 'N' để thay đổi ! : ");
+                    System.out.println("'" + fullName + "' đã có trong dãy , bạn có chắc chắn muốn thêm !");
+                    System.out.println("---------------");
+                    System.out.println("|  1. Yes      |");
+                    System.out.println("|  0. No       |");
+                    System.out.println("---------------");
+                    System.out.println();
+                    System.out.println("Chọn : ");
                     try {
                         choice = input.nextLine().charAt(0);
                     } catch (Exception e) {
                         choice = ' ';
                     }
                     switch (choice) {
-                        case 'y':
-                        case 'Y':
+                        case '1':
                             isChoice = false;
                             break;
-                        case 'n':
-                        case 'N':
+                        case '0':
                             fullName = "";
                             isChoice = false;
                             break;
@@ -1522,20 +1546,24 @@ public class StaffManager implements Serializable {
         boolean isPress = true;
         System.out.println("Thay đổi giới tính của nhân viên ");
         do {
-            System.out.print("Nhấn 'M' nếu nhân viên là nam , nhấn 'F' nếu nhân viên là nữ ?  ");
+            System.out.println("------------------------------");
+            System.out.println("| Giới tính của nhân viên ?   |");
+            System.out.println("|  1. Nam                     |");
+            System.out.println("|  2. Nữ                      |");
+            System.out.println("-------------------------------");
+            System.out.println();
+            System.out.println("Chọn : ");
             try {
                 press = input.nextLine().charAt(0);
             } catch (Exception e) {
                 press = ' ';
             }
             switch (press) {
-                case 'm':
-                case 'M':
+                case '1':
                     gender = "Nam";
                     isPress = false;
                     break;
-                case 'f':
-                case 'F':
+                case '2':
                     gender = "Nu";
                     isPress = false;
                     break;

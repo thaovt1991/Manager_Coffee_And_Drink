@@ -151,15 +151,20 @@ public class AccountManager implements Serializable {
         char check = ' ';
         boolean isCheck = false;
         do {
-            System.out.print("Bạn có muốn thêm thức uống mới ? Nhấn 'Y' để đồng ý, nhấn 'N' để quay trờ về menu !");
+            System.out.println("----------------------------------------");
+            System.out.println("|  Bạn có muốn thêm tài khoản mới ?     |");
+            System.out.println("|    1. Đồng ý                          |");
+            System.out.println("|    0. Hủy bỏ                          |");
+            System.out.println("----------------------------------------");
+            System.out.println();
+            System.out.print("Chọn : ");
             try {
                 check = input.nextLine().charAt(0);
             } catch (Exception e) {
                 check = ' ';
             }
             switch (check) {
-                case 'y':
-                case 'Y':
+                case '1':
                     displayAllListStaff();
                     String ownerID = "";
                     boolean isChoice = true;
@@ -195,7 +200,7 @@ public class AccountManager implements Serializable {
                         System.out.print("Nhập pass lần 1 : ");
                         pass = input.nextLine();
                         if (!isFormatPassword(pass)) {
-                            System.out.println("password có ít nhất 8 kí tự gồm chữ và số, bắt đầu bằng chữ và có ít nhất 1 chữ số");
+                            System.out.println("Password có ít nhất 8 kí tự gồm chữ và số, bắt đầu bằng chữ và có ít nhất 1 chữ số");
                         } else {
                             System.out.print("Nhập pass lần 2 : ");
                             pass2 = input.nextLine();
@@ -210,20 +215,24 @@ public class AccountManager implements Serializable {
                     boolean isPress = true;
                     System.out.println("Phân quyền cho account ?");
                     do {
-                        System.out.print("Nhấn 'A' nếu người dùng là quản lý , nhấn 'G' nếu người dùng là nhân viên thông thường ?  ");
+                        System.out.println("-----------------------");
+                        System.out.println("|  Quyền truy cập ?    |");
+                        System.out.println("|   1. Admin           |");
+                        System.out.println("|   2. Guest           |");
+                        System.out.println("-----------------------");
+                        System.out.println();
+                        System.out.print("Chọn : ");;
                         try {
                             press = input.nextLine().charAt(0);
                         } catch (Exception e) {
                             press = ' ';
                         }
                         switch (press) {
-                            case 'a':
-                            case 'A':
+                            case '1':
                                 decentralization = "Admin";
                                 isPress = false;
                                 break;
-                            case 'G':
-                            case 'g':
+                            case '2':
                                 decentralization = "Guest";
                                 isPress = false;
                                 break;
@@ -242,23 +251,27 @@ public class AccountManager implements Serializable {
                     char choose = ' ';
                     boolean isChoose = true;
                     do {
-                        System.out.print("Nhấn 'Y' để đồng ý ! Nhấn 'N' để hủy bỏ thao tác !");
+                        System.out.println("-----------------------");
+                        System.out.println("|  Lưu vào dữ liệu ?   |");
+                        System.out.println("|    1. Đồng ý         |");
+                        System.out.println("|    0. Hủy bỏ         |");
+                        System.out.println("------------------------");
+                        System.out.println();
+                        System.out.print("Chọn : ");
                         try {
                             press = input.nextLine().charAt(0);
                         } catch (Exception e) {
                             press = ' ';
                         }
                         switch (press) {
-                            case 'Y':
-                            case 'y': {
+                            case '1': {
                                 accountsList.add(account);
                                 writeDataAccountToFile(LINK_SAVE_OBJECT_ACCOUNT, accountsList);
                                 writeDataAccountToFileCsv(LINK_SAVE_FORMAT_CSV_ACCOUNT, accountsList);
                                 isChoose = false;
                                 break;
                             }
-                            case 'n':
-                            case 'N':
+                            case '0':
                                 menuAccountManager();
                                 isChoose = false;
                                 break;
@@ -267,8 +280,7 @@ public class AccountManager implements Serializable {
                         }
                     } while (isChoose);
                     break;
-                case 'n':
-                case 'N':
+                case '0':
                     menuAccountManager();
                     break;
                 default:
@@ -332,20 +344,24 @@ public class AccountManager implements Serializable {
                         char press = ' ';
                         boolean isChoice = true;
                         do {
-                            System.out.println("Nhấn 'Y' để tiếp tục, nhấn 'N' để tìm kiếm lại ");
+                            System.out.println("------------------");
+                            System.out.println("| Thay đổi ?      |");
+                            System.out.println("|  1. Đồng ý      |");
+                            System.out.println("|  0. Hủy bỏ      |");
+                            System.out.println("-------------------");
+                            System.out.println();
+                            System.out.println("Chọn : ");
                             try {
                                 press = input.nextLine().charAt(0);
                             } catch (Exception e) {
                                 press = ' ';
                             }
                             switch (press) {
-                                case 'Y':
-                                case 'y':
+                                case '1':
                                     editOptionAccount(account);
                                     isChoice = false;
                                     break;
-                                case 'n':
-                                case 'N':
+                                case '0':
                                     editAccount();
                                     isChoice = false;
                                     break;
@@ -378,26 +394,29 @@ public class AccountManager implements Serializable {
                         if (account.getUserName().equals(username)) {
                             System.out.println("Tài khoản cần tìm là : ");
                             displayOneAccount(account);
-                            System.out.println("Có phải bạn muốn thông tin tài khoản này !");
+                            System.out.println("Có phải bạn muốn thay đổi thông tin tài khoản này !");
 
                             char press = ' ';
                             boolean isChoice = true;
                             do {
-                                System.out.println("Nhấn 'Y' để tiếp tục, nhấn 'N' để tìm kiếm lại ");
+                                System.out.println("------------------");
+                                System.out.println("| Thay đổi ?      |");
+                                System.out.println("|  1. Đồng ý      |");
+                                System.out.println("|  0. Hủy bỏ      |");
+                                System.out.println("-------------------");
+                                System.out.println();
+                                System.out.println("Chọn : ");
                                 try {
                                     press = input.nextLine().charAt(0);
                                 } catch (Exception e) {
                                     press = ' ';
                                 }
                                 switch (press) {
-                                    case 'Y':
-                                    case 'y':
+                                    case '1':
                                         editOptionAccount(account);
                                         isChoice = false;
                                         break;
-
-                                    case 'n':
-                                    case 'N':
+                                    case '0':
                                         editAccount();
                                         isChoice = false;
                                         break;
@@ -506,7 +525,7 @@ public class AccountManager implements Serializable {
             if (!isFormatUserName(userName)) {
                 System.out.println("Username gồm số và chữ thường, phải bắt đầu là một chữ và có 6-16 kí tự !");
             } else if (isUserNameHaveInListAccount(userName)) {
-                System.out.println("username đã được sử dụng !");
+                System.out.println("Username đã được sử dụng !");
             }
         } while (isUserNameHaveInListAccount(userName) || !isFormatUserName(userName));
         account.setUserName(userName);
@@ -537,20 +556,24 @@ public class AccountManager implements Serializable {
         boolean isPress = true;
         System.out.println("Phân quyền lại account ?");
         do {
-            System.out.print("Nhấn 'A' nếu người dùng là quản lý , nhấn 'G' nếu người dùng là nhân viên thông thường ?  ");
+            System.out.println("-----------------------");
+            System.out.println("|  Quyền truy cập ?    |");
+            System.out.println("|   1. Admin           |");
+            System.out.println("|   2. Guest           |");
+            System.out.println("-----------------------");
+            System.out.println();
+            System.out.print("Chọn : ");
             try {
                 press = input.nextLine().charAt(0);
             } catch (Exception e) {
                 press = ' ';
             }
             switch (press) {
-                case 'a':
-                case 'A':
+                case '1':
                     decentralization = "Admin";
                     isPress = false;
                     break;
-                case 'G':
-                case 'g':
+                case '2':
                     decentralization = "Guest";
                     isPress = false;
                     break;
@@ -571,7 +594,7 @@ public class AccountManager implements Serializable {
             System.out.println("|                                    0. Quay lại |");
             System.out.println("--------------------------------------------------");
             System.out.println();
-            System.out.println("Lựa chọn : ");
+            System.out.print("Chọn : ");
             try {
                 choice = input.nextLine().charAt(0);
             } catch (Exception e) {
@@ -646,23 +669,26 @@ public class AccountManager implements Serializable {
         char choice;
         boolean isChoice = true;
         do {
-            System.out.println("Bạn muốn lưu thay đổi ? 'Y' = Yes / 'N' = No");
-            System.out.println("Chọn : ");
+            System.out.println("------------------------------");
+            System.out.println("| Bạn muốn lưu thay đổi ?     |");
+            System.out.println("|   1. Yes                    |");
+            System.out.println("|   0. No                     |");
+            System.out.println("-------------------------------");
+            System.out.println();
+            System.out.print("Chọn : ");
             try {
                 choice = input.nextLine().charAt(0);
             } catch (Exception e) {
                 choice = ' ';
             }
             switch (choice) {
-                case 'y':
-                case 'Y':
+                case '1':
                     writeDataAccountToFile(LINK_SAVE_OBJECT_ACCOUNT, accountsList);
                     writeDataAccountToFileCsv(LINK_SAVE_FORMAT_CSV_ACCOUNT, accountsList);
                     isChoice = false;
                     deleteAccount();
                     break;
-                case 'n':
-                case 'N':
+                case '0':
                     accountsList = readDataAccountToFile(LINK_SAVE_OBJECT_ACCOUNT);
                     isChoice = false;
                     deleteAccount();
@@ -799,7 +825,7 @@ public class AccountManager implements Serializable {
             switch (press) {
                 case 'r':
                 case 'R': {
-                    //   searchAccount();
+                    searchAccount();
                     isChoice = false;
                     break;
                 }
@@ -887,7 +913,7 @@ public class AccountManager implements Serializable {
             System.out.println("|                                        0. Quay lại  |");
             System.out.println("-------------------------------------------------------");
             System.out.println();
-            System.out.print("Lựa chọn :");
+            System.out.print("Chọn : ");
             try {
                 choice = input.nextLine().charAt(0);
             } catch (Exception e) {
@@ -929,7 +955,7 @@ public class AccountManager implements Serializable {
             System.out.println("|                                         0. Quay lại |");
             System.out.println("-------------------------------------------------------");
             System.out.println();
-            System.out.print("Lựa chọn :");
+            System.out.print("Chọn :");
             try {
                 choice = input.nextLine().charAt(0);
             } catch (Exception e) {
@@ -971,7 +997,7 @@ public class AccountManager implements Serializable {
             System.out.println("|                                         0. Quay lại |");
             System.out.println("-------------------------------------------------------");
             System.out.println();
-            System.out.print("Lựa chọn :");
+            System.out.print("Chọn :");
             try {
                 choice = input.nextLine().charAt(0);
             } catch (Exception e) {
@@ -1040,32 +1066,35 @@ public class AccountManager implements Serializable {
                 System.out.println();
                 menuAccountManager();
             } else {
-                System.out.println("File đã tồn tại ! bạn có muốn ghi đè !");
                 char press = ' ';
                 boolean isPress = true;
                 do {
-                    System.out.print("Nhấn 'Y' để thực hiện,  'N' để thay đổi đường dẫn, 'R' để quay lại menu  ");
+                    System.out.println("---------------------------------------------");
+                    System.out.println("|  File đã tồn tại ! Bạn có muốn ghi đè !    |");
+                    System.out.println("|    1. Thực hiện ghi đè                     |");
+                    System.out.println("|    2. Thay đổi đường dẫn                   |");
+                    System.out.println("|    0. Quay lại                             |");
+                    System.out.println("---------------------------------------------");
+                    System.out.println();
+                    System.out.print("Chọn : ");
                     try {
                         press = input.nextLine().charAt(0);
                     } catch (Exception e) {
                         press = ' ';
                     }
                     switch (press) {
-                        case 'y':
-                        case 'Y':
+                        case '1':
                             writeDataAccountToFileCsv(linkFull, accountsList);
                             System.out.println("Đã xuất file thành công đến đường dẫn : " + linkFull);
                             isChoice = false;
                             isPress = false;
                             menuAccountManager();
                             break;
-                        case 'n':
-                        case 'N':
+                        case '2':
                             exportFileAccountToCsv();
                             isPress = false;
                             break;
-                        case 'R':
-                        case 'r':
+                        case '0':
                             isChoice = false;
                             isPress = false;
                             menuAccountManager();
