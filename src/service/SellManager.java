@@ -1327,6 +1327,7 @@ public class SellManager implements IManagerSell {
     }
 
     public void payForTable() {
+        if(!tablesListHaveCustomer.isEmpty()){
         DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
         String idTable = "";
         displaylistTable();
@@ -1384,10 +1385,11 @@ public class SellManager implements IManagerSell {
                     default:
                 }
             } while (isNotChoice);
-        }
+        }}else System.out.println("Không có khách nào đang ngồi trong quán !");
     }
 
     public void payForCA() {
+        if(!listCarriedAway.isEmpty()){
         DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
         String idCA = "";
         displaylistCA();
@@ -1445,7 +1447,7 @@ public class SellManager implements IManagerSell {
                     default:
                 }
             } while (isNotChoice);
-        }
+        }}else System.out.println("Không có khách nào mua mang về !");
     }
 
     public String getFullNameOfIdStaff(String idSfaff) {
@@ -1502,6 +1504,7 @@ public class SellManager implements IManagerSell {
             System.out.println("| 1. Order thức uống cho khách                        |");
             System.out.println("| 2. Sửa order cho khách                              |");
             System.out.println("| 3. Thanh toán tiền                                  |");
+            System.out.println("| 4. Xem thức uống trong quán                         |");
             System.out.println("|                                         0. Quay lại |");
             System.out.println("-------------------------------------------------------");
             System.out.println();
@@ -1520,6 +1523,10 @@ public class SellManager implements IManagerSell {
                     break;
                 case '3':
                     menuPay();
+                    break;
+                case '4':
+                    displayMenuDrinks();
+                    menuSellDrinksManager();
                     break;
                 case '0':
                     if (Menu.decentralization.equals("Guest")) {

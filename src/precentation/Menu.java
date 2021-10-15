@@ -137,6 +137,7 @@ public class Menu implements Serializable {
                         break;
                     case '7':
                         changePassword();
+                        break;
                     case '0':
                         timeOut = String.valueOf(java.time.LocalTime.now()) + " " + String.valueOf(java.time.LocalDate.now());
                         loginHistory.setTimeLogOut(timeOut);

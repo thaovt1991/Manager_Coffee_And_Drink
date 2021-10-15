@@ -36,7 +36,7 @@ public class SystemManager {
         } else {
             Files.copy(sourceFolder.toPath(), targetFolder.toPath(),
                     StandardCopyOption.REPLACE_EXISTING);
-            System.out.println("File da duoc save " + targetFolder);
+          //  System.out.println("File da duoc save " + targetFolder);
         }
     }
 
@@ -173,7 +173,7 @@ public class SystemManager {
                         System.out.println();
                 }
             } while (choice != '0');
-        } else System.out.println("Phải đăng nhập tài khoản 'admin' hệ thống để thực hiện chức năng này ! ");
+        } else System.out.println("Phải đăng nhập tài khoản 'admin hệ thống' để thực hiện chức năng này ! ");
     }
 }
 
