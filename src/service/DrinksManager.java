@@ -23,7 +23,7 @@ public class DrinksManager implements IManagerObj {
     public static final String QUALITY_REGEX = "^[0-9]{1,9}$"; //int
     public static final String PRIME_REGEX = "^[1-9][0-9]{1,14}[0]{3}$";
     public static final String LINK_REGEX = "(^([C|D][:])\\\\(?:[\\w]+\\\\)*\\w+$)|(^[C|D][:][\\\\]$)";
-    public static final String FORMAT_CSV_DRINKS = "ID,NAME,QUALITY,PRICE,OTHER";
+    public static final String FORMAT_CSV_DRINKS = "ID,NAME,QUANTITY,PRICE,OTHER";
     public static final String DOWN_THE_LINE = "\n";
     public static final String COMMA_DELIMITER = ",";
     public static final String LINK_SAVE_OBJECT_DRINKS = "src/data/list_drinks.txt";
@@ -181,7 +181,8 @@ public class DrinksManager implements IManagerObj {
                     System.out.println("Mô tả về thức uống :");
                     other = input.nextLine();
                     Drinks drink = new Drinks(id, name, quality, price, other);
-                    System.out.println("Thức uống mới : " + drink);
+                    System.out.println("Thức uống mới : " );
+                    displayOneDrinks(drink);
                     System.out.println("Bạn muốn thêm '" + drink.getNameDrink() + "' vào danh sách thức uống của quán !");
                     char press = ' ';
                     boolean isChoice = true;
