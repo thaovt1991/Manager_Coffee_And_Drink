@@ -127,11 +127,11 @@ public class SystemManager {
         ArrayList<LoginHistory> listHistoryLog = ReadAndWrite.readDataHistoryLogToFile(ReadAndWrite.LINK_HISTORY_LOG);
         System.out.println("Lịch sử đăng nhập làm việc : ");
         System.out.println();
-        System.out.printf("%-7s%-15s%-15s%-30s%s\n","STT","USERNAME","DECENTRALIZATION","TIME LOGIN", "TIME LOGOUT");
+        System.out.printf("%-7s%-15s%-17s%-30s%s\n","STT","USERNAME","DECENTRALIZATION","TIME LOGIN", "TIME LOGOUT");
         int count = 0;
         for(LoginHistory loginHistory : listHistoryLog){
             count ++ ;
-            System.out.printf("%-7s%-15s%-15s%-30s%s\n",String.valueOf(count),loginHistory.getUsernameLog(),loginHistory.getDecentralization(),loginHistory.getTimeLogIn(), loginHistory.getTimeLogOut());
+            System.out.printf("%-7s%-15s%-17s%-30s%s\n",String.valueOf(count),loginHistory.getUsernameLog(),loginHistory.getDecentralization(),loginHistory.getTimeLogIn(), loginHistory.getTimeLogOut());
         };
         System.out.println();
 
