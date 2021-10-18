@@ -19,7 +19,7 @@ import java.util.regex.Pattern;
 public class AccountManager implements IManagerObj {
 
     private ArrayList<Account> accountsList;
-    private ArrayList<Staff> staffList;
+    private  ArrayList<Staff> staffList;
     static Scanner input = new Scanner(System.in);
     public static final String LINK_SAVE_OBJECT_STAFF = "src/data/list_staff.txt";
     public static final String LINK_SAVE_OBJECT_ACCOUNT = "src/data/list_account.txt";

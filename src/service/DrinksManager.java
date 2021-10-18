@@ -77,7 +77,7 @@ public class DrinksManager implements IManagerObj {
         return listDrinks;
     }
 
-    public void writeToFile(String path, ArrayList<Drinks> listDrinks) {
+    public void writeDrinksToFile(String path, ArrayList<Drinks> listDrinks) {
         try {
             FileOutputStream fos = new FileOutputStream(path);
             ObjectOutputStream oos = new ObjectOutputStream(fos);
@@ -201,7 +201,7 @@ public class DrinksManager implements IManagerObj {
                         switch (press) {
                             case '1': {
                                 drinksList.add(drink);
-                                writeToFile(LINK_SAVE_OBJECT_DRINKS, drinksList);
+                                writeDrinksToFile(LINK_SAVE_OBJECT_DRINKS, drinksList);
                                 writeDataFromFileFormatToCsv(LINK_SAVE_FORMAT_CSV_DRINKS, drinksList);
                                 isChoice = false;
                                 menuDrinksManager();
@@ -454,7 +454,7 @@ public class DrinksManager implements IManagerObj {
                     isChoice = false;
                     break;
                 case '8':
-                    writeToFile(LINK_SAVE_OBJECT_DRINKS, drinksList);
+                    writeDrinksToFile(LINK_SAVE_OBJECT_DRINKS, drinksList);
                     writeDataFromFileFormatToCsv(LINK_SAVE_FORMAT_CSV_DRINKS, drinksList);
                     if(!drinks.getIdDrink().equals(idDrinksOld)){
                         FacadeEdit.editAllObjOfIdDrinks(idDrinksOld,drinks.getIdDrink());
@@ -489,7 +489,7 @@ public class DrinksManager implements IManagerObj {
             System.out.printf("%-3s%-12s%-12s%-40s%-20s%-23s%s\n", "|", stt, id, name, ql, pr, "|");
         }
         System.out.println("------------------------------------------######################-----------------------------------------------");
-        drinksList = readDataDrinksFromFile(LINK_SAVE_OBJECT_DRINKS);
+//        drinksList = readDataDrinksFromFile(LINK_SAVE_OBJECT_DRINKS); cai nay gay loi ko up date o phia duoi
     }
 
     public void editIdDrink(Drinks drinks) {
@@ -661,7 +661,7 @@ public class DrinksManager implements IManagerObj {
             }
             switch (choice) {
                 case '1':
-                    writeToFile(LINK_SAVE_OBJECT_DRINKS, drinksList);
+                    writeDrinksToFile(LINK_SAVE_OBJECT_DRINKS, drinksList);
                     writeDataFromFileFormatToCsv(LINK_SAVE_FORMAT_CSV_DRINKS, drinksList);
                     isChoice = false;
                     deleteDrink();

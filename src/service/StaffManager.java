@@ -1153,7 +1153,7 @@ public class StaffManager implements IManagerObj {
         String id = "";
         System.out.print("Nhập ID nhân viên muốn xóa : ");
         id = input.nextLine();
-        if (!isFormatPay(id)) {
+        if (!isFormatIdStaff(id)) {
             System.out.println("Định dạng id phải có dạng 'NV123456' !");
             deleteStaff();
         } else {
@@ -1717,7 +1717,7 @@ public class StaffManager implements IManagerObj {
 
     @Override
     public void search() {
-
+        searchStaff();
     }
 
     @Override
